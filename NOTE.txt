@@ -1,0 +1,33 @@
+Sebelum itu ingat ini, pastikan aktifkan Proteksi crsf untuk keamanan. kemudian mulai sekarang setiap ada perubahan atau penambahan module kasih tau saya file apa yang perlu di tambah atau yang perlu di edit, sertakan juga bagian mana yang perlu di edit atau di replace semua keseluruhan harus di beritahu agar tidak rancu.
+
+Baik, lanjut ke modul penomoran surat lengkap CRUD CI3, 
+Alurnya gini, Ketika klik (Tambah Nomor Surat), muncul dulu option dalam bentuk sweatalert pilihan jenis surat :
+1. SETDA - Surat Keluar
+2. SETDA - SPPD
+3. UMUM - Surat Keluar
+4. UMUM - SPPD
+5. NOTA DINAS
+
+setelah di pilih maka masuk/redirect ke halaman isi form :
+FORM -> SETDA-Surat Keluar dan SETDA-SPPD
+- Kode Keamanan
+- Nomor Urut 
+- Catatan
+- Kode Klasifikasi
+- Tahun
+- Tanggal Surat
+- Perihal
+- Pengolah
+- Tujuan
+
+FORM -> UMUM-Surat Keluar dan UMUM-SPPD dan NOTA DINAS
+- Kode Keamanan
+- Nomor Urut
+- Catatan
+- Kode Klasifikasi
+- Kode Umum
+- Tahun
+- Tanggal Surat
+- Perihal
+- Pengolah
+- Tujuan

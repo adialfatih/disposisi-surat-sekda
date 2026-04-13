@@ -1,0 +1,1908 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RJS Admin Panel</title>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+:root {
+  --sogan: #5C3317;
+  --sogan-mid: #7A4828;
+  --sogan-light: #A0673A;
+  --sogan-pale: #F5EDE4;
+  --sogan-faint: #FBF6F1;
+  --cream: #F7F0E8;
+  --cream-dark: #EDE2D4;
+  --gold: #C49A3C;
+  --gold-light: #E8C97A;
+  --gold-faint: #FDF6E3;
+  --text-dark: #2C1A0E;
+  --text-mid: #6B4C35;
+  --text-muted: #9C7B62;
+  --white: #FFFFFF;
+  --sidebar-w: 260px;
+  --header-h: 64px;
+  --shadow-sm: 0 1px 3px rgba(92,51,23,.08);
+  --shadow-md: 0 4px 16px rgba(92,51,23,.12);
+  --shadow-lg: 0 8px 32px rgba(92,51,23,.18);
+  --radius: 10px;
+  --radius-lg: 16px;
+  --transition: 0.28s cubic-bezier(.4,0,.2,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text-dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── BATIK PATTERN ── */
+.batik-pattern {
+  background-image:
+    radial-gradient(circle at 2px 2px, rgba(196,154,60,.18) 1px, transparent 0),
+    radial-gradient(circle at 10px 10px, rgba(92,51,23,.07) 1px, transparent 0);
+  background-size: 14px 14px, 14px 14px;
+}
+
+.batik-border {
+  border-bottom: 3px solid transparent;
+  border-image: repeating-linear-gradient(
+    90deg,
+    var(--gold) 0px, var(--gold) 6px,
+    var(--sogan) 6px, var(--sogan) 12px,
+    var(--cream-dark) 12px, var(--cream-dark) 16px
+  ) 1;
+}
+
+/* ── SIDEBAR ── */
+#sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  background: var(--sogan);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition);
+  overflow: hidden;
+}
+
+#sidebar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 3px 3px, rgba(255,255,255,.05) 1.5px, transparent 0),
+    radial-gradient(circle at 11px 11px, rgba(255,255,255,.03) 1px, transparent 0);
+  background-size: 16px 16px, 16px 16px;
+  pointer-events: none;
+}
+
+.sidebar-logo {
+  padding: 0 20px;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+  flex-shrink: 0;
+}
+
+.logo-mark {
+  width: 36px; height: 36px;
+  background: var(--gold);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--sogan);
+}
+
+.logo-text {
+  font-family: 'Playfair Display', serif;
+  color: var(--white);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.logo-text small {
+  display: block;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 10px;
+  color: rgba(255,255,255,.5);
+  font-weight: 400;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.nav-section-label {
+  padding: 20px 20px 6px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 20px;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+  border-radius: 0;
+  color: rgba(255,255,255,.65);
+  font-size: 14px;
+  font-weight: 500;
+  position: relative;
+  user-select: none;
+}
+
+.nav-item:hover {
+  background: rgba(255,255,255,.08);
+  color: var(--white);
+}
+
+.nav-item.active {
+  background: rgba(196,154,60,.2);
+  color: var(--gold-light);
+}
+
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--gold);
+  border-radius: 0 3px 3px 0;
+}
+
+.nav-item .material-icons {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.nav-badge {
+  margin-left: auto;
+  background: var(--gold);
+  color: var(--sogan);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 20px;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255,255,255,.1);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  color: var(--sogan);
+  flex-shrink: 0;
+}
+
+.user-info { flex: 1; min-width: 0; }
+.user-name { font-size: 13px; font-weight: 600; color: var(--white); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.user-role { font-size: 11px; color: rgba(255,255,255,.45); }
+
+.btn-logout {
+  width: 28px; height: 28px;
+  background: none; border: none; cursor: pointer;
+  color: rgba(255,255,255,.45);
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 6px;
+  transition: background var(--transition), color var(--transition);
+  flex-shrink: 0;
+}
+.btn-logout:hover { background: rgba(255,255,255,.1); color: var(--white); }
+.btn-logout .material-icons { font-size: 18px; }
+
+/* ── OVERLAY ── */
+#overlay {
+  position: fixed; inset: 0;
+  background: rgba(30,10,0,.45);
+  z-index: 99;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition);
+}
+#overlay.show { opacity: 1; pointer-events: auto; }
+
+/* ── MAIN ── */
+#main {
+  margin-left: var(--sidebar-w);
+  min-height: 100vh;
+  transition: margin-left var(--transition);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── HEADER ── */
+#header {
+  height: var(--header-h);
+  background: var(--white);
+  border-bottom: 1px solid var(--cream-dark);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 16px;
+  position: sticky; top: 0; z-index: 50;
+  box-shadow: var(--shadow-sm);
+}
+
+#header .batik-stripe {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--gold) 0, var(--gold) 8px,
+    var(--sogan) 8px, var(--sogan) 16px,
+    var(--cream-dark) 16px, var(--cream-dark) 20px
+  );
+}
+
+#hamburger {
+  display: none;
+  width: 40px; height: 40px;
+  background: none; border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  transition: background var(--transition);
+  order: 10;
+  margin-left: auto;
+}
+#hamburger:hover { background: var(--sogan-faint); }
+#hamburger span {
+  display: block;
+  width: 20px; height: 2px;
+  background: var(--sogan);
+  border-radius: 2px;
+  transition: transform .3s ease, opacity .3s ease, width .3s ease;
+  transform-origin: center;
+}
+#hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+#hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+#hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.page-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--sogan);
+}
+.page-sub { font-size: 12px; color: var(--text-muted); }
+
+.header-actions { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+.btn-icon {
+  width: 38px; height: 38px;
+  background: none; border: 1px solid var(--cream-dark);
+  border-radius: 8px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-mid);
+  transition: background var(--transition), border-color var(--transition);
+  position: relative;
+}
+.btn-icon:hover { background: var(--sogan-faint); border-color: var(--sogan-pale); }
+.btn-icon .material-icons { font-size: 20px; }
+.notif-dot {
+  position: absolute; top: 7px; right: 7px;
+  width: 7px; height: 7px;
+  background: #D84315;
+  border-radius: 50%;
+  border: 1px solid var(--white);
+}
+
+/* ── CONTENT ── */
+#content {
+  padding: 28px 28px;
+  flex: 1;
+}
+
+.page { display: none; }
+.page.active { display: block; animation: fadeInUp .3s ease; }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── DASHBOARD ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  border: 1px solid var(--cream-dark);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+.stat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+.stat-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+}
+.stat-card.c1::after { background: var(--sogan); }
+.stat-card.c2::after { background: var(--gold); }
+.stat-card.c3::after { background: #2E7D32; }
+.stat-card.c4::after { background: #1565C0; }
+
+.stat-icon {
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 14px;
+}
+.stat-icon .material-icons { font-size: 22px; }
+.stat-card.c1 .stat-icon { background: var(--sogan-pale); color: var(--sogan); }
+.stat-card.c2 .stat-icon { background: var(--gold-faint); color: #A07820; }
+.stat-card.c3 .stat-icon { background: #E8F5E9; color: #2E7D32; }
+.stat-card.c4 .stat-icon { background: #E3F2FD; color: #1565C0; }
+
+.stat-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text-dark);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-label { font-size: 12px; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: .04em; }
+.stat-change { font-size: 12px; margin-top: 8px; display: flex; align-items: center; gap: 4px; }
+.stat-change.up { color: #2E7D32; }
+.stat-change.down { color: #C62828; }
+.stat-change .material-icons { font-size: 14px; }
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--sogan);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  border: 1px solid var(--cream-dark);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── ACTIVITY LIST ── */
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--cream);
+}
+.activity-item:last-child { border-bottom: none; }
+.activity-dot {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.activity-dot .material-icons { font-size: 16px; }
+.dot-prod { background: var(--sogan-pale); color: var(--sogan); }
+.dot-warn { background: #FFF8E1; color: #F57F17; }
+.dot-ok { background: #E8F5E9; color: #2E7D32; }
+.dot-info { background: #E3F2FD; color: #1565C0; }
+.activity-text { flex: 1; }
+.activity-text strong { font-size: 13px; font-weight: 600; color: var(--text-dark); display: block; }
+.activity-text span { font-size: 12px; color: var(--text-muted); }
+.activity-time { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+
+/* ── PRODUCTION CHART (CSS) ── */
+.chart-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 120px;
+  padding: 0 0 8px;
+  border-bottom: 1px solid var(--cream-dark);
+  margin-bottom: 8px;
+}
+.bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.bar {
+  width: 100%;
+  border-radius: 4px 4px 0 0;
+  background: var(--sogan-pale);
+  transition: background var(--transition);
+  position: relative;
+  cursor: pointer;
+}
+.bar.primary { background: var(--sogan); }
+.bar.secondary { background: var(--gold-light); }
+.bar:hover { filter: brightness(1.1); }
+.bar-label { font-size: 10px; color: var(--text-muted); }
+.chart-legend { display: flex; gap: 16px; margin-top: 8px; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); }
+.legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+/* ── TABLE ── */
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--white);
+  border: 1px solid var(--cream-dark);
+  border-radius: 8px;
+  padding: 0 12px;
+  height: 38px;
+  flex: 1; min-width: 180px;
+  transition: border-color var(--transition);
+}
+.search-box:focus-within { border-color: var(--sogan-light); }
+.search-box .material-icons { font-size: 18px; color: var(--text-muted); }
+.search-box input {
+  border: none; outline: none;
+  font-family: inherit; font-size: 13px;
+  color: var(--text-dark); background: none;
+  width: 100%;
+}
+
+.filter-select {
+  height: 38px;
+  border: 1px solid var(--cream-dark);
+  border-radius: 8px;
+  padding: 0 10px;
+  font-family: inherit; font-size: 13px;
+  color: var(--text-mid);
+  background: var(--white);
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--transition);
+}
+.filter-select:focus { border-color: var(--sogan-light); }
+
+.btn {
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background var(--transition), box-shadow var(--transition), transform var(--transition);
+  border: none;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn:active { transform: scale(.98); }
+.btn-primary {
+  background: var(--sogan);
+  color: var(--white);
+}
+.btn-primary:hover { background: var(--sogan-mid); box-shadow: var(--shadow-md); }
+.btn-gold {
+  background: var(--gold);
+  color: var(--white);
+}
+.btn-gold:hover { background: #A07820; }
+.btn-outline {
+  background: var(--white);
+  color: var(--sogan);
+  border: 1px solid var(--sogan-pale);
+}
+.btn-outline:hover { background: var(--sogan-faint); }
+.btn-danger { background: #C62828; color: var(--white); }
+.btn-danger:hover { background: #B71C1C; }
+.btn-sm { height: 30px; padding: 0 10px; font-size: 12px; }
+.btn .material-icons { font-size: 16px; }
+
+.table-wrap {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--cream-dark);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.data-table thead tr {
+  background: var(--sogan-faint);
+  border-bottom: 2px solid var(--cream-dark);
+}
+
+.data-table thead th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-mid);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+.data-table thead th:hover { color: var(--sogan); }
+.data-table thead th .sort-icon { font-size: 14px; vertical-align: middle; opacity: .4; }
+
+.data-table tbody tr {
+  border-bottom: 1px solid var(--cream);
+  transition: background var(--transition);
+}
+.data-table tbody tr:last-child { border-bottom: none; }
+.data-table tbody tr:hover { background: var(--sogan-faint); }
+
+.data-table td {
+  padding: 12px 16px;
+  color: var(--text-dark);
+  vertical-align: middle;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.badge-green { background: #E8F5E9; color: #2E7D32; }
+.badge-yellow { background: #FFF8E1; color: #F57F17; }
+.badge-red { background: #FFEBEE; color: #C62828; }
+.badge-blue { background: #E3F2FD; color: #1565C0; }
+.badge-gray { background: var(--cream); color: var(--text-muted); }
+
+.action-btns { display: flex; gap: 6px; }
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-top: 1px solid var(--cream-dark);
+  font-size: 13px;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.page-btns { display: flex; gap: 4px; }
+.page-btn {
+  width: 32px; height: 32px;
+  border: 1px solid var(--cream-dark);
+  border-radius: 6px;
+  background: var(--white);
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--text-mid);
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+  display: flex; align-items: center; justify-content: center;
+}
+.page-btn:hover { background: var(--sogan-faint); border-color: var(--sogan-pale); }
+.page-btn.active { background: var(--sogan); color: var(--white); border-color: var(--sogan); }
+.page-btn:disabled { opacity: .4; cursor: not-allowed; }
+.page-btn .material-icons { font-size: 16px; }
+
+/* ── FORM ── */
+.form-section {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  border: 1px solid var(--cream-dark);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 20px;
+}
+
+.form-section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--sogan);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--cream-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.form-section-title .material-icons { font-size: 18px; color: var(--gold); }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.form-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+.col-span-2 { grid-column: span 2; }
+
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-mid);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.form-label .req { color: #C62828; }
+
+.form-control {
+  height: 40px;
+  border: 1px solid var(--cream-dark);
+  border-radius: 8px;
+  padding: 0 12px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text-dark);
+  background: var(--white);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  outline: none;
+}
+.form-control:focus {
+  border-color: var(--sogan-light);
+  box-shadow: 0 0 0 3px rgba(160,103,58,.12);
+}
+.form-control.error { border-color: #C62828; }
+
+textarea.form-control {
+  height: auto;
+  min-height: 80px;
+  padding: 10px 12px;
+  resize: vertical;
+}
+
+select.form-control { cursor: pointer; }
+
+.form-hint { font-size: 11px; color: var(--text-muted); }
+.form-error { font-size: 11px; color: #C62828; display: none; }
+.form-control.error ~ .form-error { display: block; }
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  padding-top: 8px;
+  flex-wrap: wrap;
+}
+
+.radio-group, .check-group { display: flex; gap: 16px; flex-wrap: wrap; }
+.radio-item, .check-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text-dark);
+}
+.radio-item input, .check-item input { accent-color: var(--sogan); cursor: pointer; }
+
+/* ── MODALS ── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(30,10,0,.5);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition);
+}
+.modal-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  width: 100%;
+  transform: scale(.92) translateY(12px);
+  transition: transform var(--transition);
+}
+.modal-overlay.show .modal { transform: scale(1) translateY(0); }
+
+.modal-sm { max-width: 380px; }
+.modal-md { max-width: 540px; }
+.modal-lg { max-width: 800px; }
+
+.modal-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--cream-dark);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--sogan-faint);
+}
+.modal-header h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--sogan);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.modal-header h3 .material-icons { font-size: 18px; color: var(--gold); }
+.modal-close {
+  width: 30px; height: 30px;
+  background: none; border: none; cursor: pointer;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted);
+  transition: background var(--transition), color var(--transition);
+}
+.modal-close:hover { background: var(--cream-dark); color: var(--sogan); }
+.modal-close .material-icons { font-size: 20px; }
+
+.modal-body { padding: 20px; }
+.modal-body p { font-size: 14px; color: var(--text-mid); line-height: 1.6; }
+
+.modal-footer {
+  padding: 14px 20px;
+  border-top: 1px solid var(--cream-dark);
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* ── DEMO CARDS ── */
+.demo-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  #sidebar {
+    transform: translateX(-100%);
+    z-index: 200;
+    width: 280px;
+  }
+  #sidebar.open { transform: translateX(0); }
+  #main { margin-left: 0 !important; }
+  #hamburger { display: flex; }
+  #content { padding: 16px; }
+  .grid-2 { grid-template-columns: 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-grid.cols-3 { grid-template-columns: 1fr; }
+  .col-span-2 { grid-column: span 1; }
+  .table-toolbar { flex-direction: column; align-items: stretch; }
+  .header-actions .btn-icon:not(:last-child) { display: none; }
+  .data-table { min-width: 600px; }
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 420px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .page-title { font-size: 15px; }
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: var(--sogan-pale); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--sogan-light); }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">RJ</div>
+    <div class="logo-text">
+      Rindang Jati
+      <small>Admin Panel</small>
+    </div>
+  </div>
+
+  <div class="nav-section-label">Navigasi</div>
+
+  <div class="nav-item active" data-page="dashboard">
+    <span class="material-icons">dashboard</span>
+    Dashboard
+  </div>
+  <div class="nav-item" data-page="table">
+    <span class="material-icons">table_view</span>
+    Data Produksi
+    <span class="nav-badge">24</span>
+  </div>
+  <div class="nav-item" data-page="form">
+    <span class="material-icons">add_box</span>
+    Input Produksi
+  </div>
+
+  <div class="nav-section-label">Komponen</div>
+  <div class="nav-item" data-page="modals">
+    <span class="material-icons">web_asset</span>
+    Modal & Notifikasi
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="user-avatar">AD</div>
+    <div class="user-info">
+      <div class="user-name">Adi Subuhadir</div>
+      <div class="user-role">Administrator</div>
+    </div>
+    <button class="btn-logout" id="btnLogout" title="Logout">
+      <span class="material-icons">logout</span>
+    </button>
+  </div>
+</nav>
+
+<!-- OVERLAY -->
+<div id="overlay"></div>
+
+<!-- MAIN -->
+<div id="main">
+  <header id="header">
+    <div>
+      <div class="page-title" id="pageTitle">Dashboard</div>
+      <div class="page-sub" id="pageSub">Selamat datang kembali, Adi</div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-icon" id="btnSearch" title="Cari">
+        <span class="material-icons">search</span>
+      </button>
+      <button class="btn-icon" id="btnNotif" title="Notifikasi">
+        <span class="material-icons">notifications</span>
+        <span class="notif-dot"></span>
+      </button>
+      <button class="btn-icon" title="Profil">
+        <span class="material-icons">account_circle</span>
+      </button>
+      <button id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="batik-stripe"></div>
+  </header>
+
+  <div id="content">
+
+    <!-- ── PAGE: DASHBOARD ── -->
+    <div class="page active" id="page-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card c1">
+          <div class="stat-icon"><span class="material-icons">straighten</span></div>
+          <div class="stat-val">48,250</div>
+          <div class="stat-label">Meter Kain Diproduksi</div>
+          <div class="stat-change up">
+            <span class="material-icons">trending_up</span>12.4% dari bulan lalu
+          </div>
+        </div>
+        <div class="stat-card c2">
+          <div class="stat-icon"><span class="material-icons">precision_manufacturing</span></div>
+          <div class="stat-val">136</div>
+          <div class="stat-label">Mesin Aktif</div>
+          <div class="stat-change up">
+            <span class="material-icons">trending_up</span>4 mesin baru aktif
+          </div>
+        </div>
+        <div class="stat-card c3">
+          <div class="stat-icon"><span class="material-icons">check_circle</span></div>
+          <div class="stat-val">97.2%</div>
+          <div class="stat-label">Tingkat Kualitas</div>
+          <div class="stat-change up">
+            <span class="material-icons">trending_up</span>+0.8% minggu ini
+          </div>
+        </div>
+        <div class="stat-card c4">
+          <div class="stat-icon"><span class="material-icons">inventory_2</span></div>
+          <div class="stat-val">8.4T</div>
+          <div class="stat-label">Stok Benang (kg)</div>
+          <div class="stat-change down">
+            <span class="material-icons">trending_down</span>-320kg terpakai hari ini
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="section-title">
+            Output Produksi Mingguan
+            <span style="font-size:12px;font-family:'Plus Jakarta Sans';font-weight:400;color:var(--text-muted)">meter/hari</span>
+          </div>
+          <div class="chart-bars" id="chartBars"></div>
+          <div class="chart-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:var(--sogan)"></div>Tenun Sarung</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--gold-light)"></div>Kain Polos</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">Aktivitas Terkini</div>
+          <div id="activityList">
+            <div class="activity-item">
+              <div class="activity-dot dot-ok"><span class="material-icons">check</span></div>
+              <div class="activity-text"><strong>QC Lulus — Lot #2847</strong><span>Sarung motif parang rusak, 400m</span></div>
+              <div class="activity-time">09:41</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot dot-warn"><span class="material-icons">warning</span></div>
+              <div class="activity-text"><strong>Benang stok rendah</strong><span>Benang Ne 30/1 tersisa 120 kg</span></div>
+              <div class="activity-time">09:15</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot dot-prod"><span class="material-icons">settings</span></div>
+              <div class="activity-text"><strong>Mesin M-42 maintenance</strong><span>Jadwal rutin, estimasi 2 jam</span></div>
+              <div class="activity-time">08:50</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot dot-info"><span class="material-icons">local_shipping</span></div>
+              <div class="activity-text"><strong>Pengiriman ke Gudang B</strong><span>1,200 pieces sarung Premium</span></div>
+              <div class="activity-time">08:20</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot dot-ok"><span class="material-icons">fiber_manual_record</span></div>
+              <div class="activity-text"><strong>Shift pagi dimulai</strong><span>84 operator hadir dari 86</span></div>
+              <div class="activity-time">07:00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">
+          Ringkasan Mesin per Lini
+          <button class="btn btn-outline btn-sm" onclick="navigate('table')">
+            <span class="material-icons">open_in_new</span>Lihat Semua
+          </button>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Lini</th>
+                <th>Jenis</th>
+                <th>Mesin Aktif</th>
+                <th>Target (m)</th>
+                <th>Realisasi (m)</th>
+                <th>Capaian</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Lini A</td><td>Sarung Tenun</td><td>32/32</td><td>12,000</td><td>11,840</td><td>98.7%</td><td><span class="badge badge-green">Normal</span></td></tr>
+              <tr><td>Lini B</td><td>Kain Polos</td><td>28/30</td><td>9,500</td><td>8,910</td><td>93.8%</td><td><span class="badge badge-yellow">Perhatian</span></td></tr>
+              <tr><td>Lini C</td><td>Tenun Motif</td><td>24/24</td><td>7,200</td><td>7,150</td><td>99.3%</td><td><span class="badge badge-green">Normal</span></td></tr>
+              <tr><td>Lini D</td><td>Benang Finishing</td><td>18/20</td><td>5,000</td><td>4,230</td><td>84.6%</td><td><span class="badge badge-red">Gangguan</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PAGE: TABLE ── -->
+    <div class="page" id="page-table">
+      <div class="table-toolbar">
+        <div class="search-box">
+          <span class="material-icons">search</span>
+          <input type="text" id="searchInput" placeholder="Cari lot, operator, mesin...">
+        </div>
+        <select class="filter-select" id="filterStatus">
+          <option value="">Semua Status</option>
+          <option value="Selesai">Selesai</option>
+          <option value="Proses">Proses</option>
+          <option value="QC">QC</option>
+          <option value="Ditahan">Ditahan</option>
+        </select>
+        <select class="filter-select" id="filterLini">
+          <option value="">Semua Lini</option>
+          <option value="A">Lini A</option>
+          <option value="B">Lini B</option>
+          <option value="C">Lini C</option>
+          <option value="D">Lini D</option>
+        </select>
+        <button class="btn btn-primary" onclick="openModal('modalTambah')">
+          <span class="material-icons">add</span>Tambah Data
+        </button>
+        <button class="btn btn-outline" onclick="showExportAlert()">
+          <span class="material-icons">file_download</span>Export
+        </button>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table class="data-table" id="dataTable">
+            <thead>
+              <tr>
+                <th onclick="sortTable('lot')">No. Lot <span class="material-icons sort-icon">unfold_more</span></th>
+                <th onclick="sortTable('tgl')">Tanggal <span class="material-icons sort-icon">unfold_more</span></th>
+                <th onclick="sortTable('lini')">Lini <span class="material-icons sort-icon">unfold_more</span></th>
+                <th onclick="sortTable('mesin')">Mesin <span class="material-icons sort-icon">unfold_more</span></th>
+                <th onclick="sortTable('produk')">Produk</th>
+                <th onclick="sortTable('meter')">Output (m) <span class="material-icons sort-icon">unfold_more</span></th>
+                <th onclick="sortTable('operator')">Operator</th>
+                <th onclick="sortTable('status')">Status <span class="material-icons sort-icon">unfold_more</span></th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+        <div class="pagination" id="pagination">
+          <div id="paginationInfo">Menampilkan 1–10 dari 24 data</div>
+          <div class="page-btns" id="pageButtons"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PAGE: FORM ── -->
+    <div class="page" id="page-form">
+      <form id="prodForm" novalidate>
+        <div class="form-section">
+          <div class="form-section-title">
+            <span class="material-icons">info</span>
+            Informasi Lot Produksi
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">No. Lot <span class="req">*</span></label>
+              <input type="text" class="form-control" id="fLot" placeholder="cth: LOT-2025-001">
+              <div class="form-error">No. Lot wajib diisi</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tanggal Produksi <span class="req">*</span></label>
+              <input type="date" class="form-control" id="fTgl">
+              <div class="form-error">Tanggal wajib diisi</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Lini Produksi <span class="req">*</span></label>
+              <select class="form-control" id="fLini">
+                <option value="">— Pilih Lini —</option>
+                <option>Lini A (Sarung Tenun)</option>
+                <option>Lini B (Kain Polos)</option>
+                <option>Lini C (Tenun Motif)</option>
+                <option>Lini D (Benang Finishing)</option>
+              </select>
+              <div class="form-error">Lini wajib dipilih</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">No. Mesin <span class="req">*</span></label>
+              <input type="text" class="form-control" id="fMesin" placeholder="cth: M-12">
+              <div class="form-error">No. Mesin wajib diisi</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">
+            <span class="material-icons">category</span>
+            Detail Produk
+          </div>
+          <div class="form-grid cols-3">
+            <div class="form-group">
+              <label class="form-label">Nama Produk <span class="req">*</span></label>
+              <select class="form-control" id="fProduk">
+                <option value="">— Pilih Produk —</option>
+                <option>Sarung Motif Parang</option>
+                <option>Sarung Motif Kawung</option>
+                <option>Sarung Polos Premium</option>
+                <option>Kain Katun 40s</option>
+                <option>Kain Rayon Motif</option>
+              </select>
+              <div class="form-error">Produk wajib dipilih</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Jenis Benang</label>
+              <select class="form-control" id="fBenang">
+                <option value="">— Pilih —</option>
+                <option>Ne 20/1</option>
+                <option>Ne 30/1</option>
+                <option>Ne 40/1</option>
+                <option>Polyester 150D</option>
+                <option>Rayon 60s</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Warna Benang</label>
+              <input type="text" class="form-control" id="fWarna" placeholder="cth: Coklat Sogan">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Output (meter) <span class="req">*</span></label>
+              <input type="number" class="form-control" id="fMeter" placeholder="0" min="0">
+              <div class="form-error">Output wajib diisi</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Target (meter)</label>
+              <input type="number" class="form-control" id="fTarget" placeholder="0" min="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Pcs / Potong</label>
+              <input type="number" class="form-control" id="fPcs" placeholder="0" min="0">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">
+            <span class="material-icons">person</span>
+            Operator & QC
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Nama Operator <span class="req">*</span></label>
+              <input type="text" class="form-control" id="fOperator" placeholder="Nama lengkap operator">
+              <div class="form-error">Operator wajib diisi</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Shift</label>
+              <div class="radio-group" style="margin-top:8px">
+                <label class="radio-item"><input type="radio" name="shift" value="Pagi" checked> Pagi</label>
+                <label class="radio-item"><input type="radio" name="shift" value="Siang"> Siang</label>
+                <label class="radio-item"><input type="radio" name="shift" value="Malam"> Malam</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Status QC</label>
+              <select class="form-control" id="fQC">
+                <option value="">— Pilih —</option>
+                <option>Lulus QC</option>
+                <option>Proses QC</option>
+                <option>Gagal QC</option>
+                <option>Belum QC</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Cacat (%)</label>
+              <input type="number" class="form-control" id="fCacat" placeholder="0.0" step="0.1" min="0" max="100">
+              <div class="form-hint">Persentase kain cacat dari total output</div>
+            </div>
+            <div class="form-group col-span-2">
+              <label class="form-label">Catatan Tambahan</label>
+              <textarea class="form-control" id="fCatatan" placeholder="Kendala produksi, keterangan khusus, dll..."></textarea>
+            </div>
+            <div class="form-group col-span-2">
+              <label class="form-label" style="margin-bottom:4px">Opsi Tambahan</label>
+              <div class="check-group">
+                <label class="check-item"><input type="checkbox" id="chkPriority"> Produksi Prioritas</label>
+                <label class="check-item"><input type="checkbox" id="chkSample"> Permintaan Sample</label>
+                <label class="check-item"><input type="checkbox" id="chkRework"> Perlu Rework</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">
+            <span class="material-icons">save</span>Simpan Data
+          </button>
+          <button type="button" class="btn btn-gold" onclick="saveDraft()">
+            <span class="material-icons">drafts</span>Simpan Draft
+          </button>
+          <button type="reset" class="btn btn-outline" onclick="resetForm()">
+            <span class="material-icons">refresh</span>Reset
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- ── PAGE: MODALS ── -->
+    <div class="page" id="page-modals">
+      <div class="card" style="margin-bottom:20px">
+        <div class="section-title">Demo Modal</div>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">Klik tombol berikut untuk melihat berbagai ukuran modal dengan animasi smooth.</p>
+        <div class="demo-btns">
+          <button class="btn btn-outline" onclick="openModal('modalSmall')">
+            <span class="material-icons">crop_square</span>Modal Kecil
+          </button>
+          <button class="btn btn-primary" onclick="openModal('modalMedium')">
+            <span class="material-icons">crop_5_4</span>Modal Default
+          </button>
+          <button class="btn btn-gold" onclick="openModal('modalLarge')">
+            <span class="material-icons">crop_landscape</span>Modal Besar
+          </button>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:20px">
+        <div class="section-title">Demo SweetAlert2</div>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">Berbagai tipe notifikasi menggunakan SweetAlert2.</p>
+        <div class="demo-btns">
+          <button class="btn btn-outline" onclick="showAlert('success')">
+            <span class="material-icons">check_circle</span>Sukses
+          </button>
+          <button class="btn btn-outline" onclick="showAlert('error')">
+            <span class="material-icons">error</span>Error
+          </button>
+          <button class="btn btn-outline" onclick="showAlert('warning')">
+            <span class="material-icons">warning</span>Peringatan
+          </button>
+          <button class="btn btn-outline" onclick="showAlert('info')">
+            <span class="material-icons">info</span>Informasi
+          </button>
+          <button class="btn btn-primary" onclick="showAlert('confirm')">
+            <span class="material-icons">help</span>Konfirmasi
+          </button>
+          <button class="btn btn-gold" onclick="showAlert('loading')">
+            <span class="material-icons">hourglass_top</span>Loading
+          </button>
+          <button class="btn btn-outline" onclick="showAlert('toast')">
+            <span class="material-icons">notifications</span>Toast
+          </button>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="section-title">Tipe Badge</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">
+            <span class="badge badge-green"><span class="material-icons" style="font-size:12px">check_circle</span>Selesai</span>
+            <span class="badge badge-yellow"><span class="material-icons" style="font-size:12px">schedule</span>Proses</span>
+            <span class="badge badge-red"><span class="material-icons" style="font-size:12px">cancel</span>Ditahan</span>
+            <span class="badge badge-blue"><span class="material-icons" style="font-size:12px">science</span>QC</span>
+            <span class="badge badge-gray"><span class="material-icons" style="font-size:12px">remove</span>Draft</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="section-title">Tipe Tombol</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">
+            <button class="btn btn-primary btn-sm"><span class="material-icons">add</span>Primary</button>
+            <button class="btn btn-gold btn-sm"><span class="material-icons">star</span>Gold</button>
+            <button class="btn btn-outline btn-sm"><span class="material-icons">edit</span>Outline</button>
+            <button class="btn btn-danger btn-sm"><span class="material-icons">delete</span>Danger</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- ── MODAL: TAMBAH (table) ── -->
+<div class="modal-overlay" id="modalTambah">
+  <div class="modal modal-md">
+    <div class="modal-header">
+      <h3><span class="material-icons">add_circle</span>Tambah Data Produksi</h3>
+      <button class="modal-close" onclick="closeModal('modalTambah')"><span class="material-icons">close</span></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid" style="gap:14px">
+        <div class="form-group">
+          <label class="form-label">No. Lot <span class="req">*</span></label>
+          <input type="text" class="form-control" id="mLot" placeholder="LOT-2025-XXX">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tanggal</label>
+          <input type="date" class="form-control" id="mTgl">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Lini</label>
+          <select class="form-control" id="mLini">
+            <option value="">— Pilih —</option>
+            <option value="A">Lini A</option>
+            <option value="B">Lini B</option>
+            <option value="C">Lini C</option>
+            <option value="D">Lini D</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mesin</label>
+          <input type="text" class="form-control" id="mMesin" placeholder="M-XX">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Output (m)</label>
+          <input type="number" class="form-control" id="mMeter" placeholder="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Operator</label>
+          <input type="text" class="form-control" id="mOperator" placeholder="Nama operator">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modalTambah')">Batal</button>
+      <button class="btn btn-primary" onclick="addTableRow()">
+        <span class="material-icons">save</span>Simpan
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: DETAIL ── -->
+<div class="modal-overlay" id="modalDetail">
+  <div class="modal modal-md">
+    <div class="modal-header">
+      <h3><span class="material-icons">info</span>Detail Produksi</h3>
+      <button class="modal-close" onclick="closeModal('modalDetail')"><span class="material-icons">close</span></button>
+    </div>
+    <div class="modal-body" id="modalDetailBody">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modalDetail')">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL SMALL ── -->
+<div class="modal-overlay" id="modalSmall">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <h3><span class="material-icons">notifications</span>Notifikasi Sistem</h3>
+      <button class="modal-close" onclick="closeModal('modalSmall')"><span class="material-icons">close</span></button>
+    </div>
+    <div class="modal-body">
+      <p>Stok benang <strong>Ne 30/1</strong> hampir habis. Sisa stok: <strong>120 kg</strong>. Segera lakukan permintaan pembelian.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modalSmall')">Nanti</button>
+      <button class="btn btn-primary" onclick="closeModal('modalSmall');showAlert('success2')">Buat PO</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL MEDIUM ── -->
+<div class="modal-overlay" id="modalMedium">
+  <div class="modal modal-md">
+    <div class="modal-header">
+      <h3><span class="material-icons">bar_chart</span>Ringkasan Produksi Hari Ini</h3>
+      <button class="modal-close" onclick="closeModal('modalMedium')"><span class="material-icons">close</span></button>
+    </div>
+    <div class="modal-body">
+      <div class="stats-grid" style="grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+        <div class="stat-card c1" style="padding:14px">
+          <div class="stat-val" style="font-size:22px">6,840</div>
+          <div class="stat-label">Meter diproduksi</div>
+        </div>
+        <div class="stat-card c3" style="padding:14px">
+          <div class="stat-val" style="font-size:22px">98.1%</div>
+          <div class="stat-label">Kualitas</div>
+        </div>
+      </div>
+      <p style="margin-bottom:10px">Produksi hari ini berjalan <strong>di atas target</strong>. Semua lini beroperasi normal kecuali Lini D yang mengalami gangguan mesin sejak pukul 14:00.</p>
+      <p>Tim maintenance sudah diterjunkan dan estimasi selesai pukul 17:30.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modalMedium')">Tutup</button>
+      <button class="btn btn-primary" onclick="closeModal('modalMedium');navigate('table')">
+        <span class="material-icons">table_view</span>Lihat Data Lengkap
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL LARGE ── -->
+<div class="modal-overlay" id="modalLarge">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h3><span class="material-icons">assessment</span>Laporan Produksi Bulanan — Mei 2025</h3>
+      <button class="modal-close" onclick="closeModal('modalLarge')"><span class="material-icons">close</span></button>
+    </div>
+    <div class="modal-body">
+      <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px">
+        <div class="stat-card c1" style="padding:12px"><div class="stat-val" style="font-size:20px">48,250</div><div class="stat-label">Total Meter</div></div>
+        <div class="stat-card c2" style="padding:12px"><div class="stat-val" style="font-size:20px">1,820</div><div class="stat-label">Lot Selesai</div></div>
+        <div class="stat-card c3" style="padding:12px"><div class="stat-val" style="font-size:20px">97.2%</div><div class="stat-label">Kualitas</div></div>
+        <div class="stat-card c4" style="padding:12px"><div class="stat-val" style="font-size:20px">136</div><div class="stat-label">Mesin Aktif</div></div>
+      </div>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Lini</th><th>Produk Utama</th><th>Target (m)</th><th>Realisasi (m)</th><th>Efisiensi</th><th>Kualitas</th><th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Lini A</td><td>Sarung Tenun</td><td>15,000</td><td>14,820</td><td>98.8%</td><td>98.5%</td><td><span class="badge badge-green">Tercapai</span></td></tr>
+            <tr><td>Lini B</td><td>Kain Polos</td><td>12,000</td><td>11,240</td><td>93.7%</td><td>96.2%</td><td><span class="badge badge-yellow">Hampir</span></td></tr>
+            <tr><td>Lini C</td><td>Tenun Motif</td><td>10,000</td><td>10,180</td><td>101.8%</td><td>99.1%</td><td><span class="badge badge-green">Melebihi</span></td></tr>
+            <tr><td>Lini D</td><td>Benang Finishing</td><td>8,000</td><td>6,760</td><td>84.5%</td><td>94.8%</td><td><span class="badge badge-red">Tidak Tercapai</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:16px;padding:12px;background:var(--sogan-faint);border-radius:8px;font-size:13px;color:var(--text-mid)">
+        <strong>Catatan:</strong> Lini D mengalami penurunan output disebabkan oleh maintenance mesin M-42 dan M-45 yang berjalan selama 4 hari. Direncanakan recovery plan di bulan berikutnya.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modalLarge')">Tutup</button>
+      <button class="btn btn-gold" onclick="showExportAlert();closeModal('modalLarge')">
+        <span class="material-icons">picture_as_pdf</span>Export PDF
+      </button>
+      <button class="btn btn-primary" onclick="closeModal('modalLarge')">
+        <span class="material-icons">print</span>Cetak
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DATA ──
+const tableData = [
+  { id:1, lot:'LOT-2025-001', tgl:'2025-05-01', lini:'A', mesin:'M-01', produk:'Sarung Motif Parang', meter:420, operator:'Sutrisno', status:'Selesai' },
+  { id:2, lot:'LOT-2025-002', tgl:'2025-05-01', lini:'B', mesin:'M-15', produk:'Kain Katun 40s', meter:380, operator:'Wahyudi', status:'Selesai' },
+  { id:3, lot:'LOT-2025-003', tgl:'2025-05-02', lini:'C', mesin:'M-28', produk:'Sarung Motif Kawung', meter:310, operator:'Parmin', status:'QC' },
+  { id:4, lot:'LOT-2025-004', tgl:'2025-05-02', lini:'A', mesin:'M-04', produk:'Sarung Polos Premium', meter:450, operator:'Suroto', status:'Selesai' },
+  { id:5, lot:'LOT-2025-005', tgl:'2025-05-03', lini:'D', mesin:'M-42', produk:'Benang Ne 30/1', meter:220, operator:'Bambang', status:'Ditahan' },
+  { id:6, lot:'LOT-2025-006', tgl:'2025-05-03', lini:'B', mesin:'M-18', produk:'Kain Rayon Motif', meter:395, operator:'Slamet', status:'Proses' },
+  { id:7, lot:'LOT-2025-007', tgl:'2025-05-04', lini:'C', mesin:'M-31', produk:'Sarung Motif Parang', meter:330, operator:'Heru', status:'Selesai' },
+  { id:8, lot:'LOT-2025-008', tgl:'2025-05-04', lini:'A', mesin:'M-07', produk:'Kain Katun 40s', meter:410, operator:'Agus', status:'QC' },
+  { id:9, lot:'LOT-2025-009', tgl:'2025-05-05', lini:'D', mesin:'M-45', produk:'Benang Ne 20/1', meter:180, operator:'Bambang', status:'Ditahan' },
+  { id:10, lot:'LOT-2025-010', tgl:'2025-05-05', lini:'B', mesin:'M-22', produk:'Sarung Polos Premium', meter:360, operator:'Riyanto', status:'Selesai' },
+  { id:11, lot:'LOT-2025-011', tgl:'2025-05-06', lini:'A', mesin:'M-02', produk:'Sarung Motif Kawung', meter:440, operator:'Sutrisno', status:'Selesai' },
+  { id:12, lot:'LOT-2025-012', tgl:'2025-05-06', lini:'C', mesin:'M-33', produk:'Kain Rayon Motif', meter:290, operator:'Parmin', status:'Proses' },
+  { id:13, lot:'LOT-2025-013', tgl:'2025-05-07', lini:'B', mesin:'M-19', produk:'Sarung Motif Parang', meter:370, operator:'Slamet', status:'Selesai' },
+  { id:14, lot:'LOT-2025-014', tgl:'2025-05-07', lini:'A', mesin:'M-10', produk:'Kain Katun 40s', meter:425, operator:'Wahyudi', status:'QC' },
+  { id:15, lot:'LOT-2025-015', tgl:'2025-05-08', lini:'D', mesin:'M-43', produk:'Benang Ne 30/1', meter:210, operator:'Heru', status:'Selesai' },
+  { id:16, lot:'LOT-2025-016', tgl:'2025-05-08', lini:'C', mesin:'M-30', produk:'Sarung Polos Premium', meter:320, operator:'Agus', status:'Selesai' },
+  { id:17, lot:'LOT-2025-017', tgl:'2025-05-09', lini:'A', mesin:'M-05', produk:'Sarung Motif Kawung', meter:460, operator:'Suroto', status:'Proses' },
+  { id:18, lot:'LOT-2025-018', tgl:'2025-05-09', lini:'B', mesin:'M-16', produk:'Kain Rayon Motif', meter:340, operator:'Riyanto', status:'Selesai' },
+  { id:19, lot:'LOT-2025-019', tgl:'2025-05-10', lini:'C', mesin:'M-29', produk:'Sarung Motif Parang', meter:305, operator:'Parmin', status:'QC' },
+  { id:20, lot:'LOT-2025-020', tgl:'2025-05-10', lini:'A', mesin:'M-08', produk:'Kain Katun 40s', meter:415, operator:'Sutrisno', status:'Selesai' },
+  { id:21, lot:'LOT-2025-021', tgl:'2025-05-11', lini:'D', mesin:'M-44', produk:'Benang Ne 40/1', meter:195, operator:'Bambang', status:'Ditahan' },
+  { id:22, lot:'LOT-2025-022', tgl:'2025-05-11', lini:'B', mesin:'M-20', produk:'Sarung Polos Premium', meter:355, operator:'Slamet', status:'Selesai' },
+  { id:23, lot:'LOT-2025-023', tgl:'2025-05-12', lini:'A', mesin:'M-03', produk:'Sarung Motif Parang', meter:435, operator:'Wahyudi', status:'Proses' },
+  { id:24, lot:'LOT-2025-024', tgl:'2025-05-12', lini:'C', mesin:'M-32', produk:'Kain Rayon Motif', meter:285, operator:'Heru', status:'QC' },
+];
+
+let filteredData = [...tableData];
+let sortKey = 'lot', sortDir = 1;
+let currentPage = 1;
+const perPage = 10;
+let nextId = 25;
+
+// ── NAVIGATION ──
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelector(`[data-page="${page}"]`).classList.add('active');
+
+  const titles = {
+    dashboard: ['Dashboard', 'Selamat datang kembali, Adi'],
+    table: ['Data Produksi', 'Manajemen & monitoring lot produksi'],
+    form: ['Input Produksi', 'Tambah data lot produksi baru'],
+    modals: ['Modal & Notifikasi', 'Demo komponen interaktif']
+  };
+  document.getElementById('pageTitle').textContent = titles[page][0];
+  document.getElementById('pageSub').textContent = titles[page][1];
+
+  closeSidebar();
+  if (page === 'table') renderTable();
+}
+
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => navigate(item.dataset.page));
+});
+
+// ── HAMBURGER & SIDEBAR ──
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('overlay');
+const hamburger = document.getElementById('hamburger');
+
+function openSidebar() {
+  sidebar.classList.add('open');
+  overlay.classList.add('show');
+  hamburger.classList.add('open');
+}
+function closeSidebar() {
+  sidebar.classList.remove('open');
+  overlay.classList.remove('show');
+  hamburger.classList.remove('open');
+}
+
+hamburger.addEventListener('click', (e) => {
+  e.stopPropagation();
+  sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+});
+
+overlay.addEventListener('click', closeSidebar);
+
+// ── MODALS ──
+function openModal(id) {
+  document.getElementById(id).classList.add('show');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('show');
+}
+
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === this) closeModal(this.id);
+  });
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.show').forEach(m => m.classList.remove('show'));
+  }
+});
+
+// ── TABLE ──
+function statusBadge(s) {
+  const map = {
+    'Selesai': 'badge-green',
+    'Proses': 'badge-yellow',
+    'QC': 'badge-blue',
+    'Ditahan': 'badge-red'
+  };
+  return `<span class="badge ${map[s]||'badge-gray'}">${s}</span>`;
+}
+
+function renderTable() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const statusF = document.getElementById('filterStatus').value;
+  const liniF = document.getElementById('filterLini').value;
+
+  filteredData = tableData.filter(r => {
+    const matchSearch = !search ||
+      r.lot.toLowerCase().includes(search) ||
+      r.operator.toLowerCase().includes(search) ||
+      r.mesin.toLowerCase().includes(search) ||
+      r.produk.toLowerCase().includes(search);
+    const matchStatus = !statusF || r.status === statusF;
+    const matchLini = !liniF || r.lini === liniF;
+    return matchSearch && matchStatus && matchLini;
+  });
+
+  filteredData.sort((a, b) => {
+    let av = a[sortKey], bv = b[sortKey];
+    if (typeof av === 'string') av = av.toLowerCase();
+    if (typeof bv === 'string') bv = bv.toLowerCase();
+    return av < bv ? -sortDir : av > bv ? sortDir : 0;
+  });
+
+  const total = filteredData.length;
+  const totalPages = Math.max(1, Math.ceil(total / perPage));
+  if (currentPage > totalPages) currentPage = 1;
+
+  const start = (currentPage - 1) * perPage;
+  const slice = filteredData.slice(start, start + perPage);
+
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = slice.map(r => `
+    <tr>
+      <td><strong>${r.lot}</strong></td>
+      <td>${r.tgl}</td>
+      <td><span class="badge badge-gray">Lini ${r.lini}</span></td>
+      <td>${r.mesin}</td>
+      <td>${r.produk}</td>
+      <td><strong>${r.meter.toLocaleString()}</strong></td>
+      <td>${r.operator}</td>
+      <td>${statusBadge(r.status)}</td>
+      <td>
+        <div class="action-btns">
+          <button class="btn btn-outline btn-sm" onclick="showDetail(${r.id})" title="Detail">
+            <span class="material-icons">visibility</span>
+          </button>
+          <button class="btn btn-outline btn-sm" onclick="editRow(${r.id})" title="Edit">
+            <span class="material-icons">edit</span>
+          </button>
+          <button class="btn btn-danger btn-sm" onclick="deleteRow(${r.id})" title="Hapus">
+            <span class="material-icons">delete</span>
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+
+  document.getElementById('paginationInfo').textContent =
+    total === 0 ? 'Tidak ada data' :
+    `Menampilkan ${start+1}–${Math.min(start+perPage, total)} dari ${total} data`;
+
+  renderPageButtons(totalPages);
+}
+
+function renderPageButtons(totalPages) {
+  const container = document.getElementById('pageButtons');
+  let html = `<button class="page-btn" onclick="changePage(${currentPage-1})" ${currentPage===1?'disabled':''}><span class="material-icons">chevron_left</span></button>`;
+  for (let i = 1; i <= totalPages; i++) {
+    if (totalPages <= 7 || Math.abs(i - currentPage) <= 2 || i === 1 || i === totalPages) {
+      html += `<button class="page-btn ${i===currentPage?'active':''}" onclick="changePage(${i})">${i}</button>`;
+    } else if (Math.abs(i - currentPage) === 3) {
+      html += `<button class="page-btn" disabled>…</button>`;
+    }
+  }
+  html += `<button class="page-btn" onclick="changePage(${currentPage+1})" ${currentPage===totalPages?'disabled':''}><span class="material-icons">chevron_right</span></button>`;
+  container.innerHTML = html;
+}
+
+function changePage(p) {
+  const total = Math.max(1, Math.ceil(filteredData.length / perPage));
+  if (p < 1 || p > total) return;
+  currentPage = p;
+  renderTable();
+}
+
+function sortTable(key) {
+  if (sortKey === key) sortDir *= -1;
+  else { sortKey = key; sortDir = 1; }
+  renderTable();
+}
+
+document.getElementById('searchInput').addEventListener('input', () => { currentPage = 1; renderTable(); });
+document.getElementById('filterStatus').addEventListener('change', () => { currentPage = 1; renderTable(); });
+document.getElementById('filterLini').addEventListener('change', () => { currentPage = 1; renderTable(); });
+
+function showDetail(id) {
+  const r = tableData.find(x => x.id === id);
+  if (!r) return;
+  document.getElementById('modalDetailBody').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:4px">No. Lot</div><div style="font-size:14px;font-weight:600">${r.lot}</div></div>
+      <div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:4px">Tanggal</div><div style="font-size:14px">${r.tgl}</div></div>
+      <div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:4px">Lini / Mesin</div><div style="font-size:14px">Lini ${r.lini} / ${r.mesin}</div></div>
+      <div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:4px">Produk</div><div style="font-size:14px">${r.produk}</div></div>
+      <div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:4px">Output</div><div style="font-size:22px;font-family:'Playfair Display',serif;color:var(--sogan)">${r.meter.toLocaleString()} m</div></div>
+      <div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:4px">Operator</div><div style="font-size:14px">${r.operator}</div></div>
+      <div style="grid-column:span 2"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:6px">Status</div>${statusBadge(r.status)}</div>
+    </div>
+  `;
+  openModal('modalDetail');
+}
+
+function editRow(id) {
+  Swal.fire({
+    title: 'Edit Data',
+    text: 'Fitur edit akan membuka halaman Input Produksi dengan data yang sudah terisi.',
+    icon: 'info',
+    confirmButtonText: 'Buka Form Edit',
+    showCancelButton: true,
+    cancelButtonText: 'Batal',
+    confirmButtonColor: '#5C3317',
+    cancelButtonColor: '#A0673A',
+  }).then(r => { if (r.isConfirmed) navigate('form'); });
+}
+
+function deleteRow(id) {
+  Swal.fire({
+    title: 'Hapus Data?',
+    html: `Lot <strong>LOT-2025-${String(id).padStart(3,'0')}</strong> akan dihapus secara permanen.`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: '<span class="material-icons" style="font-size:15px;vertical-align:middle">delete</span> Ya, Hapus',
+    cancelButtonText: 'Batal',
+    confirmButtonColor: '#C62828',
+    cancelButtonColor: '#5C3317',
+  }).then(r => {
+    if (r.isConfirmed) {
+      const idx = tableData.findIndex(x => x.id === id);
+      if (idx > -1) tableData.splice(idx, 1);
+      renderTable();
+      Swal.fire({ title: 'Terhapus!', text: 'Data berhasil dihapus.', icon: 'success', timer: 1800, showConfirmButton: false, confirmButtonColor: '#5C3317' });
+    }
+  });
+}
+
+function addTableRow() {
+  const lot = document.getElementById('mLot').value.trim();
+  const tgl = document.getElementById('mTgl').value;
+  const lini = document.getElementById('mLini').value;
+  const mesin = document.getElementById('mMesin').value.trim();
+  const meter = parseInt(document.getElementById('mMeter').value) || 0;
+  const operator = document.getElementById('mOperator').value.trim();
+
+  if (!lot) {
+    Swal.fire({ title: 'Validasi Gagal', text: 'No. Lot wajib diisi!', icon: 'error', confirmButtonColor: '#5C3317' });
+    return;
+  }
+
+  tableData.push({ id: nextId++, lot, tgl: tgl || new Date().toISOString().slice(0,10), lini: lini||'A', mesin: mesin||'M-00', produk: 'Produk Baru', meter, operator: operator||'–', status: 'Proses' });
+  closeModal('modalTambah');
+  renderTable();
+  ['mLot','mTgl','mLini','mMesin','mMeter','mOperator'].forEach(id => { const el = document.getElementById(id); el.value = el.tagName==='SELECT'?'':''; });
+
+  const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 2500, timerProgressBar: true });
+  Toast.fire({ icon: 'success', title: 'Data berhasil ditambahkan' });
+}
+
+// ── SWEETALERT ──
+const swalTheme = {
+  confirmButtonColor: '#5C3317',
+  cancelButtonColor: '#A0673A',
+};
+
+function showAlert(type) {
+  if (type === 'success') {
+    Swal.fire({ title: 'Berhasil!', text: 'Data produksi berhasil disimpan ke sistem.', icon: 'success', ...swalTheme });
+  } else if (type === 'success2') {
+    Swal.fire({ title: 'PO Dibuat', text: 'Purchase Order benang Ne 30/1 berhasil dibuat.', icon: 'success', ...swalTheme });
+  } else if (type === 'error') {
+    Swal.fire({ title: 'Terjadi Kesalahan', text: 'Koneksi ke server gagal. Silakan coba kembali.', icon: 'error', ...swalTheme });
+  } else if (type === 'warning') {
+    Swal.fire({ title: 'Peringatan!', html: 'Stok benang <strong>Ne 30/1</strong> hampir habis. Segera lakukan pembelian.', icon: 'warning', ...swalTheme });
+  } else if (type === 'info') {
+    Swal.fire({ title: 'Informasi Sistem', text: 'Backup data otomatis berjalan setiap hari pukul 23:00 WIB.', icon: 'info', ...swalTheme });
+  } else if (type === 'confirm') {
+    Swal.fire({
+      title: 'Konfirmasi Aksi',
+      text: 'Apakah Anda yakin ingin menutup shift dan mengunci data hari ini?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Ya, Tutup Shift',
+      cancelButtonText: 'Batal',
+      ...swalTheme
+    }).then(r => {
+      if (r.isConfirmed) Swal.fire({ title: 'Shift Ditutup', text: 'Data hari ini telah dikunci.', icon: 'success', timer: 2000, showConfirmButton: false });
+    });
+  } else if (type === 'loading') {
+    Swal.fire({
+      title: 'Memproses...',
+      html: 'Sinkronisasi data sedang berjalan.',
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading()
+    });
+    setTimeout(() => {
+      Swal.fire({ title: 'Selesai!', text: '24 data berhasil disinkronisasi.', icon: 'success', timer: 2000, showConfirmButton: false });
+    }, 2500);
+  } else if (type === 'toast') {
+    const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true });
+    Toast.fire({ icon: 'info', title: 'Notifikasi baru dari Supervisor' });
+  }
+}
+
+function showExportAlert() {
+  Swal.fire({
+    title: 'Export Data',
+    html: `
+      <div style="text-align:left;display:flex;flex-direction:column;gap:10px;margin-top:8px">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px"><input type="radio" name="expType" value="excel" checked style="accent-color:#5C3317"> Export ke Excel (.xlsx)</label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px"><input type="radio" name="expType" value="pdf" style="accent-color:#5C3317"> Export ke PDF</label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px"><input type="radio" name="expType" value="csv" style="accent-color:#5C3317"> Export ke CSV</label>
+      </div>`,
+    showCancelButton: true,
+    confirmButtonText: 'Export Sekarang',
+    cancelButtonText: 'Batal',
+    ...swalTheme
+  }).then(r => {
+    if (r.isConfirmed) {
+      const t = document.querySelector('input[name="expType"]:checked')?.value || 'excel';
+      const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 2500, timerProgressBar: true });
+      Toast.fire({ icon: 'success', title: `Data berhasil diexport ke ${t.toUpperCase()}` });
+    }
+  });
+}
+
+// ── FORM ──
+document.getElementById('prodForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const fields = ['fLot','fTgl','fLini','fMesin','fProduk','fMeter','fOperator'];
+  let valid = true;
+  fields.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el.value.trim()) { el.classList.add('error'); valid = false; }
+    else el.classList.remove('error');
+  });
+  if (!valid) {
+    Swal.fire({ title: 'Form Belum Lengkap', text: 'Mohon lengkapi semua field yang wajib diisi.', icon: 'warning', ...swalTheme });
+    return;
+  }
+  Swal.fire({
+    title: 'Simpan Data?',
+    html: `Lot <strong>${document.getElementById('fLot').value}</strong> akan disimpan.`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Simpan',
+    cancelButtonText: 'Periksa Lagi',
+    ...swalTheme
+  }).then(r => {
+    if (r.isConfirmed) {
+      Swal.fire({ title: 'Tersimpan!', text: 'Data produksi berhasil disimpan.', icon: 'success', timer: 2000, showConfirmButton: false })
+        .then(() => { document.getElementById('prodForm').reset(); navigate('table'); });
+    }
+  });
+});
+
+document.querySelectorAll('.form-control').forEach(el => {
+  el.addEventListener('input', () => {
+    if (el.value.trim()) el.classList.remove('error');
+  });
+});
+
+function saveDraft() {
+  const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 2500, timerProgressBar: true });
+  Toast.fire({ icon: 'info', title: 'Draft tersimpan di browser' });
+}
+
+function resetForm() {
+  document.querySelectorAll('.form-control').forEach(el => el.classList.remove('error'));
+}
+
+// ── CHART BARS (dashboard) ──
+function buildChart() {
+  const bars = document.getElementById('chartBars');
+  const days = ['Sen','Sel','Rab','Kam','Jum','Sab','Min'];
+  const sarung = [78, 85, 72, 90, 88, 65, 40];
+  const polos = [55, 60, 58, 70, 65, 50, 30];
+  const maxVal = Math.max(...sarung, ...polos);
+  bars.innerHTML = days.map((d, i) => `
+    <div class="bar-group">
+      <div style="display:flex;gap:3px;align-items:flex-end;height:100px">
+        <div class="bar primary" style="height:${(sarung[i]/maxVal*100)}%" title="${sarung[i]}m Sarung"></div>
+        <div class="bar secondary" style="height:${(polos[i]/maxVal*100)}%" title="${polos[i]}m Polos"></div>
+      </div>
+      <div class="bar-label">${d}</div>
+    </div>
+  `).join('');
+}
+
+// ── HEADER ACTIONS ──
+document.getElementById('btnNotif').addEventListener('click', () => showAlert('toast'));
+document.getElementById('btnSearch').addEventListener('click', () => {
+  navigate('table');
+  setTimeout(() => document.getElementById('searchInput').focus(), 350);
+});
+document.getElementById('btnLogout').addEventListener('click', () => {
+  Swal.fire({
+    title: 'Keluar dari Sistem?',
+    text: 'Sesi Anda akan diakhiri.',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Ya, Keluar',
+    cancelButtonText: 'Batal',
+    ...swalTheme
+  }).then(r => {
+    if (r.isConfirmed) Swal.fire({ title: 'Sampai Jumpa!', text: 'Anda berhasil keluar.', icon: 'success', timer: 1800, showConfirmButton: false });
+  });
+});
+
+// ── INIT ──
+buildChart();
+document.getElementById('fTgl').value = new Date().toISOString().slice(0, 10);
+renderTable();
+</script>
+</body>
+</html>
