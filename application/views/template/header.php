@@ -10,5 +10,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <link rel="stylesheet" href="<?= base_url('assets/css/admin-template.css'); ?>">
+    <?php if (!empty($active_menu) && $active_menu === 'penomoran_surat'): ?>
+        <link rel="stylesheet" href="<?= base_url('assets/css/penomoran-surat.css'); ?>">
+    <?php endif; ?>
 </head>
 <body>

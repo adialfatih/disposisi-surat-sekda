@@ -27,7 +27,7 @@
 
         <h1 class="left-headline">
             Sistem Informasi<br>
-            <em>Penomoran & Agenda Surat</em><br>
+            <em>Penomoran &amp; Agenda Surat</em><br>
             Terpadu
         </h1>
 
@@ -62,10 +62,11 @@
                 <?= $this->session->flashdata('login_error'); ?>
             </div>
         <?php endif; ?>
+
         <form id="loginForm" method="post" action="<?= base_url('login'); ?>" novalidate autocomplete="off">
             <input type="hidden"
-                name="<?= $this->security->get_csrf_token_name(); ?>"
-                value="<?= $this->security->get_csrf_hash(); ?>">
+                   name="<?= $this->security->get_csrf_token_name(); ?>"
+                   value="<?= $this->security->get_csrf_hash(); ?>">
 
             <div class="form-group">
                 <label class="form-label" for="username">Username</label>
@@ -130,15 +131,10 @@
             </button>
         </form>
 
-        <div class="divider">akun awal</div>
-
-        <!-- <div class="demo-note">
-            <div><strong>Admin</strong> : admin / admin123</div>
-            <div><strong>User</strong> : user / user12345</div>
-        </div> -->
+        <div class="divider">login aktif dengan session</div>
 
         <div class="form-footer">
-            &copy; 2026 Sekretariat Daerah Kota Pekalongan<br>
+            &copy; 2026 Sekretariat Daerah Kota Pekalongan &mdash;
             <a href="#">Kebijakan Privasi</a> &middot; <a href="#">Bantuan</a>
         </div>
     </div>

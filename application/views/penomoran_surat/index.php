@@ -1,23 +1,36 @@
 <div class="page active">
+    <?php if ($this->session->flashdata('crud_success')): ?>
+        <div style="margin-bottom:16px;padding:12px 14px;border-radius:10px;background:#E8F5E9;color:#2E7D32;font-size:13px;line-height:1.6;">
+            <?= $this->session->flashdata('crud_success'); ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($this->session->flashdata('crud_error')): ?>
+        <div style="margin-bottom:16px;padding:12px 14px;border-radius:10px;background:#FFEBEE;color:#C62828;font-size:13px;line-height:1.6;">
+            <?= $this->session->flashdata('crud_error'); ?>
+        </div>
+    <?php endif; ?>
+
     <div class="table-toolbar">
         <div class="search-box">
             <span class="material-icons">search</span>
-            <input type="text" placeholder="Cari nomor surat, perihal, tujuan surat...">
+            <input type="text" id="searchPenomoranSurat" placeholder="Cari perihal, pengolah, tujuan..." readonly>
         </div>
 
-        <select class="filter-select">
-            <option value="">Semua Jenis</option>
-            <option value="">Surat Undangan</option>
-            <option value="">Nota Dinas</option>
-            <option value="">Surat Tugas</option>
-            <option value="">Surat Edaran</option>
+        <select class="filter-select" id="filterJenisSurat">
+            <option value="">Semua Jenis Surat</option>
+            <option value="setda-surat-keluar">SETDA - Surat Keluar</option>
+            <option value="setda-sppd">SETDA - SPPD</option>
+            <option value="umum-surat-keluar">UMUM - Surat Keluar</option>
+            <option value="umum-sppd">UMUM - SPPD</option>
+            <option value="nota-dinas">NOTA DINAS</option>
         </select>
 
-        <button class="btn btn-primary">
+        <button type="button" class="btn btn-primary" id="btnTambahNomorSurat">
             <span class="material-icons">add</span>Tambah Nomor Surat
         </button>
 
-        <button class="btn btn-outline">
+        <button type="button" class="btn btn-outline" id="btnExportPenomoran">
             <span class="material-icons">file_download</span>Export
         </button>
     </div>
@@ -28,70 +41,64 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Tanggal</th>
-                        <th>Nomor Surat</th>
+                        <th>Jenis Surat</th>
+                        <th>Kode Keamanan</th>
+                        <th>Nomor Urut</th>
+                        <th>Kode Klasifikasi</th>
+                        <th>Kode Umum</th>
+                        <th>Tahun</th>
+                        <th>Tanggal Surat</th>
                         <th>Perihal</th>
+                        <th>Pengolah</th>
                         <th>Tujuan</th>
-                        <th>Jenis</th>
-                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>13-04-2026</td>
-                        <td><strong>800/001/SEKDA/2026</strong></td>
-                        <td>Undangan Rapat Koordinasi</td>
-                        <td>OPD Terkait</td>
-                        <td>Surat Undangan</td>
-                        <td><span class="badge badge-green">Terbit</span></td>
-                        <td>
-                            <div class="action-btns">
-                                <button class="btn btn-outline btn-sm"><span class="material-icons">visibility</span></button>
-                                <button class="btn btn-outline btn-sm"><span class="material-icons">edit</span></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>12-04-2026</td>
-                        <td><strong>800/002/SEKDA/2026</strong></td>
-                        <td>Nota Dinas Internal</td>
-                        <td>Bagian Umum</td>
-                        <td>Nota Dinas</td>
-                        <td><span class="badge badge-yellow">Draft</span></td>
-                        <td>
-                            <div class="action-btns">
-                                <button class="btn btn-outline btn-sm"><span class="material-icons">visibility</span></button>
-                                <button class="btn btn-outline btn-sm"><span class="material-icons">edit</span></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>11-04-2026</td>
-                        <td><strong>800/003/SEKDA/2026</strong></td>
-                        <td>Surat Tugas Pendampingan</td>
-                        <td>Tim Pendamping</td>
-                        <td>Surat Tugas</td>
-                        <td><span class="badge badge-green">Terbit</span></td>
-                        <td>
-                            <div class="action-btns">
-                                <button class="btn btn-outline btn-sm"><span class="material-icons">visibility</span></button>
-                                <button class="btn btn-outline btn-sm"><span class="material-icons">edit</span></button>
-                            </div>
-                        </td>
-                    </tr>
+                    <?php if (!empty($rows)): ?>
+                        <?php $no = 1; ?>
+                        <?php foreach ($rows as $row): ?>
+                            <tr>
+                                <td><?= $no++; ?></td>
+                                <td><?= html_escape($row->jenis_surat_label); ?></td>
+                                <td><?= html_escape($row->kode_keamanan); ?></td>
+                                <td><?= (int) $row->nomor_urut; ?></td>
+                                <td><?= html_escape($row->kode_klasifikasi); ?></td>
+                                <td><?= html_escape($row->kode_umum ?: '-'); ?></td>
+                                <td><?= (int) $row->tahun; ?></td>
+                                <td><?= html_escape($row->tanggal_surat); ?></td>
+                                <td><?= html_escape($row->perihal); ?></td>
+                                <td><?= html_escape($row->pengolah); ?></td>
+                                <td><?= html_escape($row->tujuan); ?></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <a href="<?= base_url('penomoran-surat/detail/' . $row->id); ?>" class="btn btn-outline btn-sm" title="Detail">
+                                            <span class="material-icons">visibility</span>
+                                        </a>
+
+                                        <a href="<?= base_url('penomoran-surat/edit/' . $row->id); ?>" class="btn btn-outline btn-sm" title="Edit">
+                                            <span class="material-icons">edit</span>
+                                        </a>
+
+                                        <form method="post" action="<?= base_url('penomoran-surat/delete/' . $row->id); ?>" class="formDeleteSurat" style="display:inline-block;">
+                                            <input type="hidden"
+                                                   name="<?= $this->security->get_csrf_token_name(); ?>"
+                                                   value="<?= $this->security->get_csrf_hash(); ?>">
+                                            <button type="submit" class="btn btn-danger btn-sm" title="Hapus">
+                                                <span class="material-icons">delete</span>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="12" style="text-align:center;">Belum ada data penomoran surat.</td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
-        </div>
-
-        <div class="pagination">
-            <div>Menampilkan 1–3 dari 3 data</div>
-            <div class="page-btns">
-                <button class="page-btn active">1</button>
-            </div>
         </div>
     </div>
 </div>

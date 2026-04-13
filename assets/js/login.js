@@ -12,6 +12,10 @@
         passwordEl.classList.remove('error');
         document.getElementById('errUsername').classList.remove('show');
         document.getElementById('errPassword').classList.remove('show');
+        document.getElementById('errUsername').innerHTML =
+            '<span class="material-icons">error_outline</span>Username wajib diisi';
+        document.getElementById('errPassword').innerHTML =
+            '<span class="material-icons">error_outline</span>Password wajib diisi';
     }
 
     function shakeEl(el) {
@@ -89,7 +93,9 @@
                 valid = false;
             }
 
-            if (!valid) return false;
+            if (!valid) {
+                return false;
+            }
 
             btnLogin.classList.add('loading');
         });

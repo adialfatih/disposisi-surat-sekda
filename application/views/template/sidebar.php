@@ -14,7 +14,7 @@
         Dashboard
     </a>
 
-    <a href="<?= base_url('dashboard/penomoran_surat'); ?>" class="nav-item <?= ($active_menu == 'penomoran_surat') ? 'active' : ''; ?>">
+    <a href="<?= base_url('penomoran-surat'); ?>" class="nav-item <?= ($active_menu == 'penomoran_surat') ? 'active' : ''; ?>">
         <span class="material-icons">tag</span>
         Penomoran Surat
         <span class="nav-badge">Baru</span>

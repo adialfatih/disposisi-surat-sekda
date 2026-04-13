@@ -4,7 +4,6 @@
     const hamburger = document.getElementById('hamburger');
     const btnNotif = document.getElementById('btnNotif');
     const btnSearch = document.getElementById('btnSearch');
-    const btnLogout = document.getElementById('btnLogout');
     const chartBars = document.getElementById('chartBars');
 
     function openSidebar() {
@@ -54,21 +53,6 @@
                 text: 'Fitur pencarian global akan kita hubungkan pada tahap berikutnya.',
                 icon: 'info',
                 confirmButtonColor: '#5C3317'
-            });
-        });
-    }
-
-    if (btnLogout) {
-        btnLogout.addEventListener('click', function () {
-            Swal.fire({
-                title: 'Keluar dari Sistem?',
-                text: 'Template logout belum dihubungkan ke autentikasi.',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Ya, Keluar',
-                cancelButtonText: 'Batal',
-                confirmButtonColor: '#5C3317',
-                cancelButtonColor: '#A0673A'
             });
         });
     }

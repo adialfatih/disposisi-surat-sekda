@@ -34,13 +34,7 @@ class Dashboard extends MY_Controller
 
     public function penomoran_surat()
     {
-        $data = [
-            'page_title'    => 'Penomoran Surat',
-            'page_subtitle' => 'Pengelolaan nomor surat keluar Sekda Kota Pekalongan',
-            'active_menu'   => 'penomoran_surat'
-        ];
-
-        $this->render('penomoran_surat/index', $data);
+         redirect('penomoran-surat');
     }
 
     public function agenda_disposisi()
