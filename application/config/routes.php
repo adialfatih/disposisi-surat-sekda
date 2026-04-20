@@ -23,3 +23,13 @@ $route['penomoran-surat/edit/(:num)'] = 'penomoran_surat/edit/$1';
 $route['penomoran-surat/update/(:num)'] = 'penomoran_surat/update/$1';
 $route['penomoran-surat/delete/(:num)'] = 'penomoran_surat/delete/$1';
 $route['penomoran-surat/next-nomor'] = 'penomoran_surat/get_next_nomor_urut';
+
+
+$route['surat-masuk']                = 'surat_masuk/index';
+$route['surat-masuk/create']         = 'surat_masuk/create';
+$route['surat-masuk/store']          = 'surat_masuk/store';
+$route['surat-masuk/next-agenda']    = 'surat_masuk/get_next_nomor_agenda';
+$route['surat-masuk/detail/(:num)']  = 'surat_masuk/detail/$1';
+$route['surat-masuk/edit/(:num)']    = 'surat_masuk/edit/$1';
+$route['surat-masuk/update/(:num)']  = 'surat_masuk/update/$1';
+$route['surat-masuk/delete/(:num)']  = 'surat_masuk/delete/$1';

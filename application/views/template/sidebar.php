@@ -25,7 +25,7 @@
         Agenda Disposisi
     </a>
 
-    <a href="<?= base_url('dashboard/agenda_surat_masuk'); ?>" class="nav-item <?= ($active_menu == 'agenda_surat_masuk') ? 'active' : ''; ?>">
+    <a href="<?= base_url('surat-masuk'); ?>" class="nav-item <?= ($active_menu == 'agenda_surat_masuk') ? 'active' : ''; ?>">
         <span class="material-icons">mail</span>
         Agenda Surat Masuk
     </a>

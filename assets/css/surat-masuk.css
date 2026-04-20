@@ -1,0 +1,211 @@
+/* ================================================================
+   surat-masuk.css
+   Styles khusus modul Agenda Surat Masuk
+   Mengikuti design system admin-template.css
+   ================================================================ */
+
+/* --- Alert Flash --- */
+.alert-flash {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.6;
+    font-weight: 500;
+}
+.alert-flash .material-icons { font-size: 18px; flex-shrink: 0; }
+.alert-flash-success { background: #E8F5E9; color: #2E7D32; }
+.alert-flash-error   { background: #FFEBEE; color: #C62828; }
+
+/* --- Stats Strip --- */
+.sm-stats-strip {
+    display: flex;
+    align-items: center;
+    background: var(--white);
+    border: 1px solid var(--cream-dark);
+    border-radius: var(--radius-lg);
+    padding: 16px 24px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-sm);
+    gap: 0;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.sm-stat-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 120px;
+}
+
+.sm-stat-icon { font-size: 28px !important; }
+
+.sm-stat-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-dark);
+    line-height: 1;
+}
+
+.sm-stat-lbl {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-top: 2px;
+}
+
+.sm-stat-divider {
+    width: 1px;
+    height: 36px;
+    background: var(--cream-dark);
+    flex-shrink: 0;
+}
+
+/* --- Table Cells --- */
+.nomor-agenda-code {
+    font-size: 12px;
+    background: var(--sogan-faint);
+    color: var(--sogan);
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.nomor-surat-inline {
+    font-size: 12px;
+    color: var(--text-mid);
+    font-weight: 500;
+}
+
+.td-perihal {
+    max-width: 220px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.td-asal {
+    max-width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.td-empty {
+    text-align: center;
+    padding: 40px 16px !important;
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+/* --- Detail Page --- */
+.sm-detail-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    background: #EEF2FF;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.sm-detail-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #6366F1;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-bottom: 4px;
+}
+
+.sm-detail-nomor-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.sm-detail-nomor {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e1e2d;
+    letter-spacing: .03em;
+    font-family: 'Playfair Display', serif;
+}
+
+.sm-copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1.5px solid #6366F1;
+    background: transparent;
+    color: #6366F1;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s ease;
+    font-family: inherit;
+}
+.sm-copy-btn .material-icons { font-size: 15px; }
+.sm-copy-btn:hover { background: #EEF2FF; }
+
+.sm-detail-header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.sm-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.sm-span-2 { grid-column: span 2; }
+
+.sm-detail-item {
+    background: var(--sogan-faint);
+    border-radius: 8px;
+    padding: 12px 16px;
+}
+
+.sm-detail-item-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: 6px;
+}
+.sm-detail-item-label .material-icons { font-size: 15px; color: var(--sogan-light); }
+
+.sm-detail-item-val {
+    font-size: 14px;
+    color: var(--text-dark);
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .sm-stats-strip { gap: 8px; }
+    .sm-stat-divider { display: none; }
+    .sm-detail-grid { grid-template-columns: 1fr; }
+    .sm-span-2 { grid-column: span 1; }
+}
