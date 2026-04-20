@@ -31,3 +31,12 @@ FORM -> UMUM-Surat Keluar dan UMUM-SPPD dan NOTA DINAS
 - Perihal
 - Pengolah
 - Tujuan
+
+
+Mapping format per jenis surat:
+
+1. setda-surat-keluar → KS/N/K/Y (Korespondensi Eksternal, ditandatangani Sekda)
+2. setda-sppd → K/N/Y (Naskah Dinas Penugasan)
+3. umum-surat-keluar → KS/N/K/Y (Korespondensi Eksternal)
+4. umum-sppd → K/N/Y (Penugasan)
+5. nota-dinas → N/K/Y (Korespondensi Internal)

@@ -22,3 +22,4 @@ $route['penomoran-surat/detail/(:num)'] = 'penomoran_surat/detail/$1';
 $route['penomoran-surat/edit/(:num)'] = 'penomoran_surat/edit/$1';
 $route['penomoran-surat/update/(:num)'] = 'penomoran_surat/update/$1';
 $route['penomoran-surat/delete/(:num)'] = 'penomoran_surat/delete/$1';
+$route['penomoran-surat/next-nomor'] = 'penomoran_surat/get_next_nomor_urut';

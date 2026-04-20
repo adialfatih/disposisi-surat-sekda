@@ -27,7 +27,7 @@ class Penomoran_surat extends MY_Controller
         return [
             'setda-surat-keluar' => [
                 'label' => 'SETDA - Surat Keluar',
-                'show_kode_umum' => FALSE
+                'show_kode_umum' => TRUE
             ],
             'setda-sppd' => [
                 'label' => 'SETDA - SPPD',
@@ -213,7 +213,14 @@ class Penomoran_surat extends MY_Controller
             $this->session->set_flashdata('crud_error', 'Nomor urut untuk jenis surat dan tahun tersebut sudah digunakan.');
             redirect('penomoran-surat/create/' . $jenis_slug);
         }
-
+        $insert_data['nomor_surat'] = $this->Penomoran_surat_model->generate_nomor_surat(
+            $insert_data['jenis_surat_slug'],
+            $insert_data['nomor_urut'],
+            $insert_data['kode_klasifikasi'],
+            $insert_data['kode_keamanan'],
+            $insert_data['kode_umum'],
+            $insert_data['tahun']
+        );
         $this->Penomoran_surat_model->insert($insert_data);
         $this->session->set_flashdata('crud_success', 'Data penomoran surat berhasil disimpan.');
         redirect('penomoran-surat');
@@ -319,6 +326,15 @@ class Penomoran_surat extends MY_Controller
             redirect('penomoran-surat/edit/' . $id);
         }
 
+        $update_data['nomor_surat'] = $this->Penomoran_surat_model->generate_nomor_surat(
+            $jenis_slug,
+            $update_data['nomor_urut'],
+            $update_data['kode_klasifikasi'],
+            $update_data['kode_keamanan'],
+            $update_data['kode_umum'],
+            $update_data['tahun']
+        );
+
         $this->Penomoran_surat_model->update($id, $update_data);
         $this->session->set_flashdata('crud_success', 'Data penomoran surat berhasil diperbarui.');
         redirect('penomoran-surat');
@@ -339,5 +355,25 @@ class Penomoran_surat extends MY_Controller
         $this->Penomoran_surat_model->delete($id);
         $this->session->set_flashdata('crud_success', 'Data penomoran surat berhasil dihapus.');
         redirect('penomoran-surat');
+    }
+    public function get_next_nomor_urut()
+    {
+        if ($this->input->method(TRUE) !== 'POST') {
+            show_404();
+        }
+
+        $jenis_slug = $this->input->post('jenis_surat_slug', TRUE);
+        $tahun      = (int) $this->input->post('tahun', TRUE);
+
+        $jenis_options = $this->get_jenis_surat_options();
+
+        if (!isset($jenis_options[$jenis_slug]) || $tahun < 2000) {
+            echo json_encode(['success' => FALSE, 'next_nomor' => 1]);
+            return;
+        }
+
+        $next = $this->Penomoran_surat_model->get_next_nomor_urut($jenis_slug, $tahun);
+
+        echo json_encode(['success' => TRUE, 'next_nomor' => $next]);
     }
 }

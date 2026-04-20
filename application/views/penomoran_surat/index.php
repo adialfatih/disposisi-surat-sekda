@@ -41,6 +41,7 @@
                 <thead>
                     <tr>
                         <th>No</th>
+                        <th>Nomor Surat</th>
                         <th>Jenis Surat</th>
                         <th>Kode Keamanan</th>
                         <th>Nomor Urut</th>
@@ -60,6 +61,11 @@
                         <?php foreach ($rows as $row): ?>
                             <tr>
                                 <td><?= $no++; ?></td>
+                                <td>
+                                    <code style="font-size:12px;background:#f3f4f6;padding:2px 6px;border-radius:4px;">
+                                        <?= html_escape($row->nomor_surat ?: '-'); ?>
+                                    </code>
+                                </td>
                                 <td><?= html_escape($row->jenis_surat_label); ?></td>
                                 <td><?= html_escape($row->kode_keamanan); ?></td>
                                 <td><?= (int) $row->nomor_urut; ?></td>
@@ -94,7 +100,7 @@
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="12" style="text-align:center;">Belum ada data penomoran surat.</td>
+                            <td colspan="13" style="text-align:center;">Belum ada data penomoran surat.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>

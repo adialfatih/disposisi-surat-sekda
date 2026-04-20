@@ -78,15 +78,31 @@ function old_or_value($ci, $row, $field)
 
                 <div class="form-group">
                     <label class="form-label">Nomor Urut <span class="req">*</span></label>
-                    <input
-                        type="number"
-                        name="nomor_urut"
-                        class="form-control"
-                        min="1"
-                        placeholder="Contoh: 12"
-                        value="<?= html_escape(old_or_value($this, $row, 'nomor_urut')); ?>"
-                    >
-                    <div class="field-note">Nomor urut tidak boleh sama pada jenis dan tahun yang sama.</div>
+                    <div style="position:relative;">
+                        <input
+                            type="number"
+                            name="nomor_urut"
+                            id="inputNomorUrut"
+                            class="form-control"
+                            min="1"
+                            placeholder="Otomatis terisi..."
+                            value="<?= html_escape(old_or_value($this, $row, 'nomor_urut')); ?>"
+                            <?= !$is_edit ? 'readonly' : ''; ?>
+                            style="padding-right: 110px;"
+                        >
+                        <?php if (!$is_edit): ?>
+                        <span id="nomorUrutStatus"
+                            style="position:absolute;right:10px;top:50%;transform:translateY(-50%);
+                                    font-size:11px;color:#6366F1;font-weight:600;white-space:nowrap;">
+                            Memuat...
+                        </span>
+                        <?php endif; ?>
+                    </div>
+                    <div class="field-note">
+                        <?= $is_edit
+                            ? 'Nomor urut tidak boleh sama pada jenis dan tahun yang sama.'
+                            : 'Terisi otomatis. Ubah manual jika diperlukan.'; ?>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -225,4 +241,64 @@ function old_or_value($ci, $row, $field)
             </div>
         </div>
     </form>
+<?php if (!$is_edit): ?>
+<script>
+(function () {
+    const inputNomor  = document.getElementById('inputNomorUrut');
+    const statusEl    = document.getElementById('nomorUrutStatus');
+    const inputTahun  = document.querySelector('input[name="tahun"]');
+    const jenisSurat  = '<?= html_escape($jenis_surat_slug); ?>';
+    const nextNomorUrl = '<?= base_url('penomoran-surat/next-nomor'); ?>';
+    const csrfName    = '<?= $this->security->get_csrf_token_name(); ?>';
+
+    let debounceTimer = null;
+
+    function fetchNextNomor(tahun) {
+        if (!tahun || tahun < 2000) return;
+
+        statusEl.textContent = 'Memuat...';
+        statusEl.style.color = '#9CA3AF';
+        inputNomor.readOnly  = true;
+
+        // Ambil CSRF hash terbaru dari meta atau dari hidden input di form
+        const csrfHash = document.querySelector('input[name="' + csrfName + '"]').value;
+
+        const body = new URLSearchParams();
+        body.append('jenis_surat_slug', jenisSurat);
+        body.append('tahun', tahun);
+        body.append(csrfName, csrfHash);
+
+        fetch(nextNomorUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: body.toString()
+        })
+        .then(r => r.json())
+        .then(data => {
+            inputNomor.value    = data.next_nomor;
+            inputNomor.readOnly = false;
+            statusEl.textContent = '✓ Auto #' + data.next_nomor;
+            statusEl.style.color = '#22C55E';
+        })
+        .catch(() => {
+            inputNomor.value    = 1;
+            inputNomor.readOnly = false;
+            statusEl.textContent = 'Gagal fetch';
+            statusEl.style.color = '#EF4444';
+        });
+    }
+
+    // Trigger saat tahun diubah (dengan debounce 500ms)
+    inputTahun.addEventListener('input', function () {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            fetchNextNomor(parseInt(this.value));
+        }, 500);
+    });
+
+    // Fetch otomatis saat halaman pertama kali load
+    fetchNextNomor(parseInt(inputTahun.value));
+})();
+</script>
+<?php endif; ?>
 </div>
