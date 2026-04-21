@@ -33,3 +33,17 @@ $route['surat-masuk/detail/(:num)']  = 'surat_masuk/detail/$1';
 $route['surat-masuk/edit/(:num)']    = 'surat_masuk/edit/$1';
 $route['surat-masuk/update/(:num)']  = 'surat_masuk/update/$1';
 $route['surat-masuk/delete/(:num)']  = 'surat_masuk/delete/$1';
+
+$route['csrf-token'] = 'surat_masuk/get_csrf_token';
+
+$route['disposisi-surat']                                         = 'disposisi_surat/index';
+$route['disposisi-surat/create']                                  = 'disposisi_surat/create';
+$route['disposisi-surat/store']                                   = 'disposisi_surat/store';
+$route['disposisi-surat/next-nomor']                              = 'disposisi_surat/get_next_nomor';
+$route['disposisi-surat/detail/(:num)']                           = 'disposisi_surat/detail/$1';
+$route['disposisi-surat/edit/(:num)']                             = 'disposisi_surat/edit/$1';
+$route['disposisi-surat/update/(:num)']                           = 'disposisi_surat/update/$1';
+$route['disposisi-surat/delete/(:num)']                           = 'disposisi_surat/delete/$1';
+$route['disposisi-surat/tracking/(:num)/(:num)']                  = 'disposisi_surat/tracking/$1/$2';
+$route['disposisi-surat/kirim/(:num)/(:num)']                     = 'disposisi_surat/store_kirim/$1/$2';
+$route['disposisi-surat/terima/(:num)/(:num)']                    = 'disposisi_surat/store_terima/$1/$2';

@@ -1,0 +1,389 @@
+/* ================================================================
+   disposisi-surat.css
+   Styles modul Agenda Disposisi
+   Extends: admin-template.css + surat-masuk.css (form utilities)
+   ================================================================ */
+
+/* --- Penerima Count Badge --- */
+.dsp-penerima-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--sogan);
+    font-weight: 600;
+}
+
+/* --- Detail: Surat Referensi --- */
+.dsp-surat-ref {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: var(--sogan-faint);
+    border-left: 3px solid var(--sogan);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+}
+.dsp-surat-ref .material-icons { color: var(--sogan); margin-top: 2px; flex-shrink: 0; }
+.dsp-surat-ref-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--text-muted);
+    margin-bottom: 3px;
+}
+.dsp-surat-ref-val { font-size: 13px; color: var(--text-dark); line-height: 1.5; }
+
+/* --- Section title dalam detail/tracking --- */
+.dsp-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    color: var(--sogan);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--cream-dark);
+}
+.dsp-section-title .material-icons { font-size: 18px; color: var(--sogan-light); }
+
+/* ----------------------------------------------------------------
+   PENERIMA LIST & PROGRESS
+   ---------------------------------------------------------------- */
+.dsp-penerima-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.dsp-penerima-card {
+    background: var(--sogan-faint);
+    border: 1px solid var(--cream-dark);
+    border-radius: 10px;
+    padding: 14px 16px;
+}
+
+.dsp-penerima-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.dsp-penerima-nama {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+.dsp-penerima-nama .material-icons { color: var(--sogan-light); font-size: 18px; }
+
+/* --- Progress Steps --- */
+.dsp-progress {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.dsp-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.dsp-step-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all .2s ease;
+}
+.dsp-step-icon .material-icons { font-size: 17px; }
+
+.dsp-step.done  .dsp-step-icon { background: #E8F5E9; color: #2E7D32; }
+.dsp-step.active .dsp-step-icon { background: #E3F2FD; color: #1565C0; }
+.dsp-step.pending .dsp-step-icon { background: var(--cream-dark); color: var(--text-muted); }
+
+.dsp-step-info {}
+.dsp-step-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-dark);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+.dsp-step-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+.dsp-sub-pending { color: var(--text-muted); font-style: italic; }
+
+.dsp-step-bukti {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+}
+
+.dsp-bukti-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 11px;
+    color: var(--sogan);
+    background: var(--white);
+    border: 1px solid var(--cream-dark);
+    border-radius: 4px;
+    padding: 2px 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background .15s;
+}
+.dsp-bukti-link:hover { background: var(--sogan-pale); }
+.dsp-bukti-link .material-icons { font-size: 13px; }
+
+.dsp-step-connector {
+    flex: 0 0 32px;
+    height: 2px;
+    background: var(--cream-dark);
+    margin: 0 4px;
+    position: relative;
+    top: -6px; /* naik sedikit agar sejajar dengan icon */
+    transition: background .3s ease;
+}
+.dsp-step-connector.done { background: #2E7D32; }
+
+/* ----------------------------------------------------------------
+   FORM PENERIMA DYNAMIC (di form.php)
+   ---------------------------------------------------------------- */
+.penerima-row { margin-bottom: 10px; }
+
+.penerima-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--sogan-faint);
+    border: 1px solid var(--cream-dark);
+    border-radius: 8px;
+    padding: 6px 10px;
+}
+
+.penerima-icon { font-size: 18px !important; color: var(--sogan-light); flex-shrink: 0; }
+
+.penerima-input-wrap .form-control {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    flex: 1;
+    height: 34px;
+}
+.penerima-input-wrap .form-control:focus { box-shadow: none; }
+
+.btn-hapus-penerima {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    border-radius: 4px;
+    transition: color .15s, background .15s;
+    flex-shrink: 0;
+}
+.btn-hapus-penerima:hover { color: #C62828; background: #FFEBEE; }
+.btn-hapus-penerima .material-icons { font-size: 18px; }
+
+/* ----------------------------------------------------------------
+   TRACKING PAGE
+   ---------------------------------------------------------------- */
+.dsp-tracking-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    background: #EEF2FF;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.dsp-tracking-penerima-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--sogan);
+    color: var(--white);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.dsp-tracking-penerima-badge .material-icons { font-size: 17px; }
+
+.dsp-tracking-panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 8px;
+}
+
+.dsp-tracking-panel {
+    border-radius: 12px;
+    padding: 20px;
+    border: 2px solid transparent;
+    transition: border-color .2s ease;
+}
+
+.panel-done   { background: #F0FFF4; border-color: #A5D6A7; }
+.panel-active { background: #E3F2FD; border-color: #90CAF9; }
+.panel-locked { background: var(--cream); border-color: var(--cream-dark); opacity: .7; }
+
+.dsp-panel-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--sogan);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0,0,0,.06);
+}
+.dsp-panel-title .material-icons { font-size: 18px; color: var(--sogan-light); }
+
+.dsp-locked-msg {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
+    font-size: 13px;
+    padding: 16px;
+    background: var(--white);
+    border-radius: 8px;
+    border: 1px dashed var(--cream-dark);
+}
+.dsp-locked-msg .material-icons { font-size: 20px; }
+
+/* --- Bukti Preview (sudah tersimpan) --- */
+.dsp-bukti-preview {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+}
+.dsp-bukti-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+}
+.dsp-bukti-row .material-icons { font-size: 16px; color: var(--sogan-light); }
+
+.dsp-bukti-files {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.dsp-file-thumb {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--text-muted);
+}
+.dsp-file-thumb img {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--cream-dark);
+}
+.dsp-file-thumb img.ttd-preview {
+    object-fit: contain;
+    background: var(--white);
+}
+
+/* --- Form Bukti --- */
+.dsp-bukti-form .form-control { background: var(--white); }
+.dsp-file-input { height: auto; padding: 8px 12px; cursor: pointer; }
+
+/* ----------------------------------------------------------------
+   SIGNATURE PAD
+   ---------------------------------------------------------------- */
+.signature-wrap {
+    border: 2px dashed var(--sogan-pale);
+    border-radius: 10px;
+    background: var(--white);
+    overflow: hidden;
+    transition: border-color .2s;
+}
+.signature-wrap:focus-within { border-color: var(--sogan-light); }
+
+.sig-canvas {
+    display: block;
+    width: 100%;
+    height: 160px;
+    cursor: crosshair;
+    touch-action: none;
+}
+
+.sig-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 12px;
+    background: var(--sogan-faint);
+    border-top: 1px solid var(--cream-dark);
+}
+
+.sig-hint { font-size: 11px; color: var(--text-muted); font-style: italic; }
+
+.sig-clear-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: 1px solid var(--cream-dark);
+    border-radius: 5px;
+    padding: 3px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-mid);
+    cursor: pointer;
+    font-family: inherit;
+    transition: background .15s;
+}
+.sig-clear-btn:hover { background: var(--cream-dark); }
+.sig-clear-btn .material-icons { font-size: 13px; }
+
+/* ----------------------------------------------------------------
+   RESPONSIVE
+   ---------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .dsp-tracking-panels { grid-template-columns: 1fr; }
+    .dsp-tracking-header { flex-direction: column; }
+    .dsp-penerima-top    { flex-direction: column; align-items: flex-start; }
+}

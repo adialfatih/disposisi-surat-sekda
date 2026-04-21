@@ -15,7 +15,12 @@
     <?php endif; ?>
     
     <?php if (!empty($active_menu) && $active_menu === 'agenda_surat_masuk'): ?>
-        <link rel="stylesheet" href="<?= base_url('assets/css/surat-masuk.css'); ?>">
+        <link rel="stylesheet" href="<?= base_url('assets/css/surat-masuk.css?v=2'); ?>">
+    <?php endif; ?>
+
+    <?php if (!empty($active_menu) && $active_menu === 'agenda_disposisi'): ?>
+        <link rel="stylesheet" href="<?= base_url('assets/css/surat-masuk.css?v=3'); ?>">
+        <link rel="stylesheet" href="<?= base_url('assets/css/disposisi-surat.css'); ?>">
     <?php endif; ?>
 </head>
 <body>

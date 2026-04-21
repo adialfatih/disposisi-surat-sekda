@@ -241,6 +241,7 @@ function sm_old($ci, $row, $field, $default = '')
     </form>
 </div>
 
+
 <?php if (!$is_edit): ?>
 <script>
 (function () {
@@ -248,9 +249,32 @@ function sm_old($ci, $row, $field, $default = '')
     const statusEl     = document.getElementById('nomorAgendaStatus');
     const inputTanggal = document.getElementById('inputTanggalTerima');
     const nextUrl      = '<?= base_url('surat-masuk/next-agenda'); ?>';
+    const csrfTokenUrl = '<?= base_url('csrf-token'); ?>';
     const csrfName     = '<?= $this->security->get_csrf_token_name(); ?>';
 
     let debounce = null;
+
+    // Ambil CSRF hash terbaru dari hidden input di form
+    function getCsrfHash() {
+        const el = document.querySelector('input[name="' + csrfName + '"]');
+        return el ? el.value : '';
+    }
+
+    // Update hidden input CSRF dengan hash terbaru dari server
+    function refreshCsrfToken(callback) {
+        fetch(csrfTokenUrl)
+            .then(r => r.json())
+            .then(data => {
+                const el = document.querySelector('input[name="' + csrfName + '"]');
+                if (el && data.csrf_hash) {
+                    el.value = data.csrf_hash;
+                }
+                if (callback) callback();
+            })
+            .catch(function() {
+                if (callback) callback();
+            });
+    }
 
     function fetchNextAgenda(tahun) {
         if (!tahun || tahun < 2000) return;
@@ -259,10 +283,9 @@ function sm_old($ci, $row, $field, $default = '')
         statusEl.style.color = '#9CA3AF';
         inputAgenda.readOnly = true;
 
-        const csrfHash = document.querySelector('input[name="' + csrfName + '"]').value;
-        const body     = new URLSearchParams();
+        const body = new URLSearchParams();
         body.append('tahun', tahun);
-        body.append(csrfName, csrfHash);
+        body.append(csrfName, getCsrfHash());
 
         fetch(nextUrl, {
             method: 'POST',
@@ -275,22 +298,25 @@ function sm_old($ci, $row, $field, $default = '')
             inputAgenda.readOnly = false;
             statusEl.textContent = '✓ Auto';
             statusEl.style.color = '#22C55E';
+
+            // Refresh CSRF setelah fetch agar form submit tidak expired
+            refreshCsrfToken();
         })
         .catch(() => {
             inputAgenda.readOnly = false;
             statusEl.textContent = 'Gagal fetch';
             statusEl.style.color = '#EF4444';
+            refreshCsrfToken();
         });
     }
 
-    // Trigger ulang saat tanggal terima berubah (tahun bisa beda)
     inputTanggal.addEventListener('change', function () {
         clearTimeout(debounce);
         const tahun = new Date(this.value).getFullYear();
         debounce = setTimeout(() => fetchNextAgenda(tahun), 300);
     });
 
-    // Load pertama kali
+    // Load pertama
     const tahunAwal = new Date(inputTanggal.value).getFullYear();
     fetchNextAgenda(tahunAwal || new Date().getFullYear());
 })();

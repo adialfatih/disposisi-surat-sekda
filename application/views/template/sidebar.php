@@ -20,7 +20,7 @@
         <span class="nav-badge">Baru</span>
     </a>
 
-    <a href="<?= base_url('dashboard/agenda_disposisi'); ?>" class="nav-item <?= ($active_menu == 'agenda_disposisi') ? 'active' : ''; ?>">
+    <a href="<?= base_url('disposisi-surat'); ?>" class="nav-item <?= ($active_menu == 'agenda_disposisi') ? 'active' : ''; ?>">
         <span class="material-icons">assignment</span>
         Agenda Disposisi
     </a>

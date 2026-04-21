@@ -39,6 +39,13 @@ class Surat_masuk extends MY_Controller
             'selesai'     => 'Selesai',
         ];
     }
+    public function get_csrf_token()
+    {
+        echo json_encode([
+            'csrf_name'  => $this->security->get_csrf_token_name(),
+            'csrf_hash'  => $this->security->get_csrf_hash(),
+        ]);
+    }
 
     private function validate_form()
     {
