@@ -27,13 +27,9 @@
         <?php endif; ?>
 
         <div class="dsp-upload-wrap">
-            <!-- <label class="dsp-upload-label" for="fotoBuktiKirim">
+            <label class="dsp-upload-label" for="fotoBuktiKirim">
                 <span class="material-icons">add_a_photo</span>
-                <span class="dsp-upload-text">
-                    <strong>Ambil Foto / Upload</strong><br>
-                    <small>Kamera (mobile) atau pilih file (desktop)</small>
-                </span>
-            </label> -->
+            </label>
             <!--
                 capture="environment" → buka kamera belakang di mobile
                 Jika tidak didukung browser akan fallback ke file picker biasa

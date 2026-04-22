@@ -27,13 +27,9 @@
         <?php endif; ?>
 
         <div class="dsp-upload-wrap">
-            <!-- <label class="dsp-upload-label" for="fotoBuktiTerima">
+            <label class="dsp-upload-label" for="fotoBuktiTerima">
                 <span class="material-icons">add_a_photo</span>
-                <span class="dsp-upload-text">
-                    <strong>Ambil Foto / Upload</strong><br>
-                    <small>Kamera (mobile) atau pilih file (desktop)</small>
-                </span>
-            </label> -->
+            </label>
             <input type="file"
                    name="foto_bukti_terima"
                    id="fotoBuktiTerima"
