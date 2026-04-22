@@ -6,11 +6,32 @@ class Disposisi_surat extends MY_Controller
     protected $upload_path_ttd  = 'uploads/ttd/';
     protected $upload_path_foto = 'uploads/bukti/';
 
+    /**
+     * Konversi path DB (uploads/ttd/file.png) ke URL browser yang benar.
+     * Mengatasi masalah CI ada di subfolder tapi uploads/ di document root.
+     */
+    private function upload_url($db_path)
+    {
+        if (empty($db_path)) return '';
+        $scheme   = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $host     = $_SERVER['HTTP_HOST'];
+        $doc_root = rtrim(str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])), '/') . '/';
+        $fcpath   = rtrim(str_replace('\\', '/', realpath(FCPATH)), '/') . '/';
+        // Relative path CI app dari document root
+        $rel_app  = ltrim(str_replace($doc_root, '', $fcpath), '/');
+        // Naik ke document root dari subfolder CI
+        $parts    = array_filter(explode('/', rtrim($rel_app, '/')));
+        $up       = count($parts) > 0 ? str_repeat('../', count($parts)) : '';
+        // Hitung URL uploads relatif terhadap document root
+        return $scheme . '://' . $host . '/' . ltrim($db_path, '/');
+    }
+
     public function __construct()
     {
         parent::__construct();
         $this->load->model('Disposisi_surat_model');
         $this->load->library('upload');
+        $this->load->helper('upload'); // application/helpers/upload_helper.php
     }
 
     private function render($view, $data = [])
@@ -113,6 +134,7 @@ class Disposisi_surat extends MY_Controller
             'page_title'       => 'Buat Disposisi',
             'page_subtitle'    => 'Form input disposisi surat masuk',
             'active_menu'      => 'agenda_disposisi',
+            'page_js'          => 'disposisi-surat.js',
             'mode'             => 'create',
             'row'              => null,
             'penerima_list'    => [],
@@ -133,6 +155,7 @@ class Disposisi_surat extends MY_Controller
                 'page_title'    => 'Buat Disposisi',
                 'page_subtitle' => 'Form input disposisi surat masuk',
                 'active_menu'   => 'agenda_disposisi',
+                'page_js'       => 'disposisi-surat.js',
                 'mode'          => 'create',
                 'row'           => null,
                 'penerima_list' => [],
@@ -211,6 +234,7 @@ class Disposisi_surat extends MY_Controller
             'page_title'    => 'Edit Disposisi',
             'page_subtitle' => 'Perbarui data disposisi',
             'active_menu'   => 'agenda_disposisi',
+            'page_js'       => 'disposisi-surat.js',
             'mode'          => 'edit',
             'row'           => $row,
             'penerima_list' => $this->Disposisi_surat_model->get_penerima($id),
@@ -234,6 +258,7 @@ class Disposisi_surat extends MY_Controller
                 'page_title'    => 'Edit Disposisi',
                 'page_subtitle' => 'Perbarui data disposisi',
                 'active_menu'   => 'agenda_disposisi',
+                'page_js'       => 'disposisi-surat.js',
                 'mode'          => 'edit',
                 'row'           => $row,
                 'penerima_list' => $this->Disposisi_surat_model->get_penerima($id),

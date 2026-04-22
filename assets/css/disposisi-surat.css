@@ -387,3 +387,117 @@
     .dsp-tracking-header { flex-direction: column; }
     .dsp-penerima-top    { flex-direction: column; align-items: flex-start; }
 }
+
+/* ----------------------------------------------------------------
+   UPLOAD FOTO — Custom button + preview
+   ---------------------------------------------------------------- */
+
+/* Input file disembunyikan, diganti dengan label custom */
+.dsp-file-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.dsp-upload-wrap {
+    position: relative;
+}
+
+.dsp-upload-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border: 2px dashed var(--sogan-pale);
+    border-radius: 10px;
+    background: var(--sogan-faint);
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+    user-select: none;
+}
+
+.dsp-upload-label:hover {
+    border-color: var(--sogan-light);
+    background: var(--cream);
+}
+
+.dsp-upload-label .material-icons {
+    font-size: 28px;
+    color: var(--sogan-light);
+    flex-shrink: 0;
+}
+
+.dsp-upload-text {
+    font-size: 13px;
+    color: var(--text-dark);
+    line-height: 1.5;
+}
+
+.dsp-upload-text small {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+/* Preview foto yang dipilih */
+.dsp-foto-preview {
+    position: relative;
+    display: inline-block;
+    margin-top: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid var(--cream-dark);
+}
+
+.dsp-foto-preview img {
+    display: block;
+    max-width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.dsp-preview-remove {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 26px;
+    height: 26px;
+    background: rgba(0,0,0,.55);
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .15s;
+}
+.dsp-preview-remove:hover { background: rgba(198,40,40,.85); }
+.dsp-preview-remove .material-icons { font-size: 15px; }
+
+/* Foto lama (sudah tersimpan) */
+.dsp-existing-foto {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    padding: 8px 10px;
+    background: var(--white);
+    border: 1px solid var(--cream-dark);
+    border-radius: 8px;
+}
+
+.dsp-existing-foto img {
+    height: 56px;
+    width: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+    .dsp-upload-label { flex-direction: column; text-align: center; gap: 6px; }
+}
