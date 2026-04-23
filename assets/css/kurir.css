@@ -1,0 +1,454 @@
+/* ================================================================
+   kurir.css — Portal Kurir, mobile-first
+   ================================================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --ink:      #0F1923;
+    --ink-mid:  #3D4F5C;
+    --ink-muted:#7A8F9E;
+    --surface:  #F4F7F9;
+    --white:    #FFFFFF;
+    --accent:   #1A56DB;
+    --accent-lt:#E8F0FE;
+    --green:    #0B7A4E;
+    --green-lt: #D1FAE5;
+    --gold:     #B45309;
+    --gold-lt:  #FEF3C7;
+    --border:   #DDE3E8;
+    --radius:   14px;
+    --shadow:   0 2px 12px rgba(15,25,35,.10);
+}
+
+body {
+    font-family: 'Sora', sans-serif;
+    background: var(--surface);
+    color: var(--ink);
+    min-height: 100vh;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ── Step Header ── */
+.k-step-header {
+    background: var(--ink);
+    color: var(--white);
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: sticky; top: 0; z-index: 10;
+}
+
+.k-back-btn {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,.1);
+    border: none;
+    border-radius: 9px;
+    color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background .15s;
+    flex-shrink: 0;
+}
+.k-back-btn:active { background: rgba(255,255,255,.2); }
+.k-back-btn .material-icons { font-size: 20px; }
+
+.k-step-header-info { flex: 1; }
+.k-step-header-info h2 {
+    font-size: 15px;
+    font-weight: 700;
+}
+.k-step-header-info .k-step-indicator {
+    font-size: 11px;
+    color: rgba(255,255,255,.45);
+    margin-top: 1px;
+}
+
+/* Step dots */
+.k-step-dots {
+    display: flex; gap: 5px; align-items: center;
+}
+.k-step-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.25);
+    transition: all .2s;
+}
+.k-step-dot.active {
+    background: var(--accent);
+    width: 20px;
+    border-radius: 4px;
+}
+.k-step-dot.done { background: var(--green); }
+
+/* ── Wrap ── */
+.k-step-wrap {
+    padding: 16px 16px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* ── Info surat box ── */
+.k-surat-info {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+.k-surat-info-stripe {
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent) 0%, #6EA8FE 100%);
+}
+.k-surat-info-body { padding: 13px 15px; }
+.k-surat-info-nomor {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--accent-lt); color: var(--accent);
+    font-size: 11px; font-weight: 700;
+    padding: 2px 8px; border-radius: 5px;
+    margin-bottom: 6px;
+}
+.k-surat-info-nomor .material-icons { font-size: 12px; }
+.k-surat-info-perihal {
+    font-size: 14px; font-weight: 600; color: var(--ink);
+    margin-bottom: 5px; line-height: 1.4;
+}
+.k-surat-info-meta {
+    font-size: 12px; color: var(--ink-muted);
+    display: flex; flex-wrap: wrap; gap: 6px 12px;
+}
+.k-surat-info-meta span { display: flex; align-items: center; gap: 3px; }
+.k-surat-info-meta .material-icons { font-size: 13px; }
+.k-surat-info-penerima {
+    margin-top: 8px;
+    display: flex; align-items: center; gap: 5px;
+    background: var(--gold-lt); color: var(--gold);
+    font-size: 12px; font-weight: 600;
+    padding: 6px 10px; border-radius: 7px;
+}
+.k-surat-info-penerima .material-icons { font-size: 15px; }
+
+/* ── Form card ── */
+.k-form-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 16px;
+}
+.k-form-card-title {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 14px; font-weight: 700; color: var(--ink);
+    margin-bottom: 6px;
+}
+.k-form-card-title .material-icons { font-size: 18px; color: var(--accent); }
+.k-form-card-desc {
+    font-size: 12px; color: var(--ink-muted);
+    line-height: 1.6; margin-bottom: 16px;
+}
+
+/* ── Input ── */
+.k-input-wrap {
+    position: relative;
+    margin-bottom: 16px;
+}
+.k-input-icon {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    font-size: 20px !important; color: var(--ink-muted);
+    pointer-events: none;
+}
+.k-input {
+    width: 100%;
+    height: 50px;
+    padding: 0 14px 0 42px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 15px;
+    color: var(--ink);
+    background: var(--surface);
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+    -webkit-appearance: none;
+}
+.k-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(26,86,219,.12);
+    background: var(--white);
+}
+
+/* ── Tombol lanjut ── */
+.k-btn-next {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 15px;
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    border-radius: 11px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .15s, transform .1s;
+    letter-spacing: -.01em;
+}
+.k-btn-next:active { transform: scale(.98); background: #263545; }
+.k-btn-next .material-icons { font-size: 19px; }
+
+.k-btn-skip {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    color: var(--ink-muted);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 8px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    width: 100%;
+    font-family: inherit;
+}
+
+/* ── Kamera ── */
+.k-camera-wrap {
+    background: #000;
+    border-radius: var(--radius);
+    overflow: hidden;
+    aspect-ratio: 4/3;
+    position: relative;
+    box-shadow: var(--shadow);
+}
+.k-video {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.k-camera-guide {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none;
+}
+.k-camera-guide-box {
+    width: 72%; height: 72%;
+    border: 2px solid rgba(255,255,255,.5);
+    border-radius: 12px;
+}
+.k-camera-guide-corner {
+    position: absolute;
+    width: 22px; height: 22px;
+    border-color: var(--white);
+    border-style: solid;
+    border-radius: 3px;
+}
+.k-camera-guide-corner.tl { top: 14%; left: 14%; border-width: 3px 0 0 3px; }
+.k-camera-guide-corner.tr { top: 14%; right: 14%; border-width: 3px 3px 0 0; }
+.k-camera-guide-corner.bl { bottom: 14%; left: 14%; border-width: 0 0 3px 3px; }
+.k-camera-guide-corner.br { bottom: 14%; right: 14%; border-width: 0 3px 3px 0; }
+
+.k-shutter-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 16px;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+.k-shutter-btn {
+    width: 66px; height: 66px;
+    border-radius: 50%;
+    border: 4px solid var(--ink);
+    background: var(--white);
+    cursor: pointer;
+    position: relative;
+    transition: transform .1s;
+    display: flex; align-items: center; justify-content: center;
+}
+.k-shutter-btn::after {
+    content: '';
+    width: 52px; height: 52px;
+    background: var(--ink);
+    border-radius: 50%;
+    transition: background .15s;
+}
+.k-shutter-btn:active { transform: scale(.94); }
+.k-shutter-btn:active::after { background: var(--accent); }
+
+.k-switch-cam {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    color: var(--ink-mid);
+    transition: background .15s;
+}
+.k-switch-cam:active { background: var(--border); }
+.k-switch-cam .material-icons { font-size: 20px; }
+
+/* Preview hasil foto */
+.k-preview-result {
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    position: relative;
+    display: none;
+}
+.k-preview-result img {
+    width: 100%; display: block;
+    border-radius: var(--radius);
+}
+.k-preview-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+.k-btn-retake {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 13px;
+    background: var(--surface);
+    color: var(--ink-mid);
+    border: 1.5px solid var(--border);
+    border-radius: 11px;
+    font-family: inherit;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer;
+    transition: background .15s;
+}
+.k-btn-retake:active { background: var(--border); }
+.k-btn-retake .material-icons { font-size: 17px; }
+
+/* ── Signature pad ── */
+.k-sig-wrap {
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    background: var(--white);
+    border: 2px dashed var(--border);
+    transition: border-color .2s;
+}
+.k-sig-wrap:focus-within { border-color: var(--accent); }
+.k-sig-canvas {
+    display: block;
+    width: 100%;
+    height: 200px;
+    cursor: crosshair;
+    touch-action: none;
+    background: var(--white);
+}
+.k-sig-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+}
+.k-sig-hint {
+    font-size: 11px; color: var(--ink-muted);
+    display: flex; align-items: center; gap: 4px;
+}
+.k-sig-hint .material-icons { font-size: 14px; }
+.k-sig-clear {
+    display: flex; align-items: center; gap: 4px;
+    background: none; border: 1px solid var(--border);
+    border-radius: 6px; padding: 4px 10px;
+    font-family: inherit; font-size: 12px; font-weight: 600;
+    color: var(--ink-mid); cursor: pointer;
+    transition: background .15s;
+}
+.k-sig-clear:active { background: var(--border); }
+.k-sig-clear .material-icons { font-size: 13px; }
+
+/* ── Sukses ── */
+.k-sukses-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 32px 24px;
+    text-align: center;
+    background: var(--white);
+}
+.k-sukses-anim {
+    width: 88px; height: 88px;
+    background: var(--green-lt);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+    animation: popIn .4s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes popIn {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+}
+.k-sukses-anim .material-icons { font-size: 44px; color: var(--green); }
+.k-sukses-title {
+    font-size: 22px; font-weight: 700;
+    color: var(--ink); margin-bottom: 8px;
+}
+.k-sukses-sub {
+    font-size: 14px; color: var(--ink-muted);
+    line-height: 1.7; margin-bottom: 28px;
+}
+.k-sukses-detail {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 14px 18px;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 28px;
+}
+.k-sukses-detail-row {
+    display: flex; gap: 8px;
+    font-size: 13px; padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+}
+.k-sukses-detail-row:last-child { border-bottom: none; }
+.k-sukses-detail-row strong { color: var(--ink-muted); min-width: 90px; flex-shrink: 0; }
+.k-sukses-detail-row span { color: var(--ink); font-weight: 600; }
+.k-btn-home {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 15px;
+    background: var(--ink); color: var(--white);
+    border: none; border-radius: 11px;
+    font-family: inherit; font-size: 15px; font-weight: 700;
+    cursor: pointer; text-decoration: none;
+    transition: background .15s;
+}
+.k-btn-home:active { background: #263545; }
+.k-btn-home .material-icons { font-size: 19px; }
+
+/* ── No camera fallback ── */
+.k-no-camera {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px 16px;
+    text-align: center;
+}
+.k-no-camera .material-icons { font-size: 36px; color: var(--ink-muted); display: block; margin-bottom: 10px; }
+.k-no-camera p { font-size: 13px; color: var(--ink-muted); margin-bottom: 14px; }
+.k-file-label {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 20px;
+    background: var(--surface);
+    border: 1.5px dashed var(--border);
+    border-radius: 10px;
+    font-size: 13px; font-weight: 600; color: var(--ink-mid);
+    cursor: pointer;
+}
+.k-file-label .material-icons { font-size: 18px; color: var(--accent); }
+.k-file-hidden { display: none; }

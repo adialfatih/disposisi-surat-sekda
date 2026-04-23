@@ -29,6 +29,10 @@
         <span class="material-icons">mail</span>
         Agenda Surat Masuk
     </a>
+    <a href="<?= base_url('kurir'); ?>" class="nav-item" target="_blank">
+        <span class="material-icons">local_shipping</span>
+        Portal Kurir
+    </a>
 
     <div class="sidebar-footer">
         <div class="user-avatar"><?= strtoupper(substr($session_nama ?? 'A', 0, 1)); ?></div>

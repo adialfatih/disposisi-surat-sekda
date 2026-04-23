@@ -275,16 +275,32 @@ function old_or_value($ci, $row, $field)
         })
         .then(r => r.json())
         .then(data => {
-            inputNomor.value    = data.next_nomor;
-            inputNomor.readOnly = false;
+            inputNomor.value     = data.next_nomor;
+            inputNomor.readOnly  = false;
             statusEl.textContent = '✓ Auto #' + data.next_nomor;
             statusEl.style.color = '#22C55E';
+
+            // Refresh CSRF setelah fetch agar form submit tidak expired
+            fetch('<?= base_url('penomoran-surat/csrf-token'); ?>')
+                .then(r => r.json())
+                .then(csrf => {
+                    const el = document.querySelector('input[name="' + csrfName + '"]');
+                    if (el && csrf.csrf_hash) el.value = csrf.csrf_hash;
+                });
         })
         .catch(() => {
-            inputNomor.value    = 1;
-            inputNomor.readOnly = false;
+            inputNomor.value     = 1;
+            inputNomor.readOnly  = false;
             statusEl.textContent = 'Gagal fetch';
             statusEl.style.color = '#EF4444';
+
+            // Refresh CSRF juga saat error
+            fetch('<?= base_url('penomoran-surat/csrf-token'); ?>')
+                .then(r => r.json())
+                .then(csrf => {
+                    const el = document.querySelector('input[name="' + csrfName + '"]');
+                    if (el && csrf.csrf_hash) el.value = csrf.csrf_hash;
+                });
         });
     }
 

@@ -155,7 +155,13 @@ class Penomoran_surat extends MY_Controller
 
         $this->render('penomoran_surat/form', $data);
     }
-
+public function get_csrf_token()
+{
+    echo json_encode([
+        'csrf_name' => $this->security->get_csrf_token_name(),
+        'csrf_hash' => $this->security->get_csrf_hash(),
+    ]);
+}
     public function store()
     {
         if ($this->input->method(TRUE) !== 'POST') {

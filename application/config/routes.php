@@ -23,6 +23,7 @@ $route['penomoran-surat/edit/(:num)'] = 'penomoran_surat/edit/$1';
 $route['penomoran-surat/update/(:num)'] = 'penomoran_surat/update/$1';
 $route['penomoran-surat/delete/(:num)'] = 'penomoran_surat/delete/$1';
 $route['penomoran-surat/next-nomor'] = 'penomoran_surat/get_next_nomor_urut';
+$route['penomoran-surat/csrf-token'] = 'penomoran_surat/get_csrf_token';
 
 
 $route['surat-masuk']                = 'surat_masuk/index';
@@ -47,3 +48,10 @@ $route['disposisi-surat/delete/(:num)']                           = 'disposisi_s
 $route['disposisi-surat/tracking/(:num)/(:num)']                  = 'disposisi_surat/tracking/$1/$2';
 $route['disposisi-surat/kirim/(:num)/(:num)']                     = 'disposisi_surat/store_kirim/$1/$2';
 $route['disposisi-surat/terima/(:num)/(:num)']                    = 'disposisi_surat/store_terima/$1/$2';
+
+$route['kurir']              = 'kurir/index';
+$route['kurir/terima/(:num)']= 'kurir/terima/$1';
+$route['kurir/step-kamera']  = 'kurir/step_kamera';
+$route['kurir/step-ttd']     = 'kurir/step_ttd';
+$route['kurir/simpan']       = 'kurir/simpan';
+$route['kurir/csrf']         = 'kurir/csrf';
