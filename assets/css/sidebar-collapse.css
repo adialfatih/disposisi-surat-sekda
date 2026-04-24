@@ -1,0 +1,214 @@
+/* ═══════════════════════════════════════════════════
+   SIDEBAR COLLAPSE — DESKTOP
+   Tambahkan di bawah semua rule yang sudah ada
+   ═══════════════════════════════════════════════════ */
+
+/* Transisi halus untuk sidebar width */
+#sidebar {
+    transition: width var(--transition), transform var(--transition);
+    overflow: hidden;
+    /* kunci utama — clip semua konten yang meluber */
+}
+
+#main {
+    transition: margin-left var(--transition);
+}
+
+/* Tombol toggle collapse — hanya tampil di desktop */
+#sidebar-toggle {
+    position: fixed;
+    top: 14px;
+    left: calc(var(--sidebar-w) - 16px);
+    z-index: 200;
+    width: 32px;
+    height: 32px;
+    background: var(--white);
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-md);
+    transition: left var(--transition), background var(--transition);
+    color: var(--sogan);
+}
+
+#sidebar-toggle:hover {
+    background: var(--sogan-faint);
+    border-color: var(--sogan-pale);
+}
+
+#sidebar-toggle .material-icons {
+    font-size: 18px;
+    transition: transform var(--transition);
+    pointer-events: none;
+}
+
+/* ══════════════════════════════
+   STATE: COLLAPSED
+   ══════════════════════════════ */
+body.sidebar-collapsed #sidebar {
+    width: 64px;
+}
+
+body.sidebar-collapsed #main {
+    margin-left: 64px;
+}
+
+body.sidebar-collapsed #sidebar-toggle {
+    left: calc(64px - 16px);
+}
+
+body.sidebar-collapsed #sidebar-toggle .material-icons {
+    transform: rotate(180deg);
+}
+
+/* ── Logo area ── */
+body.sidebar-collapsed .sidebar-logo {
+    justify-content: center;
+    padding: 0;
+}
+
+/* Sembunyikan teks logo & label section */
+body.sidebar-collapsed .logo-text,
+body.sidebar-collapsed .nav-section-label {
+    display: none;
+}
+
+/* ── Nav items: pusatkan ikon, sembunyikan semua teks ──
+   font-size: 0 adalah cara paling andal untuk mematikan
+   text node langsung (tidak punya wrapper tag) di dalam .nav-item */
+body.sidebar-collapsed .nav-item {
+    justify-content: center;
+    padding: 13px 0;
+    font-size: 0;
+}
+
+/* Kembalikan ukuran ikon yang ikut terkena font-size: 0 */
+body.sidebar-collapsed .nav-item .material-icons {
+    font-size: 22px;
+    margin: 0;
+}
+
+/* Sembunyikan badge */
+body.sidebar-collapsed .nav-badge {
+    display: none;
+}
+
+/* ── Sidebar footer ── */
+body.sidebar-collapsed .sidebar-footer {
+    justify-content: center;
+    padding: 16px 0;
+}
+
+body.sidebar-collapsed .user-info,
+body.sidebar-collapsed .btn-logout {
+    display: none;
+}
+
+/* ══════════════════════════════
+   TOOLTIP saat collapsed
+   ══════════════════════════════ */
+body.sidebar-collapsed .nav-item::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 72px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--sogan);
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    box-shadow: var(--shadow-md);
+    z-index: 9999;
+}
+
+/* Panah tooltip */
+body.sidebar-collapsed .nav-item::before {
+    content: '';
+    position: absolute;
+    left: 64px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 5px solid transparent;
+    border-right-color: var(--sogan);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* Override ::before — garis active tetap tampil */
+body.sidebar-collapsed .nav-item.active::before {
+    left: 0;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    transform: none;
+    border: none;
+    background: var(--gold);
+    width: 3px;
+    border-radius: 0 3px 3px 0;
+    opacity: 1;
+}
+
+/* Tampilkan tooltip saat hover */
+body.sidebar-collapsed .nav-item:hover::after {
+    opacity: 1;
+}
+
+body.sidebar-collapsed .nav-item:hover:not(.active)::before {
+    opacity: 1;
+}
+
+/* ══════════════════════════════
+   MOBILE — reset semua
+   ══════════════════════════════ */
+@media (max-width: 768px) {
+    #sidebar-toggle {
+        display: none;
+    }
+
+    body.sidebar-collapsed #sidebar {
+        width: 280px;
+    }
+
+    body.sidebar-collapsed #main {
+        margin-left: 0;
+    }
+
+    body.sidebar-collapsed .nav-item {
+        font-size: 14px;
+        justify-content: flex-start;
+        padding: 11px 20px;
+    }
+
+    body.sidebar-collapsed .nav-item .material-icons {
+        font-size: 20px;
+    }
+
+    body.sidebar-collapsed .logo-text,
+    body.sidebar-collapsed .nav-section-label,
+    body.sidebar-collapsed .nav-badge,
+    body.sidebar-collapsed .user-info,
+    body.sidebar-collapsed .btn-logout {
+        display: revert;
+    }
+
+    body.sidebar-collapsed .sidebar-logo {
+        justify-content: flex-start;
+        padding: 0 20px;
+    }
+
+    body.sidebar-collapsed .sidebar-footer {
+        justify-content: flex-start;
+        padding: 16px 20px;
+    }
+}
