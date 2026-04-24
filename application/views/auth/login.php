@@ -3,36 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Aplikasi Nomor Surat Sekda</title>
+    <title>Login - DINAMIT | Sekda Kota Pekalongan</title>
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <link rel="stylesheet" href="<?= base_url('assets/css/login.css'); ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/login.css?versi=2'); ?>">
 </head>
 <body>
 
-<div class="bg-batik"></div>
+<div class="bg-gradient"></div>
 
 <div class="page-wrap">
+
+    <!-- ========== LEFT PANEL ========== -->
     <div class="left-panel">
+
         <div class="brand-logo">
-            <div class="logo-mark">NS</div>
+            <div class="logo-img-wrap">
+                <img src="<?= base_url('uploads/logo.png'); ?>" alt="Logo DINAMIT">
+            </div>
             <div class="brand-name">
-                Nomor Surat
+                DINAMIT
                 <small>Sekda Kota Pekalongan</small>
             </div>
         </div>
 
         <h1 class="left-headline">
-            Sistem Informasi<br>
-            <em>Penomoran &amp; Agenda Surat</em><br>
-            Terpadu
+            Sistem Pengolahan<br>
+            <em>Surat Dinamis</em><br>
+            dan Inaktif
         </h1>
 
         <p class="left-desc">
-            Platform untuk pengelolaan nomor surat, agenda disposisi, dan agenda surat masuk pada lingkungan Sekretariat Daerah Kota Pekalongan.
+            Platform terpadu untuk pengelolaan nomor surat, agenda disposisi, dan agenda surat masuk pada lingkungan Sekretariat Daerah Kota Pekalongan.
         </p>
 
         <div class="stats-row">
@@ -49,16 +54,30 @@
                 <div class="stat-pill-label">Disposisi Selesai</div>
             </div>
         </div>
+
     </div>
 
+    <!-- ========== RIGHT PANEL ========== -->
     <div class="right-panel">
+
+        <!-- Logo tampil di mobile saat left panel disembunyikan -->
+        <div class="right-logo">
+            <div class="right-logo-img">
+                <img src="<?= base_url('uploads/logo.png'); ?>" alt="Logo DINAMIT">
+            </div>
+            <div class="right-logo-name">
+                DINAMIT
+                <small>Sekda Kota Pekalongan</small>
+            </div>
+        </div>
+
         <div class="form-header">
             <h2>Masuk ke Sistem</h2>
             <p>Gunakan akun yang diberikan administrator untuk mengakses aplikasi.</p>
         </div>
 
         <?php if ($this->session->flashdata('login_error')): ?>
-            <div style="margin-bottom:16px;padding:12px 14px;border-radius:10px;background:#FFEBEE;color:#C62828;font-size:13px;line-height:1.6;">
+            <div class="flash-error">
                 <?= $this->session->flashdata('login_error'); ?>
             </div>
         <?php endif; ?>
@@ -118,7 +137,6 @@
                     <div class="custom-check"></div>
                     Ingat saya
                 </label>
-
                 <a href="#" class="forgot-link" id="forgotLink">Lupa password?</a>
             </div>
 
@@ -129,14 +147,16 @@
                 </span>
                 <div class="spinner"></div>
             </button>
+
         </form>
 
         <div class="divider">DINAMIT</div>
 
         <div class="form-footer">
             &copy; 2026 Sekretariat Daerah Kota Pekalongan &mdash;
-            <a href="#">Kebijakan Privasi</a> &middot; <a href="#">Bantuan</a>
+            <a href="#">Kebijakan Privasi</a> - <a href="#">Bantuan</a>
         </div>
+
     </div>
 </div>
 

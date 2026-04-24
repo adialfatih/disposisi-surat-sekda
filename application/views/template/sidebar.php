@@ -1,8 +1,8 @@
 <nav id="sidebar">
     <div class="sidebar-logo">
-        <div class="logo-mark">NS</div>
+        <div class="logo-mark"><img src="<?= base_url('uploads/logo.png'); ?>" alt="Logo DINAMIT"></div>
         <div class="logo-text">
-            Nomor Surat
+            DINAMIT
             <small>Sekda Kota Pekalongan</small>
         </div>
     </div>
