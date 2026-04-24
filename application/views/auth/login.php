@@ -131,7 +131,7 @@
             </button>
         </form>
 
-        <div class="divider">login aktif dengan session</div>
+        <div class="divider">DINAMIT</div>
 
         <div class="form-footer">
             &copy; 2026 Sekretariat Daerah Kota Pekalongan &mdash;
