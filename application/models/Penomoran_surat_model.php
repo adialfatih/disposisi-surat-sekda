@@ -72,6 +72,60 @@ class Penomoran_surat_model extends CI_Model
      * @param  int         $tahun
      * @return string
      */
+    // public function generate_nomor_surat(
+    //     $jenis_slug,
+    //     $nomor_urut,
+    //     $kode_klasifikasi,
+    //     $kode_keamanan,
+    //     $kode_umum,
+    //     $tahun
+    // ) {
+    //     switch ($jenis_slug) {
+    //         // N/K/Y
+    //         case 'nota-dinas':
+    //             return implode('/', [
+    //                 $nomor_urut,
+    //                 $kode_klasifikasi,
+    //                 $tahun,
+    //             ]);
+
+    //         // K/N/Y
+    //         case 'setda-sppd':
+    //         case 'umum-sppd':
+    //             return implode('/', [
+    //                 $kode_klasifikasi,
+    //                 $nomor_urut,
+    //                 $tahun,
+    //             ]);
+
+    //         // KS/N/K/S/Y — Sekda: sifat/nomor/klasifikasi/kode_umum/tahun
+    //         case 'setda-surat-keluar':
+    //             return implode('/', [
+    //                 $kode_keamanan,
+    //                 $nomor_urut,
+    //                 $kode_klasifikasi,
+    //                 $kode_umum,
+    //                 $tahun,
+    //             ]);
+
+    //         // KS/N/K/Y — Umum: sifat/nomor/klasifikasi/tahun
+    //         case 'umum-surat-keluar':
+    //             return implode('/', [
+    //                 $kode_keamanan,
+    //                 $nomor_urut,
+    //                 $kode_klasifikasi,
+    //                 $tahun,
+    //             ]);
+
+    //         default:
+    //             return implode('/', [
+    //                 $kode_keamanan,
+    //                 $nomor_urut,
+    //                 $kode_klasifikasi,
+    //                 $tahun,
+    //             ]);
+    //     }
+    // }
     public function generate_nomor_surat(
         $jenis_slug,
         $nomor_urut,
@@ -80,50 +134,35 @@ class Penomoran_surat_model extends CI_Model
         $kode_umum,
         $tahun
     ) {
-        switch ($jenis_slug) {
-            // N/K/Y
-            case 'nota-dinas':
-                return implode('/', [
-                    $nomor_urut,
-                    $kode_klasifikasi,
-                    $tahun,
-                ]);
+        // Helper: filter nilai kosong dari array sebelum join
+        $join = function(array $parts) {
+            return implode('/', array_filter($parts, function($v) {
+                return $v !== null && $v !== '';
+            }));
+        };
 
-            // K/N/Y
+        switch ($jenis_slug) {
+
+            // Format: N/K/Y — tidak pakai KS sama sekali
+            case 'nota-dinas':
+                return $join([$nomor_urut, $kode_klasifikasi, $tahun]);
+
+            // Format: K/N/Y — tidak pakai KS sama sekali
             case 'setda-sppd':
             case 'umum-sppd':
-                return implode('/', [
-                    $kode_klasifikasi,
-                    $nomor_urut,
-                    $tahun,
-                ]);
+                return $join([$kode_klasifikasi, $nomor_urut, $tahun]);
 
-            // KS/N/K/S/Y — Sekda: sifat/nomor/klasifikasi/kode_umum/tahun
+            // Format: KS/N/K/S/Y — Sekda, KS dan S (kode_umum) wajib secara bisnis
+            // Tapi jika kosong, tetap skip daripada menghasilkan segmen //
             case 'setda-surat-keluar':
-                return implode('/', [
-                    $kode_keamanan,
-                    $nomor_urut,
-                    $kode_klasifikasi,
-                    $kode_umum,
-                    $tahun,
-                ]);
+                return $join([$kode_keamanan, $nomor_urut, $kode_klasifikasi, $kode_umum, $tahun]);
 
-            // KS/N/K/Y — Umum: sifat/nomor/klasifikasi/tahun
+            // Format: KS/N/K/Y — jika KS kosong, fallback ke N/K/Y
             case 'umum-surat-keluar':
-                return implode('/', [
-                    $kode_keamanan,
-                    $nomor_urut,
-                    $kode_klasifikasi,
-                    $tahun,
-                ]);
+                return $join([$kode_keamanan, $nomor_urut, $kode_klasifikasi, $tahun]);
 
             default:
-                return implode('/', [
-                    $kode_keamanan,
-                    $nomor_urut,
-                    $kode_klasifikasi,
-                    $tahun,
-                ]);
+                return $join([$kode_keamanan, $nomor_urut, $kode_klasifikasi, $tahun]);
         }
     }
     // public function get_next_nomor_urut($jenis_surat_slug, $tahun)

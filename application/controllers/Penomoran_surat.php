@@ -27,7 +27,7 @@ class Penomoran_surat extends MY_Controller
         return [
             'setda-surat-keluar' => [
                 'label' => 'SETDA - Surat Keluar',
-                'show_kode_umum' => TRUE
+                'show_kode_umum' => FALSE
             ],
             'setda-sppd' => [
                 'label' => 'SETDA - SPPD',
@@ -43,45 +43,46 @@ class Penomoran_surat extends MY_Controller
             ],
             'nota-dinas' => [
                 'label' => 'NOTA DINAS',
-                'show_kode_umum' => TRUE
+                'show_kode_umum' => FALSE
             ],
         ];
     }
 
-    private function validate_form($jenis_slug)
+   private function validate_form($jenis_slug)
     {
         $jenis_options = $this->get_jenis_surat_options();
-
+ 
         if (!isset($jenis_options[$jenis_slug])) {
             show_404();
         }
-
+ 
         $show_kode_umum = $jenis_options[$jenis_slug]['show_kode_umum'];
-
+ 
+        // Kode keamanan — TIDAK wajib (opsional)
         $this->form_validation->set_rules(
             'kode_keamanan',
             'Kode Keamanan',
-            'trim|required|max_length[20]'
+            'trim|max_length[20]'
         );
-
+ 
         $this->form_validation->set_rules(
             'nomor_urut',
             'Nomor Urut',
             'trim|required|integer|greater_than[0]'
         );
-
+ 
         $this->form_validation->set_rules(
             'catatan',
             'Catatan',
             'trim'
         );
-
+ 
         $this->form_validation->set_rules(
             'kode_klasifikasi',
             'Kode Klasifikasi',
             'trim|required|max_length[50]'
         );
-
+ 
         if ($show_kode_umum) {
             $this->form_validation->set_rules(
                 'kode_umum',
@@ -89,31 +90,38 @@ class Penomoran_surat extends MY_Controller
                 'trim|required|max_length[50]'
             );
         }
-
+ 
         $this->form_validation->set_rules(
             'tahun',
             'Tahun',
             'trim|required|integer|greater_than_equal_to[2000]|less_than_equal_to[2100]'
         );
-
+ 
         $this->form_validation->set_rules(
             'tanggal_surat',
             'Tanggal Surat',
             'trim|required'
         );
-
+ 
         $this->form_validation->set_rules(
             'perihal',
             'Perihal',
             'trim|required|max_length[255]'
         );
-
+ 
         $this->form_validation->set_rules(
             'pengolah',
             'Pengolah',
             'trim|required|max_length[150]'
         );
-
+ 
+        // No WA — wajib, hanya angka, maks 15 karakter
+        $this->form_validation->set_rules(
+            'no_wa_pengolah',
+            'No. WA Pengolah',
+            'trim|required|numeric|max_length[15]'
+        );
+ 
         $this->form_validation->set_rules(
             'tujuan',
             'Tujuan',
@@ -205,8 +213,9 @@ public function get_csrf_token()
             'tanggal_surat'     => trim($this->input->post('tanggal_surat', TRUE)),
             'perihal'           => trim($this->input->post('perihal', TRUE)),
             'pengolah'          => trim($this->input->post('pengolah', TRUE)),
+            'no_wa_pengolah'    => trim($this->input->post('no_wa_pengolah', TRUE)),
             'tujuan'            => trim($this->input->post('tujuan', TRUE)),
-            'created_by'        => (int) $this->session->userdata('user_id')
+            'created_by'        => (int) $this->session->userdata('user_id'),
         ];
 
         $exists = $this->Penomoran_surat_model->check_duplicate_nomor(
@@ -307,6 +316,18 @@ public function get_csrf_token()
             return;
         }
 
+        // $update_data = [
+        //     'kode_keamanan'    => trim($this->input->post('kode_keamanan', TRUE)),
+        //     'nomor_urut'       => (int) $this->input->post('nomor_urut', TRUE),
+        //     'catatan'          => trim($this->input->post('catatan', TRUE)),
+        //     'kode_klasifikasi' => trim($this->input->post('kode_klasifikasi', TRUE)),
+        //     'kode_umum'        => $jenis_options[$jenis_slug]['show_kode_umum'] ? trim($this->input->post('kode_umum', TRUE)) : null,
+        //     'tahun'            => (int) $this->input->post('tahun', TRUE),
+        //     'tanggal_surat'    => trim($this->input->post('tanggal_surat', TRUE)),
+        //     'perihal'          => trim($this->input->post('perihal', TRUE)),
+        //     'pengolah'         => trim($this->input->post('pengolah', TRUE)),
+        //     'tujuan'           => trim($this->input->post('tujuan', TRUE))
+        // ];
         $update_data = [
             'kode_keamanan'    => trim($this->input->post('kode_keamanan', TRUE)),
             'nomor_urut'       => (int) $this->input->post('nomor_urut', TRUE),
@@ -317,7 +338,8 @@ public function get_csrf_token()
             'tanggal_surat'    => trim($this->input->post('tanggal_surat', TRUE)),
             'perihal'          => trim($this->input->post('perihal', TRUE)),
             'pengolah'         => trim($this->input->post('pengolah', TRUE)),
-            'tujuan'           => trim($this->input->post('tujuan', TRUE))
+            'no_wa_pengolah'   => trim($this->input->post('no_wa_pengolah', TRUE)),
+            'tujuan'           => trim($this->input->post('tujuan', TRUE)),
         ];
 
         $exists = $this->Penomoran_surat_model->check_duplicate_nomor(
