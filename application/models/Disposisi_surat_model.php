@@ -10,9 +10,27 @@ class Disposisi_surat_model extends CI_Model
     // DISPOSISI
     // ----------------------------------------------------------------
 
+    // public function get_all()
+    // {
+    //     $this->db->select('d.*, sm.nomor_surat, sm.perihal AS perihal_surat, sm.asal_surat');
+    //     $this->db->select('(SELECT COUNT(*) FROM disposisi_penerima dp WHERE dp.disposisi_id = d.id) AS jumlah_penerima');
+    //     $this->db->from('disposisi_surat d');
+    //     $this->db->join('surat_masuk sm', 'sm.id = d.surat_masuk_id', 'left');
+    //     $this->db->order_by('d.id', 'DESC');
+    //     return $this->db->get()->result();
+    // }
     public function get_all()
     {
-        $this->db->select('d.*, sm.nomor_surat, sm.perihal AS perihal_surat, sm.asal_surat');
+        $this->db->select('d.*');
+        $this->db->select('sm.nomor_surat    AS sm_nomor_surat');
+        $this->db->select('sm.perihal        AS sm_perihal_surat');
+        $this->db->select('sm.asal_surat     AS sm_asal_surat');
+        // Kolom gabungan: pakai data agenda jika ada, fallback ke manual
+        $this->db->select('
+            COALESCE(sm.perihal,     d.manual_perihal)      AS perihal_surat,
+            COALESCE(sm.asal_surat,  d.manual_asal_berkas)  AS asal_surat,
+            COALESCE(sm.nomor_surat, d.manual_nomor_surat)  AS nomor_surat
+        ', FALSE);
         $this->db->select('(SELECT COUNT(*) FROM disposisi_penerima dp WHERE dp.disposisi_id = d.id) AS jumlah_penerima');
         $this->db->from('disposisi_surat d');
         $this->db->join('surat_masuk sm', 'sm.id = d.surat_masuk_id', 'left');
@@ -22,13 +40,29 @@ class Disposisi_surat_model extends CI_Model
 
     public function get_by_id($id)
     {
-        $this->db->select('d.*, sm.nomor_surat, sm.perihal AS perihal_surat, sm.asal_surat, sm.nomor_agenda');
+        $this->db->select('d.*');
+        $this->db->select('sm.nomor_surat AS sm_nomor_surat, sm.perihal AS sm_perihal_surat, sm.asal_surat AS sm_asal_surat, sm.nomor_agenda');
+        $this->db->select('
+            COALESCE(sm.perihal,     d.manual_perihal)      AS perihal_surat,
+            COALESCE(sm.asal_surat,  d.manual_asal_berkas)  AS asal_surat,
+            COALESCE(sm.nomor_surat, d.manual_nomor_surat)  AS nomor_surat
+        ', FALSE);
         $this->db->from('disposisi_surat d');
         $this->db->join('surat_masuk sm', 'sm.id = d.surat_masuk_id', 'left');
         $this->db->where('d.id', (int) $id);
         $this->db->limit(1);
         return $this->db->get()->row();
     }
+
+    // public function get_by_id($id)
+    // {
+    //     $this->db->select('d.*, sm.nomor_surat, sm.perihal AS perihal_surat, sm.asal_surat, sm.nomor_agenda');
+    //     $this->db->from('disposisi_surat d');
+    //     $this->db->join('surat_masuk sm', 'sm.id = d.surat_masuk_id', 'left');
+    //     $this->db->where('d.id', (int) $id);
+    //     $this->db->limit(1);
+    //     return $this->db->get()->row();
+    // }
 
     public function insert($data)
     {

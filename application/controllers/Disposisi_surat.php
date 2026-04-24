@@ -47,14 +47,32 @@ class Disposisi_surat extends MY_Controller
         $this->load->view('template/footer', $data);
     }
 
+    // private function validate_form()
+    // {
+    //     $this->form_validation->set_rules('surat_masuk_id',    'Surat Masuk',        'trim|required|integer');
+    //     $this->form_validation->set_rules('nomor_disposisi',   'Nomor Disposisi',    'trim|required|max_length[30]');
+    //     $this->form_validation->set_rules('tanggal_disposisi', 'Tanggal Disposisi',  'trim|required');
+    //     $this->form_validation->set_rules('perintah',          'Perintah',           'trim|required');
+    //     $this->form_validation->set_rules('catatan',           'Catatan',            'trim');
+    //     $this->form_validation->set_rules('status',            'Status',             'trim|required|in_list[draft,dikirim,diterima,selesai]');
+    // }
     private function validate_form()
     {
-        $this->form_validation->set_rules('surat_masuk_id',    'Surat Masuk',        'trim|required|integer');
-        $this->form_validation->set_rules('nomor_disposisi',   'Nomor Disposisi',    'trim|required|max_length[30]');
-        $this->form_validation->set_rules('tanggal_disposisi', 'Tanggal Disposisi',  'trim|required');
-        $this->form_validation->set_rules('perintah',          'Perintah',           'trim|required');
-        $this->form_validation->set_rules('catatan',           'Catatan',            'trim');
-        $this->form_validation->set_rules('status',            'Status',             'trim|required|in_list[draft,dikirim,diterima,selesai]');
+        $this->form_validation->set_rules('nomor_disposisi',   'Nomor Disposisi',   'trim|required|max_length[30]');
+        $this->form_validation->set_rules('tanggal_disposisi', 'Tanggal Disposisi', 'trim|required');
+        $this->form_validation->set_rules('perintah',          'Perintah',          'trim|required');
+        $this->form_validation->set_rules('catatan',           'Catatan',           'trim');
+        $this->form_validation->set_rules('status',            'Status',            'trim|required|in_list[draft,dikirim,diterima,selesai]');
+        $this->form_validation->set_rules('mode_surat',        'Mode Surat',        'trim|required|in_list[agenda,manual]');
+
+        $mode = $this->input->post('mode_surat');
+        if ($mode === 'agenda') {
+            $this->form_validation->set_rules('surat_masuk_id', 'Surat Masuk', 'trim|required|integer');
+        } else {
+            $this->form_validation->set_rules('manual_nomor_surat',  'Nomor Surat',  'trim|required|max_length[100]');
+            $this->form_validation->set_rules('manual_perihal',      'Perihal',      'trim|required|max_length[255]');
+            $this->form_validation->set_rules('manual_asal_berkas',  'Asal Berkas',  'trim|max_length[150]');
+        }
     }
 
     // Simpan file tanda tangan dari base64
@@ -172,9 +190,24 @@ class Disposisi_surat extends MY_Controller
         }
 
         // Simpan header disposisi
+        // $insert = [
+        //     'surat_masuk_id'    => (int) $this->input->post('surat_masuk_id', TRUE),
+        //     'nomor_disposisi'   => $nomor,
+        //     'tanggal_disposisi' => trim($this->input->post('tanggal_disposisi', TRUE)),
+        //     'perintah'          => trim($this->input->post('perintah', TRUE)),
+        //     'catatan'           => trim($this->input->post('catatan', TRUE)),
+        //     'status'            => trim($this->input->post('status', TRUE)),
+        //     'created_by'        => (int) $this->session->userdata('user_id'),
+        // ];
+        $mode = trim($this->input->post('mode_surat', TRUE));
+
         $insert = [
-            'surat_masuk_id'    => (int) $this->input->post('surat_masuk_id', TRUE),
-            'nomor_disposisi'   => $nomor,
+            'nomor_disposisi'   => trim($this->input->post('nomor_disposisi', TRUE)),
+            'surat_masuk_id'    => $mode === 'agenda' ? (int) $this->input->post('surat_masuk_id', TRUE) : NULL,
+            'mode_surat'        => $mode,
+            'manual_asal_berkas'=> $mode === 'manual' ? trim($this->input->post('manual_asal_berkas', TRUE)) : NULL,
+            'manual_nomor_surat'=> $mode === 'manual' ? trim($this->input->post('manual_nomor_surat', TRUE)) : NULL,
+            'manual_perihal'    => $mode === 'manual' ? trim($this->input->post('manual_perihal', TRUE)) : NULL,
             'tanggal_disposisi' => trim($this->input->post('tanggal_disposisi', TRUE)),
             'perintah'          => trim($this->input->post('perintah', TRUE)),
             'catatan'           => trim($this->input->post('catatan', TRUE)),
@@ -201,8 +234,12 @@ class Disposisi_surat extends MY_Controller
         }
 
         // Update status surat masuk menjadi didisposisi
-        $this->db->where('id', (int) $insert['surat_masuk_id'])
-                 ->update('surat_masuk', ['status' => 'didisposisi']);
+        if ($mode === 'agenda' && !empty($insert['surat_masuk_id'])) {
+            $this->db->where('id', (int) $insert['surat_masuk_id'])
+                    ->update('surat_masuk', ['status' => 'didisposisi']);
+        }
+        // $this->db->where('id', (int) $insert['surat_masuk_id'])
+        //          ->update('surat_masuk', ['status' => 'didisposisi']);
 
         $this->session->set_flashdata('crud_success', 'Disposisi berhasil dibuat.');
         redirect('disposisi-surat');
@@ -273,15 +310,31 @@ class Disposisi_surat extends MY_Controller
             $this->session->set_flashdata('crud_error', 'Nomor disposisi sudah digunakan.');
             redirect('disposisi-surat/edit/' . $id);
         }
+        $mode = trim($this->input->post('mode_surat', TRUE));
 
-        $this->Disposisi_surat_model->update($id, [
-            'surat_masuk_id'    => (int) $this->input->post('surat_masuk_id', TRUE),
+        $update_data = [
+            'surat_masuk_id'    => $mode === 'agenda' ? (int) $this->input->post('surat_masuk_id', TRUE) : NULL,
+            'mode_surat'        => $mode,
+            'manual_asal_berkas'=> $mode === 'manual' ? trim($this->input->post('manual_asal_berkas', TRUE)) : NULL,
+            'manual_nomor_surat'=> $mode === 'manual' ? trim($this->input->post('manual_nomor_surat', TRUE)) : NULL,
+            'manual_perihal'    => $mode === 'manual' ? trim($this->input->post('manual_perihal', TRUE)) : NULL,
             'nomor_disposisi'   => $nomor,
             'tanggal_disposisi' => trim($this->input->post('tanggal_disposisi', TRUE)),
             'perintah'          => trim($this->input->post('perintah', TRUE)),
             'catatan'           => trim($this->input->post('catatan', TRUE)),
             'status'            => trim($this->input->post('status', TRUE)),
-        ]);
+        ];
+
+        $this->Disposisi_surat_model->update($id, $update_data);
+
+        // $this->Disposisi_surat_model->update($id, [
+        //     'surat_masuk_id'    => (int) $this->input->post('surat_masuk_id', TRUE),
+        //     'nomor_disposisi'   => $nomor,
+        //     'tanggal_disposisi' => trim($this->input->post('tanggal_disposisi', TRUE)),
+        //     'perintah'          => trim($this->input->post('perintah', TRUE)),
+        //     'catatan'           => trim($this->input->post('catatan', TRUE)),
+        //     'status'            => trim($this->input->post('status', TRUE)),
+        // ]);
 
         // Sinkronisasi penerima: hapus lama, insert baru
         // (Hanya penerima yang belum ada tracking-nya yang boleh dihapus)

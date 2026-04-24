@@ -92,7 +92,7 @@ function dsp_old($ci, $row, $field, $default = '')
         </div>
 
         <!-- SECTION 2: Surat Masuk Terkait -->
-        <div class="form-section form-section-soft">
+        <!-- <div class="form-section form-section-soft">
             <div class="form-section-title">
                 <span class="material-icons">mail</span>
                 Surat Masuk yang Didisposisi
@@ -110,6 +110,92 @@ function dsp_old($ci, $row, $field, $default = '')
                         <?php endforeach; ?>
                     </select>
                     <div class="field-note">Pilih surat masuk yang akan didisposisi.</div>
+                </div>
+            </div>
+        </div> -->
+
+        <div class="form-section form-section-soft">
+            <div class="form-section-title">
+                <span class="material-icons">mail</span>
+                Surat yang Didisposisi
+            </div>
+
+            <?php
+            // Tentukan mode saat ini (edit atau POST ulang)
+            $current_mode = 'agenda';
+            if ($this->input->post('mode_surat')) {
+                $current_mode = $this->input->post('mode_surat');
+            } elseif ($is_edit && isset($row->mode_surat)) {
+                $current_mode = $row->mode_surat;
+            }
+            ?>
+
+            <!-- Toggle Mode -->
+            <input type="hidden" name="mode_surat" id="inputModeSurat" value="<?= $current_mode; ?>">
+
+            <div class="mode-toggle-wrap">
+                <button type="button" class="mode-toggle-btn <?= $current_mode === 'agenda' ? 'active' : ''; ?>"
+                        id="btnModeAgenda" onclick="setSuratMode('agenda')">
+                    <span class="material-icons">list_alt</span>
+                    Pilih dari Agenda
+                </button>
+                <button type="button" class="mode-toggle-btn <?= $current_mode === 'manual' ? 'active' : ''; ?>"
+                        id="btnModeManual" onclick="setSuratMode('manual')">
+                    <span class="material-icons">edit_note</span>
+                    Input Manual
+                </button>
+            </div>
+
+            <!-- Panel: Pilih dari Agenda -->
+            <div id="panelAgenda" style="<?= $current_mode !== 'agenda' ? 'display:none;' : ''; ?>">
+                <div class="form-grid">
+                    <div class="form-group col-span-2">
+                        <label class="form-label">Pilih Surat Masuk <span class="req">*</span></label>
+                        <select name="surat_masuk_id" class="form-control" id="selectSuratMasuk">
+                            <option value="">— Pilih surat masuk dari agenda —</option>
+                            <?php foreach ($surat_options as $sm): ?>
+                                <option value="<?= $sm->id; ?>"
+                                    <?= dsp_old($this, $row, 'surat_masuk_id') == $sm->id ? 'selected' : ''; ?>>
+                                    [<?= html_escape($sm->nomor_agenda); ?>]
+                                    <?= html_escape($sm->nomor_surat); ?> —
+                                    <?= html_escape($sm->perihal); ?>
+                                    (<?= html_escape($sm->asal_surat); ?>)
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <div class="field-note">Pilih surat masuk yang sudah tercatat di agenda surat masuk.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel: Input Manual -->
+            <div id="panelManual" style="<?= $current_mode !== 'manual' ? 'display:none;' : ''; ?>">
+                <div class="manual-surat-box">
+                    <div class="manual-surat-box-header">
+                        <span class="material-icons">description</span>
+                        Data Surat (Input Manual)
+                    </div>
+                    <div class="form-grid cols-3">
+                        <div class="form-group">
+                            <label class="form-label">Nomor Surat <span class="req">*</span></label>
+                            <input type="text" name="manual_nomor_surat" class="form-control"
+                                placeholder="Contoh: 800/123/IV/2026"
+                                value="<?= html_escape(dsp_old($this, $row, 'manual_nomor_surat', $is_edit ? ($row->manual_nomor_surat ?? '') : '')); ?>">
+                        </div>
+                        <div class="form-group col-span-2">
+                            <label class="form-label">Perihal Surat <span class="req">*</span></label>
+                            <input type="text" name="manual_perihal" class="form-control"
+                                placeholder="Perihal/isi singkat surat"
+                                value="<?= html_escape(dsp_old($this, $row, 'manual_perihal', $is_edit ? ($row->manual_perihal ?? '') : '')); ?>">
+                        </div>
+                        <div class="form-group col-span-3">
+                            <label class="form-label">Asal Berkas / Pengirim</label>
+                            <input type="text" name="manual_asal_berkas" class="form-control"
+                                placeholder="Contoh: Dinas Pendidikan, BKPSDM, dll."
+                                value="<?= html_escape(dsp_old($this, $row, 'manual_asal_berkas', $is_edit ? ($row->manual_asal_berkas ?? '') : '')); ?>">
+                            <div class="field-note">Nama instansi/bagian/orang pengirim surat (opsional).</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -263,5 +349,26 @@ function dsp_old($ci, $row, $field, $default = '')
 
     fetchNomor(new Date(inputTanggal.value).getFullYear() || new Date().getFullYear());
 })();
+function setSuratMode(mode) {
+    document.getElementById('inputModeSurat').value = mode;
+
+    // Toggle button active state
+    document.getElementById('btnModeAgenda').classList.toggle('active', mode === 'agenda');
+    document.getElementById('btnModeManual').classList.toggle('active', mode === 'manual');
+
+    // Toggle panel visibility
+    document.getElementById('panelAgenda').style.display = mode === 'agenda' ? '' : 'none';
+    document.getElementById('panelManual').style.display = mode === 'manual' ? '' : 'none';
+
+    // Toggle required agar validasi HTML5 tidak konflik
+    const selectAgenda = document.getElementById('selectSuratMasuk');
+    selectAgenda.required = (mode === 'agenda');
+
+    const manualFields = document.querySelectorAll('#panelManual input[name="manual_nomor_surat"], #panelManual input[name="manual_perihal"]');
+    manualFields.forEach(f => f.required = (mode === 'manual'));
+}
+
+// Init on load
+setSuratMode(document.getElementById('inputModeSurat').value || 'agenda');
 </script>
 <?php endif; ?>

@@ -1027,3 +1027,69 @@ a {
     font-size: 15px;
   }
 }
+/* ── Mode Toggle (Pilih Agenda / Input Manual) ── */
+.mode-toggle-wrap {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.mode-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 8px;
+    border: 1.5px solid var(--cream-dark);
+    background: var(--white);
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.mode-toggle-btn .material-icons {
+    font-size: 16px;
+}
+
+.mode-toggle-btn:hover {
+    border-color: var(--sogan-light);
+    color: var(--sogan);
+    background: var(--sogan-faint);
+}
+
+.mode-toggle-btn.active {
+    background: var(--sogan);
+    color: var(--white);
+    border-color: var(--sogan);
+}
+
+/* ── Box surat manual ── */
+.manual-surat-box {
+    border: 1.5px dashed var(--sogan-pale);
+    border-radius: var(--radius);
+    background: var(--sogan-faint);
+    overflow: hidden;
+}
+
+.manual-surat-box-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--sogan-pale);
+    color: var(--sogan);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.manual-surat-box-header .material-icons {
+    font-size: 16px;
+}
+
+.manual-surat-box .form-grid {
+    padding: 16px;
+}
