@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
  
     <link rel="stylesheet" href="<?= base_url('assets/css/admin-template.css?v=3'); ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/table-responsive.css'); ?>">
  
     <!-- Fitur collapse sidebar desktop -->
     <link rel="stylesheet" href="<?= base_url('assets/css/sidebar-collapse.css?v=1'); ?>">

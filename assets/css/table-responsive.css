@@ -1,0 +1,123 @@
+/* ============================================
+   TABLE FULL-SCREEN FIT — Desktop Only
+   Mobile tetap scroll horizontal
+   ============================================ */
+
+/* Desktop & Laptop: tabel auto-fit ke layar */
+@media (min-width: 769px) {
+
+  /* Nonaktifkan scroll horizontal di desktop */
+  .table-scroll {
+    overflow-x: visible;
+  }
+
+  .data-table {
+    /* Hapus min-width fixed, biarkan auto-fit */
+    min-width: unset;
+    width: 100%;
+    table-layout: fixed; /* kunci agar kolom patuh pada lebar container */
+  }
+
+  /* Font & padding lebih compact di desktop */
+  .data-table thead th {
+    padding: 10px 8px;
+    font-size: 10px;
+    letter-spacing: .04em;
+  }
+
+  .data-table td {
+    padding: 10px 8px;
+    font-size: 12px;
+    /* WRAP TEXT — tidak ada kolom yang tersembunyi */
+    white-space: normal;
+    word-break: break-word;
+    vertical-align: top;
+  }
+
+  /* Kolom Aksi tidak perlu lebar, cukup untuk tombol */
+  .data-table td:last-child,
+  .data-table th:last-child {
+    white-space: nowrap;
+    width: 110px;
+  }
+
+  /* Kolom No. & tanggal tidak perlu terlalu lebar */
+  .data-table th:nth-child(1),
+  .data-table td:nth-child(1) {
+    width: 36px;
+    text-align: center;
+  }
+
+  /* Badge & code tetap tidak wrap */
+  .badge,
+  .nomor-agenda-code,
+  .nomor-surat-inline {
+    white-space: nowrap;
+  }
+
+  /* Action buttons stack jika perlu */
+  .action-btns {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  /* Toolbar tetap rapi */
+  .table-toolbar {
+    flex-wrap: wrap;
+  }
+}
+
+/* Layar medium (tablet landscape / laptop kecil ~769px-1100px):
+   Kompresikan lebih lanjut */
+@media (min-width: 769px) and (max-width: 1100px) {
+
+  .data-table thead th {
+    padding: 8px 6px;
+    font-size: 9.5px;
+  }
+
+  .data-table td {
+    padding: 8px 6px;
+    font-size: 11px;
+  }
+
+  .btn-sm {
+    height: 26px;
+    padding: 0 6px;
+    font-size: 11px;
+  }
+
+  .btn-sm .material-icons {
+    font-size: 14px;
+  }
+
+  .data-table td:last-child,
+  .data-table th:last-child {
+    width: 90px;
+  }
+
+  /* Stats strip juga compact */
+  .sm-stat-val {
+    font-size: 16px;
+  }
+
+  .sm-stat-lbl {
+    font-size: 10px;
+  }
+}
+
+/* Mobile: TETAP scroll horizontal (override dari media desktop tidak berlaku) */
+@media (max-width: 768px) {
+  .table-scroll {
+    overflow-x: auto;
+  }
+
+  .data-table {
+    min-width: 700px; /* scroll horizontal di mobile */
+    table-layout: auto;
+  }
+
+  .data-table td {
+    white-space: nowrap;
+  }
+}
