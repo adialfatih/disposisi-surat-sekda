@@ -89,16 +89,16 @@
         btnTambah.addEventListener('click', openJenisSuratPicker);
     }
 
-    if (btnExport) {
-        btnExport.addEventListener('click', function () {
-            Swal.fire({
-                title: 'Export Data',
-                text: 'Fitur export akan kita sambungkan setelah modul CRUD inti selesai.',
-                icon: 'info',
-                confirmButtonColor: '#5C3317'
-            });
-        });
-    }
+    // if (btnExport) {
+    //     btnExport.addEventListener('click', function () {
+    //         Swal.fire({
+    //             title: 'Export Data',
+    //             text: 'Fitur export akan kita sambungkan setelah modul CRUD inti selesai.',
+    //             icon: 'info',
+    //             confirmButtonColor: '#5C3317'
+    //         });
+    //     });
+    // }
 
     if (filterJenis) {
         filterJenis.addEventListener('change', function () {

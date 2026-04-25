@@ -30,9 +30,12 @@
             <span class="material-icons">add</span>Tambah Nomor Surat
         </button>
 
-        <button type="button" class="btn btn-outline" id="btnExportPenomoran">
-            <span class="material-icons">file_download</span>Export
-        </button>
+        <a href="<?= base_url('penomoran-surat/export'); ?>"
+            class="btn btn-outline"
+            id="btnExportPenomoran"
+            title="Export ke Excel (per sheet jenis surat)">
+                <span class="material-icons">table_view</span>Export Excel
+        </a>
     </div>
 
     <div class="table-wrap">

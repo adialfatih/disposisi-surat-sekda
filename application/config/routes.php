@@ -55,3 +55,5 @@ $route['kurir/step-kamera']  = 'kurir/step_kamera';
 $route['kurir/step-ttd']     = 'kurir/step_ttd';
 $route['kurir/simpan']       = 'kurir/simpan';
 $route['kurir/csrf']         = 'kurir/csrf';
+
+$route['penomoran-surat/export'] = 'export/export';
