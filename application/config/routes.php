@@ -57,3 +57,17 @@ $route['kurir/simpan']       = 'kurir/simpan';
 $route['kurir/csrf']         = 'kurir/csrf';
 
 $route['penomoran-surat/export'] = 'export/export';
+
+// --- Surat Masuk V2 (dengan Disposisi) ---
+$route['surat-masuk-v2']                       = 'surat_masuk_v2/index';
+$route['surat-masuk-v2/create']                = 'surat_masuk_v2/create';
+$route['surat-masuk-v2/store']                 = 'surat_masuk_v2/store';
+$route['surat-masuk-v2/next-agenda']           = 'surat_masuk_v2/get_next_nomor_agenda';
+$route['surat-masuk-v2/detail/(:num)']         = 'surat_masuk_v2/detail/$1';
+$route['surat-masuk-v2/edit/(:num)']           = 'surat_masuk_v2/edit/$1';
+$route['surat-masuk-v2/update/(:num)']         = 'surat_masuk_v2/update/$1';
+$route['surat-masuk-v2/delete/(:num)']         = 'surat_masuk_v2/delete/$1';
+$route['surat-masuk-v2/cetak/(:num)']          = 'surat_masuk_v2/cetak/$1';
+$route['surat-masuk-v2/disposisi/(:num)']      = 'surat_masuk_v2/disposisi/$1';
+$route['surat-masuk-v2/disposisi-store/(:num)']= 'surat_masuk_v2/disposisi_store/$1';
+$route['surat-masuk-v2/csrf-token']            = 'surat_masuk_v2/get_csrf_token';

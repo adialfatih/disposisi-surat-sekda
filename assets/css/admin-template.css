@@ -1093,3 +1093,5 @@ a {
 .manual-surat-box .form-grid {
     padding: 16px;
 }
+.badge-purple { background:#EDE7F6; color:#6A1B9A; border:1px solid #CE93D8; }
+.badge-red    { background:#FFEBEE; color:#B71C1C; border:1px solid #EF9A9A; }

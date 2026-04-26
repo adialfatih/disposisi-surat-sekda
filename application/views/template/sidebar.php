@@ -40,6 +40,11 @@
         <span class="material-icons">mail</span>
         Agenda Surat Masuk
     </a>
+    <a href="<?= base_url('surat-masuk-v2'); ?>"
+        class="nav-item <?= ($active_menu === 'surat_masuk_v2') ? 'active' : ''; ?>" data-tooltip="Surat Masuk & Disposisi (Versi Baru)">
+        <span class="material-icons">assignment</span>
+        Surat Masuk & Disposisi
+    </a>
 
     <a href="<?= base_url('kurir'); ?>"
        class="nav-item"
