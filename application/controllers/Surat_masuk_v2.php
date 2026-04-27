@@ -339,7 +339,7 @@ class Surat_masuk_v2 extends MY_Controller
 
         // ── HEADER: Logo + Nama Instansi ──
         // Logo (jika ada, sesuaikan path)
-        $logo_path = FCPATH . 'assets/img/logo-pekalongan.png';
+        $logo_path = FCPATH . 'uploads/Lambang_Kota_Pekalongan.png';
         if (file_exists($logo_path)) {
             $pdf->Image($logo_path, $lm, 10, 18, 18, 'PNG');
         }
@@ -375,125 +375,137 @@ class Surat_masuk_v2 extends MY_Controller
 
         // ── BARIS INFORMASI SURAT ──
         // Layout: kolom kiri (info surat) | kolom kanan (terima, agenda, sifat)
+        // Sifat dibuat 1 baris penuh sendiri di bawah No.Agenda agar tidak terpotong
         $y_start = 47;
         $col_l   = 85; // lebar kolom kiri
-        $col_r   = $w - $col_l; // lebar kolom kanan
+        $col_r   = $w - $col_l;
 
         $pdf->SetFont('Arial', '', 9);
-        $pdf->SetXY($lm, $y_start);
 
-        // --- Kolom Kiri ---
-        $row_h = 7;
+        // Tinggi tiap baris info surat
+        $row_h = 8;
 
-        // Surat dari
+        // ── Baris 1: Surat dari | Diterima Tgl ──
         $pdf->SetXY($lm, $y_start);
         $pdf->Cell($col_l, $row_h, 'Surat dari  :  ' . $this->_truncate($row->asal_surat, 35), 'LTR', 0, 'L');
-
-        // Kolom Kanan: Diterima Tgl
         $pdf->SetXY($lm + $col_l, $y_start);
         $pdf->Cell($col_r, $row_h, 'Diterima Tgl  :  ' . date('d-m-Y', strtotime($row->tanggal_terima)), 'LTR', 1, 'L');
 
-        // No. Surat
+        // ── Baris 2: No. Surat | No. Agenda ──
         $pdf->SetXY($lm, $y_start + $row_h);
         $pdf->Cell($col_l, $row_h, 'No. Surat    :  ' . $this->_truncate($row->nomor_surat, 30), 'LR', 0, 'L');
-
-        // Kolom Kanan: No. Agenda
         $pdf->SetXY($lm + $col_l, $y_start + $row_h);
         $pdf->Cell($col_r, $row_h, 'No. Agenda  :  ' . $row->nomor_agenda, 'LR', 1, 'L');
 
-        // Tgl. Surat
+        // ── Baris 3: Tgl. Surat | Sifat (label saja) ──
         $pdf->SetXY($lm, $y_start + $row_h * 2);
-        $pdf->Cell($col_l, $row_h, 'Tgl. Surat    :  ' . date('d-m-Y', strtotime($row->tanggal_surat)), 'LBR', 0, 'L');
+        $pdf->Cell($col_l, $row_h, 'Tgl. Surat    :  ' . date('d-m-Y', strtotime($row->tanggal_surat)), 'LR', 0, 'L');
+        $pdf->SetXY($lm + $col_l, $y_start + $row_h * 2);
+        $pdf->Cell($col_r, $row_h, 'Sifat         :', 'LR', 1, 'L');
 
-        // Kolom Kanan: Sifat + Checkbox
-        $y_sifat = $y_start + $row_h;
-        $pdf->SetXY($lm + $col_l, $y_sifat + $row_h);
-        $pdf->Cell(15, $row_h, 'Sifat          :', 'LB', 0, 'L');
+        // ── Baris 4: kosong kiri | Checkbox Sifat (baris penuh, tidak terpotong) ──
+        $cb_sangat  = ($row->sifat === 'sangat_segera') ? '[X]' : '[  ]';
+        $cb_segera  = ($row->sifat === 'segera')        ? '[X]' : '[  ]';
+        $cb_rahasia = ($row->sifat === 'rahasia')       ? '[X]' : '[  ]';
 
-        // Checkbox Sangat Segera
-        $x_cb = $lm + $col_l + 15;
-        $pdf->SetXY($x_cb, $y_sifat + $row_h);
-        $cb_sangat = ($row->sifat === 'sangat_segera') ? '[X]' : '[  ]';
-        $pdf->Cell(22, $row_h, $cb_sangat . ' Sangat Segera', 'B', 0, 'L');
+        // Lebar proporsional agar semua muat di col_r
+        $w_sangat  = 32;
+        $w_segera  = 21;
+        $w_rahasia = $col_r - $w_sangat - $w_segera;
 
-        // Checkbox Segera
-        $pdf->Cell(17, $row_h, ($row->sifat === 'segera' ? '[X]' : '[  ]') . ' Segera', 'B', 0, 'L');
+        $pdf->SetXY($lm, $y_start + $row_h * 3);
+        $pdf->Cell($col_l, $row_h, '', 'LBR', 0, 'L'); // kolom kiri kosong — tutup border bawah
 
-        // Checkbox Rahasia
-        $pdf->Cell(0, $row_h, ($row->sifat === 'rahasia' ? '[X]' : '[  ]') . ' Rahasia', 'BR', 1, 'L');
+        $pdf->SetXY($lm + $col_l, $y_start + $row_h * 3);
+        $pdf->Cell($w_sangat,  $row_h, $cb_sangat  . ' Sangat Segera', 'LB',  0, 'L');
+        $pdf->Cell($w_segera,  $row_h, $cb_segera  . ' Segera',        'B',   0, 'L');
+        $pdf->Cell($w_rahasia, $row_h, $cb_rahasia . ' Rahasia',       'BR',  1, 'L');
 
-        // ── HAL ──
-        $y_hal = $y_start + $row_h * 3;
+        // ── HAL ── (di bawah 4 baris info)
+        $y_hal = $y_start + $row_h * 4;
         $pdf->SetXY($lm, $y_hal);
         $pdf->SetFont('Arial', '', 9);
-        $perihal_text = $row->perihal;
-        $pdf->Cell($w, 8, 'Hal    :    ' . $this->_truncate($perihal_text, 80), 1, 1, 'L');
+        $pdf->Cell($w, 8, 'Hal    :    ' . $this->_truncate($row->perihal, 80), 1, 1, 'L');
 
         // ── DITERUSKAN & INSTRUKSI ──
-        $y_dt = $y_hal + 10;
-        $h_dt = 55; // tinggi kotak diteruskan
+        // Kiri  : header(8) + 5 penerima × 7 + dan_seterusnya(7) = 8 + 42 = 50
+        // Kanan : header(8) + 3 instruksi × 8 + lainnya(8) + sisa = 8 + 32 + sisa
+        // Total tinggi kotak = 8 + 42 = 50 — kanan harus = 50 juga
+        $row_pen    = 7;  // tinggi baris penerima
+        $row_ins    = 8;  // tinggi baris instruksi
+        $h_header   = 8;
+        $h_kiri_isi = 6 * $row_pen;          // 6 baris × 7 = 42
+        $h_total    = $h_header + $h_kiri_isi; // 50
 
-        // Kotak kiri: Diteruskan kepada Srd
+        $y_dt = $y_hal + 10;
+
+        // Header kiri
         $pdf->SetXY($lm, $y_dt);
         $pdf->SetFont('Arial', 'B', 9);
-        $pdf->Cell($col_l, 8, 'Diteruskan kepada Srd :', 'LTR', 1, 'L');
+        $pdf->Cell($col_l, $h_header, 'Diteruskan kepada Srd :', 'LTR', 0, 'L');
 
-        // Kotak kanan: Dengan hormat harap
+        // Header kanan
         $pdf->SetXY($lm + $col_l, $y_dt);
-        $pdf->Cell($col_r, 8, 'Dengan hormat harap :', 'LTR', 1, 'L');
+        $pdf->Cell($col_r, $h_header, 'Dengan hormat harap :', 'LTR', 1, 'L');
 
         $pdf->SetFont('Arial', '', 9);
 
-        // Isi penerima (6 baris kosong dengan checkbox)
+        // Isi penerima (5 baris kosong + "dan seterusnya")
         $penerima_list = [];
         if (!empty($row->diteruskan_kepada)) {
-            $penerima_list = array_filter(explode("\n", $row->diteruskan_kepada));
+            $penerima_list = array_values(array_filter(
+                array_map('trim', explode("\n", $row->diteruskan_kepada))
+            ));
         }
 
-        $y_penerima = $y_dt + 8;
+        $y_penerima = $y_dt + $h_header;
         for ($i = 0; $i < 5; $i++) {
-            $pdf->SetXY($lm, $y_penerima + ($i * 7));
-            $isi = isset($penerima_list[$i]) ? trim($penerima_list[$i]) : '';
-            if (!empty($isi)) {
-                $pdf->Cell(5, 7, '[X]', 'L', 0, 'C');
-            } else {
-                $pdf->Cell(5, 7, '[  ]', 'L', 0, 'C');
-            }
-            $pdf->Cell($col_l - 5, 7, $isi !== '' ? $isi : ' ...................................', 'R', 1, 'L');
+            $pdf->SetXY($lm, $y_penerima + ($i * $row_pen));
+            $isi = $penerima_list[$i] ?? '';
+            $pdf->Cell(6,          $row_pen, !empty($isi) ? '[X]' : '[  ]', 'L', 0, 'C');
+            $pdf->Cell($col_l - 6, $row_pen, $isi !== '' ? $isi : ' ...................................', 'R', 1, 'L');
         }
 
-        // Baris "Dan seterusnya"
-        $pdf->SetXY($lm, $y_penerima + (5 * 7));
-        $pdf->Cell(5, 7, '[  ]', 'LB', 0, 'C');
-        $pdf->Cell($col_l - 5, 7, 'Dan seterusnya ............', 'RB', 1, 'L');
+        // Baris "Dan seterusnya" — menutup kotak kiri
+        $pdf->SetXY($lm, $y_penerima + 5 * $row_pen);
+        $pdf->Cell(6,          $row_pen, '[  ]', 'LB', 0, 'C');
+        $pdf->Cell($col_l - 6, $row_pen, 'Dan seterusnya ............', 'RB', 1, 'L');
 
         // ── Kolom Kanan: instruksi ──
+        // 3 instruksi × 8 = 24 | lainnya = 8 | sisa agar flush = h_kiri_isi - 4*row_ins = 42 - 32 = 10
         $instruksi_list = [
             'instruksi_tanggapan'     => 'Tanggapan dan Saran',
             'instruksi_proses_lanjut' => 'Proses lebih lanjut',
             'instruksi_koordinasi'    => 'Koordinasi/konfirmasi',
         ];
 
-        $y_ins = $y_dt + 8;
+        $y_ins = $y_dt + $h_header;
         $i_ins = 0;
         foreach ($instruksi_list as $field => $label) {
-            $pdf->SetXY($lm + $col_l, $y_ins + ($i_ins * 7));
-            $cb = (!empty($row->$field)) ? '[X]' : '[  ]';
-            $pdf->Cell(8, 7, $cb, 'L', 0, 'C');
-            $pdf->Cell($col_r - 8, 7, $label, 'R', 1, 'L');
+            $pdf->SetXY($lm + $col_l, $y_ins + ($i_ins * $row_ins));
+            $cb = !empty($row->$field) ? '[X]' : '[  ]';
+            $pdf->Cell(8,          $row_ins, $cb,    'L', 0, 'C');
+            $pdf->Cell($col_r - 8, $row_ins, $label, 'R', 1, 'L');
             $i_ins++;
         }
 
-        // Instruksi lainnya (2 baris)
-        $pdf->SetXY($lm + $col_l, $y_ins + ($i_ins * 7));
-        $pdf->Cell(8, 7, (!empty($row->instruksi_lainnya) ? '[X]' : '[  ]'), 'L', 0, 'C');
-        $lainnya_text = !empty($row->instruksi_lainnya) ? $this->_truncate($row->instruksi_lainnya, 28) : ' ...................................';
-        $pdf->Cell($col_r - 8, 7, $lainnya_text, 'R', 1, 'L');
+        // Instruksi lainnya
+        $lainnya_text = !empty($row->instruksi_lainnya)
+            ? $this->_truncate($row->instruksi_lainnya, 28)
+            : ' ...................................';
+        $pdf->SetXY($lm + $col_l, $y_ins + ($i_ins * $row_ins));
+        $pdf->Cell(8,          $row_ins, !empty($row->instruksi_lainnya) ? '[X]' : '[  ]', 'L', 0, 'C');
+        $pdf->Cell($col_r - 8, $row_ins, $lainnya_text, 'R', 1, 'L');
         $i_ins++;
 
-        // Baris kosong tambahan instruksi
-        $pdf->SetXY($lm + $col_l, $y_ins + ($i_ins * 7));
-        $pdf->Cell($col_r, 7, ' ...................................', 'LBR', 1, 'L');
+        // Baris sisa kanan agar flush dengan bawah kotak kiri
+        $tinggi_kanan_sudah = $i_ins * $row_ins;        // 4 × 8 = 32
+        $sisa_kanan         = $h_kiri_isi - $tinggi_kanan_sudah; // 42 - 32 = 10
+        $pdf->SetXY($lm + $col_l, $y_ins + $tinggi_kanan_sudah);
+        $pdf->Cell($col_r, $sisa_kanan, ' ...................................', 'LBR', 1, 'L');
+
+        // h_dt = tinggi total kotak diteruskan (untuk y_cat)
+        $h_dt = $h_total; // = 50
 
         // ── CATATAN ──
         $y_cat = $y_dt + $h_dt + 2;
