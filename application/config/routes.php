@@ -71,3 +71,10 @@ $route['surat-masuk-v2/cetak/(:num)']          = 'surat_masuk_v2/cetak/$1';
 $route['surat-masuk-v2/disposisi/(:num)']      = 'surat_masuk_v2/disposisi/$1';
 $route['surat-masuk-v2/disposisi-store/(:num)']= 'surat_masuk_v2/disposisi_store/$1';
 $route['surat-masuk-v2/csrf-token']            = 'surat_masuk_v2/get_csrf_token';
+
+$route['acara']               = 'acara/index';
+$route['acara/store']         = 'acara/store';
+$route['acara/edit/(:num)']   = 'acara/edit/$1';
+$route['acara/update/(:num)'] = 'acara/update/$1';
+$route['acara/delete/(:num)'] = 'acara/delete/$1';
+$route['acara/csrf-token']    = 'acara/csrf_token';

@@ -45,6 +45,11 @@
         <span class="material-icons">assignment</span>
         Surat Masuk & Disposisi
     </a>
+    <a href="<?= base_url('acara'); ?>"
+        class="nav-item <?= ($active_menu === 'acara') ? 'active' : ''; ?>" data-tooltip="Agenda Acara">
+        <span class="material-icons">event_note</span>
+        Agenda Acara
+    </a>
 
     <a href="<?= base_url('kurir'); ?>"
        class="nav-item"

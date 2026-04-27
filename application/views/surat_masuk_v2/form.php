@@ -230,36 +230,215 @@ function smv2_old($ci, $row, $field, $default = '')
 
 
 <?php if (!$is_edit): ?>
+
+<!-- ══════════════════════════════════════════════════
+     MODAL INPUT ACARA (muncul jika kategori = undangan)
+     ══════════════════════════════════════════════════ -->
+<div id="modalAcara" class="modal-acara-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="modalAcaraTitle">
+    <div class="modal-acara-box">
+
+        <!-- Header modal -->
+        <div class="modal-acara-header">
+            <div class="modal-acara-header-left">
+                <span class="modal-acara-icon material-icons">event</span>
+                <div>
+                    <div id="modalAcaraTitle" class="modal-acara-title">Input Data Acara</div>
+                    <div class="modal-acara-subtitle">Surat undangan ini memerlukan data acara</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Body modal -->
+        <div class="modal-acara-body">
+
+            <div id="modalAcaraError" class="module-alert error" style="display:none;margin-bottom:14px;">
+                <span class="material-icons">error_outline</span>
+                <span id="modalAcaraErrorMsg">Mohon lengkapi semua field wajib.</span>
+            </div>
+
+            <div class="form-grid cols-2" style="gap:12px;">
+
+                <div class="form-group">
+                    <label class="form-label">Tanggal Acara <span class="req">*</span></label>
+                    <input type="date" id="acaraTanggal" class="form-control"
+                           value="<?= date('Y-m-d'); ?>">
+                    <div class="field-note">Tanggal pelaksanaan acara.</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Jam Acara <span class="req">*</span></label>
+                    <input type="time" id="acaraJam" class="form-control" value="08:00">
+                    <div class="field-note">Jam mulai acara.</div>
+                </div>
+
+                <div class="form-group" style="grid-column:span 2;">
+                    <label class="form-label">Tempat Acara <span class="req">*</span></label>
+                    <input type="text" id="acaraTempat" class="form-control"
+                           maxlength="255" placeholder="Nama gedung, ruangan, atau alamat...">
+                    <div class="field-note">Lokasi pelaksanaan acara.</div>
+                </div>
+
+                <div class="form-group" style="grid-column:span 2;">
+                    <label class="form-label">Perihal Acara <span class="req">*</span></label>
+                    <input type="text" id="acaraPerihal" class="form-control"
+                           maxlength="255" placeholder="Deskripsi singkat acara...">
+                    <div class="field-note">Ringkasan agenda/acara yang akan dihadiri.</div>
+                </div>
+
+                <div class="form-group" style="grid-column:span 2;">
+                    <label class="form-label">Catatan Acara</label>
+                    <textarea id="acaraCatatan" class="form-control" rows="3"
+                              placeholder="Catatan tambahan (opsional)..." style="resize:vertical;"></textarea>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Footer modal -->
+        <div class="modal-acara-footer">
+            <button type="button" id="btnSimpanAcara" class="btn btn-primary">
+                <span class="material-icons">save</span>
+                Simpan &amp; Lanjutkan
+            </button>
+            <button type="button" id="btnSkipAcara" class="btn btn-outline">
+                <span class="material-icons">skip_next</span>
+                Lewati
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<!-- Style modal -->
+<style>
+.modal-acara-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: modalFadeIn .2s ease;
+}
+
+@keyframes modalFadeIn {
+    from { opacity:0; }
+    to   { opacity:1; }
+}
+
+.modal-acara-box {
+    background: #fff;
+    border-radius: 14px;
+    width: 100%;
+    max-width: 540px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.25);
+    animation: modalSlideUp .25s ease;
+    overflow: hidden;
+}
+
+@keyframes modalSlideUp {
+    from { transform: translateY(24px); opacity:0; }
+    to   { transform: translateY(0);    opacity:1; }
+}
+
+.modal-acara-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 22px 14px;
+    border-bottom: 1px solid #eee;
+    background: linear-gradient(135deg, var(--sogan, #5C3317) 0%, #7a4520 100%);
+}
+
+.modal-acara-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.modal-acara-icon {
+    font-size: 28px !important;
+    color: #fff;
+    opacity: .9;
+}
+
+.modal-acara-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.modal-acara-subtitle {
+    font-size: 11px;
+    color: rgba(255,255,255,.75);
+    margin-top: 2px;
+}
+
+.modal-acara-body {
+    padding: 20px 22px 16px;
+}
+
+.modal-acara-footer {
+    padding: 14px 22px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-top: 1px solid #f0ece8;
+    background: #faf8f6;
+}
+
+/* Badge saved acara */
+.acara-saved-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #E8F5E9;
+    color: #2E7D32;
+    border: 1.5px solid #A5D6A7;
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+</style>
+
 <script>
 (function () {
+    // ── Nomor Agenda Auto ──────────────────────────
     const inputAgenda  = document.getElementById('inputNomorAgendaV2');
     const statusEl     = document.getElementById('nomorAgendaStatusV2');
     const inputTanggal = document.getElementById('inputTanggalTerimaV2');
     const nextUrl      = '<?= base_url('surat-masuk-v2/next-agenda'); ?>';
     const csrfTokenUrl = '<?= base_url('surat-masuk-v2/csrf-token'); ?>';
+    const storeAcaraUrl= '<?= base_url('acara/store'); ?>';
     const csrfName     = '<?= $this->security->get_csrf_token_name(); ?>';
 
     let debounce = null;
+    let acaraSaved   = false;  // flag: apakah data acara sudah disimpan
+    let pendingSubmit = false; // flag: form sedang menunggu modal diselesaikan
 
     function getCsrfHash() {
         const el = document.querySelector('input[name="' + csrfName + '"]');
         return el ? el.value : '';
     }
 
+    function setCsrfHash(hash) {
+        const el = document.querySelector('input[name="' + csrfName + '"]');
+        if (el && hash) el.value = hash;
+    }
+
     function refreshCsrfToken(callback) {
         fetch(csrfTokenUrl)
             .then(r => r.json())
-            .then(data => {
-                const el = document.querySelector('input[name="' + csrfName + '"]');
-                if (el && data.csrf_hash) el.value = data.csrf_hash;
-                if (callback) callback();
-            })
+            .then(data => { setCsrfHash(data.csrf_hash); if (callback) callback(); })
             .catch(function() { if (callback) callback(); });
     }
 
+    // ── Auto Nomor Agenda ──────────────────────────
     function fetchNextAgenda(tahun) {
         if (!tahun || tahun < 2000) return;
-
         statusEl.textContent = 'Memuat...';
         statusEl.style.color = '#9CA3AF';
         inputAgenda.readOnly = true;
@@ -295,8 +474,147 @@ function smv2_old($ci, $row, $field, $default = '')
         debounce = setTimeout(() => fetchNextAgenda(tahun), 300);
     });
 
-    const tahunAwal = new Date(inputTanggal.value).getFullYear();
-    fetchNextAgenda(tahunAwal || new Date().getFullYear());
+    fetchNextAgenda(new Date(inputTanggal.value).getFullYear() || new Date().getFullYear());
+
+    // ── Modal Acara ────────────────────────────────
+    const selectKategori = document.querySelector('select[name="kategori"]');
+    const modal          = document.getElementById('modalAcara');
+    const btnSimpan      = document.getElementById('btnSimpanAcara');
+    const btnSkip        = document.getElementById('btnSkipAcara');
+    const errBox         = document.getElementById('modalAcaraError');
+    const errMsg         = document.getElementById('modalAcaraErrorMsg');
+    const mainForm       = document.querySelector('form[action*="store"]');
+
+    function showModal() {
+        modal.style.display = 'flex';
+        document.getElementById('acaraTanggal').focus();
+    }
+
+    function hideModal() {
+        modal.style.display = 'none';
+        errBox.style.display = 'none';
+    }
+
+    function getKategori() {
+        return selectKategori ? selectKategori.value : '';
+    }
+
+    // Tampilkan modal saat kategori berubah ke "undangan" (hanya create)
+    if (selectKategori) {
+        selectKategori.addEventListener('change', function () {
+            if (this.value === 'undangan' && !acaraSaved) {
+                showModal();
+            }
+        });
+        // Jika sudah undangan saat halaman load
+        if (selectKategori.value === 'undangan' && !acaraSaved) {
+            showModal();
+        }
+    }
+
+    // Tutup modal saat klik overlay (di luar box)
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            // Tidak boleh close dengan klik luar — paksa isi dulu
+        }
+    });
+
+    // Simpan acara via AJAX, lalu submit form utama
+    btnSimpan.addEventListener('click', function () {
+        const tanggal = document.getElementById('acaraTanggal').value.trim();
+        const jam     = document.getElementById('acaraJam').value.trim();
+        const tempat  = document.getElementById('acaraTempat').value.trim();
+        const perihal = document.getElementById('acaraPerihal').value.trim();
+        const catatan = document.getElementById('acaraCatatan').value.trim();
+
+        if (!tanggal || !jam || !tempat || !perihal) {
+            errMsg.textContent  = 'Tanggal, jam, tempat, dan perihal acara wajib diisi.';
+            errBox.style.display = 'flex';
+            return;
+        }
+
+        errBox.style.display = 'none';
+        btnSimpan.disabled   = true;
+        btnSimpan.innerHTML  = '<span class="material-icons">hourglass_empty</span> Menyimpan...';
+
+        const body = new URLSearchParams();
+        body.append(csrfName,       getCsrfHash());
+        body.append('nomor_agenda', inputAgenda.value.trim());
+        body.append('surat_id',     ''); // belum ada surat_id, akan diupdate setelah store surat
+        body.append('tanggal_acara', tanggal);
+        body.append('jam_acara',     jam);
+        body.append('tempat_acara',  tempat);
+        body.append('perihal_acara', perihal);
+        body.append('catatan_acara', catatan);
+
+        fetch(storeAcaraUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: body.toString()
+        })
+        .then(r => r.json())
+        .then(function(data) {
+            if (data.success) {
+                // Simpan acara_id ke hidden input agar controller bisa update surat_id nanti
+                let hiddenAcaraId = document.getElementById('_acara_id');
+                if (!hiddenAcaraId) {
+                    hiddenAcaraId = document.createElement('input');
+                    hiddenAcaraId.type = 'hidden';
+                    hiddenAcaraId.id   = '_acara_id';
+                    hiddenAcaraId.name = 'acara_id';
+                    mainForm.appendChild(hiddenAcaraId);
+                }
+                hiddenAcaraId.value = data.acara_id;
+
+                // Refresh CSRF dari response
+                setCsrfHash(data.csrf_hash);
+
+                acaraSaved = true;
+                hideModal();
+
+                // Tampilkan badge acara tersimpan di form
+                let badge = document.getElementById('acaraSavedBadge');
+                if (!badge) {
+                    badge = document.createElement('div');
+                    badge.id = 'acaraSavedBadge';
+                    badge.style.marginTop = '10px';
+                    badge.innerHTML = '<span class="acara-saved-badge">'
+                        + '<span class="material-icons" style="font-size:16px;">event_available</span>'
+                        + 'Data acara tersimpan: ' + perihal + ' — ' + tanggal + ', ' + jam
+                        + '</span>';
+                    selectKategori.closest('.form-group').appendChild(badge);
+                }
+            } else {
+                errMsg.textContent   = data.message || 'Gagal menyimpan acara.';
+                errBox.style.display = 'flex';
+            }
+        })
+        .catch(function() {
+            errMsg.textContent   = 'Terjadi kesalahan jaringan. Coba lagi.';
+            errBox.style.display = 'flex';
+        })
+        .finally(function() {
+            btnSimpan.disabled  = false;
+            btnSimpan.innerHTML = '<span class="material-icons">save</span> Simpan &amp; Lanjutkan';
+        });
+    });
+
+    // Lewati modal tanpa simpan acara
+    btnSkip.addEventListener('click', function() {
+        hideModal();
+    });
+
+    // Intersep submit form utama: jika kategori undangan & acara belum disimpan, tampilkan modal dulu
+    if (mainForm) {
+        mainForm.addEventListener('submit', function(e) {
+            if (getKategori() === 'undangan' && !acaraSaved) {
+                e.preventDefault();
+                showModal();
+                pendingSubmit = true;
+            }
+        });
+    }
+
 })();
 </script>
 <?php endif; ?>
