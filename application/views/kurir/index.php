@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Portal Kurir — Surat Masuk</title>
+<title>Caraka - Surat Masuk</title>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -259,7 +259,7 @@ body {
 <div class="k-header">
     <div class="k-header-top">
         <div class="k-header-icon"><span class="material-icons">local_shipping</span></div>
-        <h1>Portal Kurir</h1>
+        <h1>Portal Caraka</h1>
     </div>
     <div class="k-header-sub">Konfirmasi penerimaan surat disposisi</div>
 </div>

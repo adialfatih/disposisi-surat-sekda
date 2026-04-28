@@ -34,15 +34,15 @@
         Agenda Disposisi
     </a>
 
-    <a href="<?= base_url('surat-masuk'); ?>"
-       class="nav-item <?= ($active_menu == 'agenda_surat_masuk') ? 'active' : ''; ?>"
+    <!-- <a href="<= base_url('surat-masuk'); ?>"
+       class="nav-item <= ($active_menu == 'agenda_surat_masuk') ? 'active' : ''; ?>"
        data-tooltip="Agenda Surat Masuk">
         <span class="material-icons">mail</span>
         Agenda Surat Masuk
-    </a>
+    </a> -->
     <a href="<?= base_url('surat-masuk-v2'); ?>"
         class="nav-item <?= ($active_menu === 'surat_masuk_v2') ? 'active' : ''; ?>" data-tooltip="Surat Masuk & Disposisi (Versi Baru)">
-        <span class="material-icons">assignment</span>
+        <span class="material-icons">mail</span>
         Surat Masuk & Disposisi
     </a>
     <a href="<?= base_url('acara'); ?>"
@@ -56,7 +56,7 @@
        data-tooltip="Portal Kurir"
        target="_blank">
         <span class="material-icons">local_shipping</span>
-        Portal Kurir
+        Portal Caraka
     </a>
 
     <div class="sidebar-footer">
