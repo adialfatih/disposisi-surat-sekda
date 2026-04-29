@@ -1,3 +1,13 @@
+<?php
+$wa_raw = !empty($row->no_wa_pengolah) ? preg_replace('/\D+/', '', $row->no_wa_pengolah) : '';
+$wa_raw = ltrim($wa_raw, '0');
+$wa_target = (strpos($wa_raw, '62') === 0) ? $wa_raw : '62' . $wa_raw;
+$wa_phone = $wa_raw ? '+' . $wa_target : '';
+$wa_url = $wa_raw
+    ? 'https://wa.me/' . $wa_target . '?text=' . rawurlencode('Nomor surat: ' . $row->nomor_surat)
+    : '';
+?>
+
 <div class="page active">
     <div class="card">
         <div class="section-title">Detail Nomor Surat</div>
@@ -7,7 +17,7 @@
                 <strong style="font-size:12px;color:#6366F1;text-transform:uppercase;letter-spacing:.5px;">
                     Nomor Surat
                 </strong><br>
-                <div style="display:flex;align-items:center;gap:10px;margin-top:4px;">
+                <div style="display:flex;align-items:center;gap:10px;margin-top:4px;flex-wrap:wrap;">
                     <span id="nomorSuratText" style="font-size:18px;font-weight:700;letter-spacing:.5px;color:#1e1e2d;">
                         <?= html_escape($row->nomor_surat ?: '-'); ?>
                     </span>
@@ -26,6 +36,21 @@
                         Salin
                     </button>
                     <?php endif; ?>
+
+                    <?php if ($wa_url): ?>
+                    <a
+                        href="<?= html_escape($wa_url); ?>"
+                        target="_blank"
+                        rel="noopener"
+                        title="Kirim WhatsApp ke <?= html_escape($wa_phone); ?>"
+                        style="display:inline-flex;align-items:center;gap:4px;
+                            padding:4px 10px;border-radius:6px;border:1.5px solid #16A34A;
+                            background:#16A34A;color:#fff;font-size:12px;font-weight:600;
+                            text-decoration:none;cursor:pointer;transition:all .2s ease;">
+                        <span class="material-icons" style="font-size:15px;">send</span>
+                        KIRIM WA
+                    </a>
+                    <?php endif; ?>
                 </div>
             </div>
             <div><strong>Jenis Surat:</strong><br><?= html_escape($row->jenis_surat_label); ?></div>
@@ -38,6 +63,7 @@
             <div><strong>Tanggal Surat:</strong><br><?= html_escape($row->tanggal_surat); ?></div>
             <div><strong>Perihal:</strong><br><?= html_escape($row->perihal); ?></div>
             <div><strong>Pengolah:</strong><br><?= html_escape($row->pengolah); ?></div>
+            <div><strong>No. WA Pengolah:</strong><br><?= $wa_phone ? html_escape($wa_phone) : '-'; ?></div>
             <div style="grid-column:span 2;"><strong>Tujuan:</strong><br><?= html_escape($row->tujuan); ?></div>
         </div>
 

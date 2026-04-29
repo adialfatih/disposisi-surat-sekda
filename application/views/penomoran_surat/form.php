@@ -103,7 +103,7 @@ function old_or_value($ci, $row, $field)
                     <div class="field-note">
                         <?= $is_edit
                             ? 'Nomor urut tidak boleh sama pada jenis dan tahun yang sama.'
-                            : 'Terisi otomatis. Ubah manual jika diperlukan.'; ?>
+                            : 'Terisi otomatis sesuai kuota 100 nomor per hari untuk jenis surat ini.'; ?>
                     </div>
                 </div>
 
@@ -304,6 +304,7 @@ function old_or_value($ci, $row, $field)
     const inputNomor   = document.getElementById('inputNomorUrut');
     const statusEl     = document.getElementById('nomorUrutStatus');
     const inputTahun   = document.querySelector('input[name="tahun"]');
+    const inputTanggal = document.querySelector('input[name="tanggal_surat"]');
     const jenisSurat   = '<?= html_escape($jenis_surat_slug); ?>';
     const nextNomorUrl = '<?= base_url('penomoran-surat/next-nomor'); ?>';
     const csrfTokenUrl = '<?= base_url('penomoran-surat/csrf-token'); ?>';
@@ -326,8 +327,8 @@ function old_or_value($ci, $row, $field)
             .catch(() => {});
     }
 
-    function fetchNextNomor(tahun) {
-        if (!tahun || tahun < 2000) return;
+    function fetchNextNomor(tahun, tanggalSurat) {
+        if (!tahun || tahun < 2000 || !tanggalSurat) return;
 
         statusEl.textContent = 'Memuat...';
         statusEl.style.color = '#9CA3AF';
@@ -336,6 +337,7 @@ function old_or_value($ci, $row, $field)
         const body = new URLSearchParams();
         body.append('jenis_surat_slug', jenisSurat);
         body.append('tahun', tahun);
+        body.append('tanggal_surat', tanggalSurat);
         body.append(csrfName, getCsrfHash());
 
         fetch(nextNomorUrl, {
@@ -345,6 +347,14 @@ function old_or_value($ci, $row, $field)
         })
         .then(r => r.json())
         .then(data => {
+            if (!data.success || !data.next_nomor) {
+                inputNomor.value     = '';
+                inputNomor.readOnly  = true;
+                statusEl.textContent = 'Kuota penuh';
+                statusEl.style.color = '#EF4444';
+                refreshCsrf();
+                return;
+            }
             inputNomor.value     = data.next_nomor;
             inputNomor.readOnly  = false;
             statusEl.textContent = '✓ Auto #' + data.next_nomor;
@@ -363,11 +373,15 @@ function old_or_value($ci, $row, $field)
     inputTahun.addEventListener('input', function () {
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(() => {
-            fetchNextNomor(parseInt(this.value));
+            fetchNextNomor(parseInt(this.value), inputTanggal.value);
         }, 500);
     });
 
-    fetchNextNomor(parseInt(inputTahun.value));
+    inputTanggal.addEventListener('change', function () {
+        fetchNextNomor(parseInt(inputTahun.value), this.value);
+    });
+
+    fetchNextNomor(parseInt(inputTahun.value), inputTanggal.value);
 })();
 </script>
 <?php endif; ?>

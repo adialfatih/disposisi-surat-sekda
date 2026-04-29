@@ -48,7 +48,7 @@ class Penomoran_surat extends MY_Controller
         ];
     }
 
-   private function validate_form($jenis_slug)
+   private function validate_form($jenis_slug, $is_edit = FALSE)
     {
         $jenis_options = $this->get_jenis_surat_options();
  
@@ -68,7 +68,7 @@ class Penomoran_surat extends MY_Controller
         $this->form_validation->set_rules(
             'nomor_urut',
             'Nomor Urut',
-            'trim|required|integer|greater_than[0]'
+            $is_edit ? 'trim|required|integer|greater_than[0]' : 'trim|integer|greater_than[0]'
         );
  
         $this->form_validation->set_rules(
@@ -183,7 +183,7 @@ public function get_csrf_token()
             show_404();
         }
 
-        $this->validate_form($jenis_slug);
+        $this->validate_form($jenis_slug, FALSE);
 
         if ($this->form_validation->run() === FALSE) {
             $data = [
@@ -205,7 +205,7 @@ public function get_csrf_token()
             'jenis_surat_slug'  => $jenis_slug,
             'jenis_surat_label' => $jenis_options[$jenis_slug]['label'],
             'kode_keamanan'     => trim($this->input->post('kode_keamanan', TRUE)),
-            'nomor_urut'        => (int) $this->input->post('nomor_urut', TRUE),
+            'nomor_urut'        => 0,
             'catatan'           => trim($this->input->post('catatan', TRUE)),
             'kode_klasifikasi'  => trim($this->input->post('kode_klasifikasi', TRUE)),
             'kode_umum'         => $jenis_options[$jenis_slug]['show_kode_umum'] ? trim($this->input->post('kode_umum', TRUE)) : null,
@@ -217,6 +217,17 @@ public function get_csrf_token()
             'tujuan'            => trim($this->input->post('tujuan', TRUE)),
             'created_by'        => (int) $this->session->userdata('user_id'),
         ];
+
+        $insert_data['nomor_urut'] = $this->Penomoran_surat_model->get_next_nomor_urut(
+            $insert_data['jenis_surat_slug'],
+            $insert_data['tahun'],
+            $insert_data['tanggal_surat']
+        );
+
+        if ($insert_data['nomor_urut'] === null) {
+            $this->session->set_flashdata('crud_error', 'Kuota nomor surat untuk jenis dan tanggal tersebut sudah penuh (maksimal 100 nomor per hari).');
+            redirect('penomoran-surat/create/' . $jenis_slug);
+        }
 
         $exists = $this->Penomoran_surat_model->check_duplicate_nomor(
             $insert_data['jenis_surat_slug'],
@@ -298,7 +309,7 @@ public function get_csrf_token()
         $jenis_slug = $row->jenis_surat_slug;
         $jenis_options = $this->get_jenis_surat_options();
 
-        $this->validate_form($jenis_slug);
+        $this->validate_form($jenis_slug, TRUE);
 
         if ($this->form_validation->run() === FALSE) {
             $data = [
@@ -392,16 +403,22 @@ public function get_csrf_token()
 
         $jenis_slug = $this->input->post('jenis_surat_slug', TRUE);
         $tahun      = (int) $this->input->post('tahun', TRUE);
+        $tanggal_surat = $this->input->post('tanggal_surat', TRUE);
 
         $jenis_options = $this->get_jenis_surat_options();
 
-        if (!isset($jenis_options[$jenis_slug]) || $tahun < 2000) {
+        if (!isset($jenis_options[$jenis_slug]) || $tahun < 2000 || empty($tanggal_surat)) {
             echo json_encode(['success' => FALSE, 'next_nomor' => 1]);
             return;
         }
 
-        $next = $this->Penomoran_surat_model->get_next_nomor_urut($jenis_slug, $tahun);
+        $next = $this->Penomoran_surat_model->get_next_nomor_urut($jenis_slug, $tahun, $tanggal_surat);
+        $bounds = $this->Penomoran_surat_model->get_daily_nomor_bounds($tanggal_surat);
 
-        echo json_encode(['success' => TRUE, 'next_nomor' => $next]);
+        echo json_encode([
+            'success'    => ($next !== null),
+            'next_nomor' => $next,
+            'range'      => $bounds,
+        ]);
     }
 }

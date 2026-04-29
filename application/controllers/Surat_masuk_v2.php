@@ -328,7 +328,7 @@ class Surat_masuk_v2 extends MY_Controller
         // Jika autoload CI belum include FPDF, uncomment baris berikut:
         // require_once APPPATH . 'third_party/fpdf/fpdf.php';
 
-        $pdf = new FPDF('P', 'mm', 'A5'); // A4 portrait
+        $pdf = new FPDF('P', 'mm', 'A4'); // A4 portrait
         $pdf->AddPage();
         $pdf->SetAutoPageBreak(FALSE);
 

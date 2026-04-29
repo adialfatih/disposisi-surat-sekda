@@ -53,6 +53,27 @@ class Penomoran_surat_model extends CI_Model
 
         return $this->db->get($this->table)->row();
     }
+
+    public function get_daily_nomor_bounds($tanggal_surat)
+    {
+        $date = DateTime::createFromFormat('Y-m-d', (string) $tanggal_surat);
+        $errors = DateTime::getLastErrors();
+
+        if (
+            !$date
+            || (is_array($errors) && ($errors['warning_count'] > 0 || $errors['error_count'] > 0))
+        ) {
+            return ['start' => 1, 'end' => 100];
+        }
+
+        $day_number = (int) $date->format('z') + 1;
+        $start = (($day_number - 1) * 100) + 1;
+
+        return [
+            'start' => $start,
+            'end'   => $start + 99,
+        ];
+    }
     /**
      * Generate nomor surat sesuai format masing-masing jenis.
      *
@@ -134,6 +155,10 @@ class Penomoran_surat_model extends CI_Model
         $kode_umum,
         $tahun
     ) {
+        if (trim((string) $kode_keamanan) === '') {
+            return implode('/', [$kode_klasifikasi, $nomor_urut, $tahun]) . '/';
+        }
+
         // Helper: filter nilai kosong dari array sebelum join
         $join = function(array $parts) {
             return implode('/', array_filter($parts, function($v) {
@@ -181,27 +206,31 @@ class Penomoran_surat_model extends CI_Model
     
     ## di atas ini adalah ambil last nomor urut, di bawah ini adalah cari gap nomor urut terkecil yang tersedia
 
-    public function get_next_nomor_urut($jenis_surat_slug, $tahun)
+    public function get_next_nomor_urut($jenis_surat_slug, $tahun, $tanggal_surat)
     {
-        // Ambil semua nomor urut yang sudah terpakai untuk jenis+tahun ini
+        $bounds = $this->get_daily_nomor_bounds($tanggal_surat);
+
+        // Ambil semua nomor urut yang sudah terpakai untuk jenis+tahun pada kuota hari ini.
         $result = $this->db
             ->select('nomor_urut')
             ->where('jenis_surat_slug', $jenis_surat_slug)
             ->where('tahun', (int) $tahun)
+            ->where('nomor_urut >=', $bounds['start'])
+            ->where('nomor_urut <=', $bounds['end'])
             ->order_by('nomor_urut', 'ASC')
             ->get($this->table)
             ->result();
 
         if (empty($result)) {
-            return 1;
+            return $bounds['start'];
         }
 
         $used = array_map(function($row) {
             return (int) $row->nomor_urut;
         }, $result);
 
-        // Cari gap terkecil mulai dari 1
-        $candidate = 1;
+        // Cari gap terkecil di dalam blok 100 nomor untuk tanggal surat.
+        $candidate = $bounds['start'];
         foreach ($used as $nomor) {
             if ($nomor == $candidate) {
                 $candidate++;
@@ -209,6 +238,10 @@ class Penomoran_surat_model extends CI_Model
                 // Ada gap, candidate ini tersedia
                 break;
             }
+        }
+
+        if ($candidate > $bounds['end']) {
+            return null;
         }
 
         return $candidate;
