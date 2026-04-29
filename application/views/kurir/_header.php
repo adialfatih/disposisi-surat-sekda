@@ -7,6 +7,8 @@
  * $label → judul step yang ditampilkan
  */
 ?>
+<?php $this->load->view('kurir/_app_header'); ?>
+
 <div class="k-step-header">
     <a href="<?= base_url('kurir'); ?>" class="k-back-btn" title="Kembali ke daftar">
         <span class="material-icons">arrow_back</span>

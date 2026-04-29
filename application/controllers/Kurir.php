@@ -17,6 +17,10 @@ class Kurir extends MY_Controller
     // Render halaman kurir tanpa template admin
     private function render_kurir($view, $data = [])
     {
+        $data['session_nama']      = $this->session->userdata('nama');
+        $data['session_username']  = $this->session->userdata('username');
+        $data['session_hak_akses'] = $this->session->userdata('hak_akses');
+
         $this->load->view('kurir/' . $view, $data);
     }
 

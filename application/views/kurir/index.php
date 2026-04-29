@@ -6,6 +6,7 @@
 <title>Caraka - Surat Masuk</title>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -253,8 +254,11 @@ body {
 .k-fab:active { transform: scale(.93); }
 .k-fab .material-icons { font-size: 22px; }
 </style>
+<link rel="stylesheet" href="<?= base_url('assets/css/kurir.css?v=2'); ?>">
 </head>
 <body>
+
+<?php $this->load->view('kurir/_app_header'); ?>
 
 <div class="k-header">
     <div class="k-header-top">

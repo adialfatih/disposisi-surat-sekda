@@ -6,9 +6,12 @@
 <title>Penerimaan Berhasil</title>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="<?= base_url('assets/css/kurir.css'); ?>">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="<?= base_url('assets/css/kurir.css?v=2'); ?>">
 </head>
 <body>
+
+<?php $this->load->view('kurir/_app_header'); ?>
 
 <div class="k-sukses-wrap">
     <div class="k-sukses-anim">
