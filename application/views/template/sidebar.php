@@ -12,6 +12,8 @@
 
     <div class="nav-section-label">Navigasi Utama</div>
 
+    <?php $is_admin = ($session_hak_akses ?? '') === 'admin'; ?>
+
     <a href="<?= base_url('dashboard'); ?>"
        class="nav-item <?= ($active_menu == 'dashboard') ? 'active' : ''; ?>"
        data-tooltip="Dashboard">
@@ -50,6 +52,15 @@
         <span class="material-icons">event_note</span>
         Agenda Acara
     </a>
+
+    <?php if ($is_admin): ?>
+        <a href="<?= base_url('management-user'); ?>"
+           class="nav-item <?= ($active_menu === 'user_management') ? 'active' : ''; ?>"
+           data-tooltip="Management User">
+            <span class="material-icons">manage_accounts</span>
+            Management User
+        </a>
+    <?php endif; ?>
 
     <a href="<?= base_url('kurir'); ?>"
        class="nav-item"

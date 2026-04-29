@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Kurir extends CI_Controller
+class Kurir extends MY_Controller
 {
     protected $upload_path_foto = 'uploads/bukti/';
     protected $upload_path_ttd  = 'uploads/ttd/';

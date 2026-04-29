@@ -19,7 +19,7 @@
         <link rel="stylesheet" href="<?= base_url('assets/css/penomoran-surat.css'); ?>">
     <?php endif; ?>
  
-    <?php if (!empty($active_menu) && ($active_menu === 'agenda_surat_masuk' OR $active_menu === 'surat_masuk_v2' OR $active_menu === 'acara')): ?>
+    <?php if (!empty($active_menu) && ($active_menu === 'agenda_surat_masuk' OR $active_menu === 'surat_masuk_v2' OR $active_menu === 'acara' OR $active_menu === 'user_management')): ?>
         <link rel="stylesheet" href="<?= base_url('assets/css/surat-masuk.css?v=3'); ?>">
     <?php endif; ?>
  

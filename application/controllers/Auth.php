@@ -12,7 +12,8 @@ class Auth extends CI_Controller
     public function login()
     {
         if ($this->session->userdata('logged_in')) {
-            redirect('dashboard');
+            $redirect_to = $this->session->userdata('hak_akses') === 'user' ? 'kurir' : 'dashboard';
+            redirect($redirect_to);
         }
 
         if ($this->input->method(TRUE) === 'POST') {
@@ -80,6 +81,11 @@ class Auth extends CI_Controller
         ];
 
         $this->session->set_userdata($session_data);
+
+        if ($user->hak_akses === 'user') {
+            redirect('kurir');
+        }
+
         redirect('dashboard');
     }
 

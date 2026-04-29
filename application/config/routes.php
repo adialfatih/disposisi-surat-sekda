@@ -15,6 +15,13 @@ $route['translate_uri_dashes'] = FALSE;
 $route['login'] = 'auth/login';
 $route['logout'] = 'auth/logout';
 
+$route['management-user'] = 'user_management/index';
+$route['management-user/create'] = 'user_management/create';
+$route['management-user/store'] = 'user_management/store';
+$route['management-user/edit/(:num)'] = 'user_management/edit/$1';
+$route['management-user/update/(:num)'] = 'user_management/update/$1';
+$route['management-user/delete/(:num)'] = 'user_management/delete/$1';
+
 $route['penomoran-surat'] = 'penomoran_surat/index';
 $route['penomoran-surat/create/(:any)'] = 'penomoran_surat/create/$1';
 $route['penomoran-surat/store'] = 'penomoran_surat/store';
