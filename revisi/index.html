@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laporan Revisi Sistem — Manajemen Surat & Disposisi</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:       #0F2647;
+    --blue:       #1D4E9F;
+    --blue-mid:   #2563A8;
+    --blue-light: #EBF3FB;
+    --green:      #15803D;
+    --green-bg:   #DCFCE7;
+    --green-border:#86EFAC;
+    --red:        #B91C1C;
+    --red-bg:     #FEE2E2;
+    --red-border: #FCA5A5;
+    --amber:      #92400E;
+    --amber-bg:   #FEF3C7;
+    --amber-border:#FCD34D;
+    --grey-100:   #F1F5F9;
+    --grey-200:   #E2E8F0;
+    --grey-400:   #94A3B8;
+    --grey-600:   #475569;
+    --text:       #0F172A;
+    --text-mid:   #334155;
+    --white:      #FFFFFF;
+    --radius:     10px;
+    --shadow-sm:  0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+    --shadow-md:  0 4px 16px rgba(15,38,71,.10);
+    --shadow-lg:  0 8px 32px rgba(15,38,71,.14);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #F0F4F9;
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── TOP ACCENT BAR ── */
+  .top-bar {
+    height: 5px;
+    background: linear-gradient(90deg, var(--navy) 0%, var(--blue-mid) 50%, #4F9FE8 100%);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, var(--navy) 0%, #1A3D7A 60%, #22529E 100%);
+    padding: 48px 24px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 100px;
+    padding: 5px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.85);
+    margin-bottom: 18px;
+  }
+  .header-badge span { width: 6px; height: 6px; border-radius: 50%; background: #4ADE80; display: inline-block; }
+  .header h1 {
+    font-size: clamp(22px, 5vw, 34px);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -.02em;
+    margin-bottom: 8px;
+  }
+  .header p {
+    font-size: clamp(13px, 2.5vw, 16px);
+    color: rgba(255,255,255,.7);
+    font-weight: 400;
+    margin-bottom: 6px;
+  }
+  .header-date {
+    font-size: 12px;
+    color: rgba(255,255,255,.5);
+    font-family: 'DM Mono', monospace;
+    margin-top: 4px;
+  }
+
+  /* ── STICKY NAV ── */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--grey-200);
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+  .sticky-nav::-webkit-scrollbar { display: none; }
+  .nav-item {
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--grey-600);
+    padding: 14px 12px;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: all .2s;
+    letter-spacing: .01em;
+  }
+  .nav-item:hover { color: var(--blue); border-color: var(--blue-mid); }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 16px 60px;
+  }
+
+  /* ── SUMMARY CARDS ── */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+  .summary-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 20px 16px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    border-top: 3px solid transparent;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .summary-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .summary-card.total  { border-color: var(--blue-mid); }
+  .summary-card.done   { border-color: var(--green); }
+  .summary-card.fail   { border-color: var(--red); }
+  .summary-card.pct    { border-color: var(--amber); }
+  .summary-card .num {
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -.03em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .summary-card.total .num { color: var(--blue-mid); }
+  .summary-card.done  .num { color: var(--green); }
+  .summary-card.fail  .num { color: var(--red); }
+  .summary-card.pct   .num { color: var(--amber); }
+  .summary-card .label { font-size: 11px; font-weight: 600; color: var(--grey-400); text-transform: uppercase; letter-spacing: .07em; }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 36px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(90deg, var(--navy) 0%, var(--blue) 100%);
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    margin-bottom: 16px;
+  }
+  .section-header .num {
+    width: 28px; height: 28px;
+    background: rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-header h2 {
+    font-size: clamp(13px, 3vw, 15px);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: .01em;
+  }
+
+  /* ── REVISION ITEM ── */
+  .rev-list { display: flex; flex-direction: column; gap: 10px; }
+  .rev-item {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--grey-200);
+    transition: box-shadow .2s;
+  }
+  .rev-item:hover { box-shadow: var(--shadow-md); }
+  .rev-item-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+  .rev-item.ok .rev-item-header  { background: var(--green-bg); }
+  .rev-item.fail .rev-item-header { background: var(--red-bg); }
+  .rev-num {
+    width: 26px; height: 26px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .rev-item.ok   .rev-num { background: var(--green); color: #fff; }
+  .rev-item.fail .rev-num { background: var(--red);   color: #fff; }
+  .rev-title {
+    flex: 1;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 100px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .03em;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .badge-ok   { background: var(--green); color: #fff; }
+  .badge-fail { background: var(--red);   color: #fff; }
+  .rev-note {
+    padding: 10px 16px 12px 54px;
+    font-size: 12px;
+    color: var(--grey-600);
+    background: var(--grey-100);
+    border-top: 1px solid var(--grey-200);
+    line-height: 1.6;
+  }
+  .rev-note strong { color: var(--text-mid); }
+
+  /* ── CONTRACT TABLE ── */
+  .contract-block { margin-bottom: 20px; }
+  .contract-block h3 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 10px;
+    padding-left: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .contract-block h3::before {
+    content: '';
+    width: 3px; height: 16px;
+    background: var(--blue-mid);
+    border-radius: 2px;
+    display: inline-block;
+  }
+  .table-wrap { overflow-x: auto; border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  thead tr { background: var(--navy); }
+  thead th {
+    padding: 11px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: left;
+    color: #fff;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  tbody tr:nth-child(odd)  { background: var(--white); }
+  tbody tr:nth-child(even) { background: var(--grey-100); }
+  tbody tr.bonus-row { background: #F0FDF4 !important; }
+  tbody td {
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--text-mid);
+    border-bottom: 1px solid var(--grey-200);
+    vertical-align: top;
+  }
+  tbody td:first-child { font-family: 'DM Mono', monospace; font-weight: 600; color: var(--grey-400); width: 40px; text-align: center; }
+  .tag-bonus {
+    display: inline-block;
+    background: #16A34A;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 4px;
+    padding: 2px 7px;
+    letter-spacing: .04em;
+  }
+  .tag-paket {
+    display: inline-block;
+    background: var(--blue-mid);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 4px;
+    padding: 2px 7px;
+    letter-spacing: .04em;
+  }
+  .tag-tambahan {
+    display: inline-block;
+    background: #7C3AED;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 4px;
+    padding: 2px 7px;
+    letter-spacing: .04em;
+  }
+
+  /* ── LIMITATION CARDS ── */
+  .limit-list { display: flex; flex-direction: column; gap: 10px; }
+  .limit-item {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--amber-border);
+    box-shadow: var(--shadow-sm);
+  }
+  .limit-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--amber-bg);
+  }
+  .limit-num {
+    width: 26px; height: 26px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    background: var(--amber);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .limit-title { flex: 1; font-size: 13.5px; font-weight: 600; color: var(--text); line-height: 1.5; }
+  .limit-body {
+    padding: 10px 16px 12px 54px;
+    font-size: 12px;
+    color: var(--grey-600);
+    background: #FFFBEB;
+    border-top: 1px solid var(--amber-border);
+    line-height: 1.6;
+  }
+  .limit-body strong { color: var(--amber); }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap { margin: 12px 0 20px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; color: var(--grey-600); margin-bottom: 6px; }
+  .progress-bar { height: 8px; background: var(--grey-200); border-radius: 100px; overflow: hidden; }
+  .progress-fill {
+    height: 100%;
+    border-radius: 100px;
+    background: linear-gradient(90deg, var(--green) 0%, #22C55E 100%);
+    width: 0;
+    transition: width 1s cubic-bezier(.4,0,.2,1) .3s;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy);
+    text-align: center;
+    padding: 20px 16px;
+    font-size: 11px;
+    color: rgba(255,255,255,.4);
+    letter-spacing: .04em;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    .sticky-nav { display: none; }
+    .top-bar { display: none; }
+    body { background: white; }
+    .rev-item, .limit-item { break-inside: avoid; }
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { opacity: 0; animation: fadeUp .5s ease forwards; }
+  .fade-up:nth-child(1) { animation-delay: .05s; }
+  .fade-up:nth-child(2) { animation-delay: .10s; }
+  .fade-up:nth-child(3) { animation-delay: .15s; }
+  .fade-up:nth-child(4) { animation-delay: .20s; }
+</style>
+</head>
+<body>
+
+<div class="top-bar"></div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-badge"><span></span> Dokumen Resmi</div>
+  <h1>Laporan Revisi Sistem</h1>
+  <p>Sistem Manajemen Surat &amp; Disposisi</p>
+  <div class="header-date" id="doc-date"></div>
+</header>
+
+<!-- STICKY NAV -->
+<nav class="sticky-nav">
+  <a class="nav-item" href="#summary">📊 Ringkasan</a>
+  <a class="nav-item" href="#revisi">✅ Revisi Final</a>
+  <a class="nav-item" href="#kontrak">📄 Kontrak</a>
+  <a class="nav-item" href="#limitasi">⚠️ Tidak Dapat Dilakukan</a>
+</nav>
+
+<div class="container">
+
+  <!-- SUMMARY -->
+  <section id="summary" class="section">
+    <div class="summary-grid">
+      <div class="summary-card total fade-up">
+        <div class="num" id="cnt-total">14</div>
+        <div class="label">Total Item</div>
+      </div>
+      <div class="summary-card done fade-up">
+        <div class="num" id="cnt-done">12</div>
+        <div class="label">Selesai</div>
+      </div>
+      <div class="summary-card fail fade-up">
+        <div class="num" id="cnt-fail">2</div>
+        <div class="label">Tidak Dapat</div>
+      </div>
+      <div class="summary-card pct fade-up">
+        <div class="num">86%</div>
+        <div class="label">Persentase</div>
+      </div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Progres Penyelesaian</span>
+        <span>12 dari 14 item</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="prog-fill"></div></div>
+    </div>
+  </section>
+
+  <!-- REVISI FINAL -->
+  <section id="revisi" class="section">
+    <div class="section-header">
+      <div class="num">1</div>
+      <h2>Revisi Final — Status Pengerjaan</h2>
+    </div>
+
+    <div class="rev-list">
+
+      <div class="rev-item ok">
+        <div class="rev-item-header">
+          <div class="rev-num">1</div>
+          <div class="rev-title">Semua font diubah menjadi Arial</div>
+          <div class="badge badge-ok">✔ Selesai</div>
+        </div>
+        <div class="rev-note"><strong>Catatan:</strong> Font Arial tidak tersedia secara gratis di web (memerlukan lisensi berbayar dan atomic server khusus). Diganti dengan font <em>Roboto</em> — alternatif gratis dengan tampilan serupa Arial.</div>
+      </div>
+
+      <div class="rev-item ok">
+        <div class="rev-item-header">
+          <div class="rev-num">2</div>
+          <div class="rev-title">Penomoran surat dibuat dengan kuota 100/hari (Nota Dinas = 20/hari)</div>
+          <div class="badge badge-ok">✔ Selesai</div>
+        </div>
+        <div class="rev-note"><strong>Catatan:</strong> Kuota dinamis per jenis surat belum bisa diterapkan. Saat ini hanya mendukung 1 jenis kuota seragam (100/hari). Penerapan kuota berbeda per jenis surat memerlukan modul konfigurasi tersendiri.</div>
+      </div>
+
+      <div class="rev-item ok">
+        <div class="rev-item-header">
+          <div class="rev-num">3</div>
+          <div class="rev-title">Penomoran surat tanpa kode keamanan — format output: <code style="font-family:'DM Mono',monospace;font-size:12px;background:rgba(0,0,0,.07);padding:1px 5px;border-radius:4px;">Kode_Klasifikasi/No_Surat/Tahun/</code></div>
+          <div class="badge badge-ok">✔ Selesai</div>
+        </div>
+      </div>
+
+      <div class="rev-item ok">
+        <div class="rev-item-header">
+          <div class="rev-num">4</div>
+          <div class="rev-title">Penambahan tombol <strong>KIRIM WA</strong> di samping tombol Salin — nomor tujuan dari input form penomoran surat</div>
+          <div class="badge badge-ok">✔ Selesai</div>
+        </div>
+      </div>
+
+      <div class="rev-item ok">
+        <div class="rev-item-header">
+          <div class="rev-num">5</div>
+          <div class="rev-title">Menu <em>"Agenda Disposisi"</em> diubah menjadi <strong>"Surat Masuk Disposisi"</strong></div>
+          <div class="badge badge-ok">✔ Selesai</div>
+        </div>
+      </div>
+
+      <div class="rev-item ok">
+        <div class="rev-item-header">
+          <div class="rev-num">6</div>
+          <div class="rev-title">Input tracking surat: kolom <em>"Orang"</em> diganti menjadi <strong>"Pengiriman"</strong></div>
+          <div class="badge badge-ok">✔ Selesai</div>
+        </div>
+      </div>
+
+      <div class="rev-item ok">
+        <div class="rev-item-header">
+          <div class="rev-num">7</div>
+          <div class="rev-title">Tulisan <em>"Pengirim"</em> diganti menjadi <strong>"Petugas Caraka"</strong></div>
+          <div class="badge badge-ok">✔ Selesai</div>
+        </div>
+      </div>
+
+      <div class="rev-item ok">
+        <div class="rev-item-header">
+          <div class="rev-num">8</div>
+          <div class="rev-title">Menu <em>"Agenda Surat Masuk"</em> dihilangkan</div>
+          <div class="badge badge-ok">✔ Selesai</div>
+        </div>
+      </div>
+
+      <div class="rev-item ok">
+        <div class="rev-item-header">
+          <div class="rev-num">9</div>
+          <div class="rev-title">Menu <em>"Surat Masuk &amp; Disposisi"</em> diganti menjadi <strong>"Surat Masuk Bagian Umum"</strong></div>
+          <div class="badge badge-ok">✔ Selesai</div>
+        </div>
+      </div>
+
+      <div class="rev-item fail">
+        <div class="rev-item-header">
+          <div class="rev-num">10</div>
+          <div class="rev-title">Input detail acara pada surat undangan dijadikan satu halaman (tanpa pop-up form)</div>
+          <div class="badge badge-fail">✘ Tidak Dapat</div>
+        </div>
+        <div class="rev-note"><strong>Catatan:</strong> Tidak dapat dilakukan karena memerlukan perubahan mendalam pada modul yang sudah ada. Dapat dikerjakan apabila modul dibangun ulang dari awal.</div>
+      </div>
+
+      <div class="rev-item ok">
+        <div class="rev-item-header">
+          <div class="rev-num">11</div>
+          <div class="rev-title">Menu <em>"Agenda Acara"</em> diganti menjadi <strong>"Schedule Kepemimpinan"</strong></div>
+          <div class="badge badge-ok">✔ Selesai</div>
+        </div>
+      </div>
+
+      <div class="rev-item ok">
+        <div class="rev-item-header">
+          <div class="rev-num">12</div>
+          <div class="rev-title">No. Telp dan Fax pada lembar disposisi cetak diganti menjadi <strong>421093</strong></div>
+          <div class="badge badge-ok">✔ Selesai</div>
+        </div>
+      </div>
+
+      <div class="rev-item fail">
+        <div class="rev-item-header">
+          <div class="rev-num">13</div>
+          <div class="rev-title">Ukuran lembar disposisi diubah menjadi <strong>A5</strong></div>
+          <div class="badge badge-fail">✘ Tidak Dapat</div>
+        </div>
+        <div class="rev-note"><strong>Catatan:</strong> Tidak memungkinkan dengan modul saat ini. Dapat dilakukan apabila modul PDF dibangun ulang dari awal — memerlukan penyesuaian seluruh koordinat cetak yang memakan waktu signifikan.</div>
+      </div>
+
+      <div class="rev-item ok">
+        <div class="rev-item-header">
+          <div class="rev-num">14</div>
+          <div class="rev-title">Login / User untuk <strong>Caraka</strong> sudah tersedia</div>
+          <div class="badge badge-ok">✔ Selesai</div>
+        </div>
+        <div class="rev-note"><strong>Catatan:</strong> User Admin diarahkan ke Dashboard. User Caraka otomatis masuk ke Portal Caraka setelah login.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- KONTRAK -->
+  <section id="kontrak" class="section">
+    <div class="section-header">
+      <div class="num">2</div>
+      <h2>Kesepakatan Kontrak &amp; Pengembangan</h2>
+    </div>
+
+    <div class="contract-block">
+      <h3>Perjanjian Awal — Rp 2.500.000</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Modul</th>
+              <th>Keterangan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Modul Penomoran Surat</td>
+              <td><span class="tag-paket">Paket Awal</span></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Modul Disposisi</td>
+              <td><span class="tag-paket">Paket Awal</span></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Modul Agenda Surat Masuk</td>
+              <td><span class="tag-paket">Paket Awal</span></td>
+            </tr>
+            <tr class="bonus-row">
+              <td>4</td>
+              <td>Modul Tracking Disposisi</td>
+              <td><span class="tag-bonus">Bonus</span></td>
+            </tr>
+            <tr class="bonus-row">
+              <td>5</td>
+              <td>Management User</td>
+              <td><span class="tag-bonus">Bonus</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="contract-block">
+      <h3>Tambahan Modul Pasca Revisi</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Modul Tambahan</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Schedule Kepemimpinan</td>
+              <td><span class="tag-tambahan">Tambahan</span></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Modul Portal Kurir / Caraka</td>
+              <td><span class="tag-tambahan">Tambahan</span></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Perubahan Modul Agenda dan Disposisi v2</td>
+              <td><span class="tag-tambahan">Tambahan</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIMITASI -->
+  <section id="limitasi" class="section">
+    <div class="section-header">
+      <div class="num">3</div>
+      <h2>Perubahan yang Tidak Dapat Dilakukan</h2>
+    </div>
+
+    <p style="font-size:13px;color:var(--grey-600);margin-bottom:14px;line-height:1.7;">
+      Berikut adalah item revisi yang tidak dapat dilaksanakan dalam ruang lingkup kontrak saat ini, beserta solusi yang dapat dipertimbangkan untuk pengembangan selanjutnya.
+    </p>
+
+    <div class="limit-list">
+
+      <div class="limit-item">
+        <div class="limit-header">
+          <div class="limit-num">1</div>
+          <div class="limit-title">Penomoran Surat dengan Kuota Dinamis (berbeda per jenis surat)</div>
+        </div>
+        <div class="limit-body">
+          <strong>Solusi:</strong> Dapat dilakukan apabila ditambahkan modul konfigurasi terpisah untuk setiap jenis surat, sehingga admin dapat mengatur batas kuota secara mandiri sesuai kebutuhan masing-masing jenis surat.
+        </div>
+      </div>
+
+      <div class="limit-item">
+        <div class="limit-header">
+          <div class="limit-num">2</div>
+          <div class="limit-title">Input detail acara pada surat undangan dalam satu halaman (tanpa pop-up)</div>
+        </div>
+        <div class="limit-body">
+          <strong>Solusi:</strong> Dapat dilakukan apabila modul dibangun ulang dari awal. Saat ini perubahan struktur halaman memerlukan modifikasi mendalam pada modul yang sudah ada sehingga tidak memungkinkan dalam cakupan revisi ini.
+        </div>
+      </div>
+
+      <div class="limit-item">
+        <div class="limit-header">
+          <div class="limit-num">3</div>
+          <div class="limit-title">Ukuran lembar disposisi diubah menjadi A5</div>
+        </div>
+        <div class="limit-body">
+          <strong>Solusi:</strong> Dapat dilakukan apabila modul cetak PDF dibuat ulang dari awal, karena diperlukan penyesuaian seluruh titik koordinat cetak. Proses ini memakan waktu pengerjaan yang signifikan dan di luar cakupan revisi saat ini.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div id="footer-date"></div>
+  <div style="margin-top:4px;">Dokumen ini dibuat secara resmi sebagai laporan revisi sistem.</div>
+</footer>
+
+<script>
+  // Date
+  const now = new Date();
+  const opts = { day: 'numeric', month: 'long', year: 'numeric' };
+  const dateStr = now.toLocaleDateString('id-ID', opts);
+  document.getElementById('doc-date').textContent = 'Tanggal Laporan: ' + dateStr;
+  document.getElementById('footer-date').textContent = 'Diterbitkan pada ' + dateStr;
+
+  // Progress bar animate on load
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('prog-fill').style.width = '85.7%';
+    }, 400);
+  });
+
+  // Intersection observer for fade-up
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+        e.target.style.transition = 'opacity .4s ease, transform .4s ease';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.rev-item, .limit-item, .contract-block').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(12px)';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
