@@ -33,7 +33,7 @@
        class="nav-item <?= ($active_menu == 'agenda_disposisi') ? 'active' : ''; ?>"
        data-tooltip="Agenda Disposisi">
         <span class="material-icons">assignment</span>
-        Agenda Disposisi
+        Surat Masuk Disposisi
     </a>
 
     <!-- <a href="<= base_url('surat-masuk'); ?>"
@@ -45,12 +45,12 @@
     <a href="<?= base_url('surat-masuk-v2'); ?>"
         class="nav-item <?= ($active_menu === 'surat_masuk_v2') ? 'active' : ''; ?>" data-tooltip="Surat Masuk & Disposisi (Versi Baru)">
         <span class="material-icons">mail</span>
-        Surat Masuk & Disposisi
+        Surat Masuk Bagian Umum
     </a>
     <a href="<?= base_url('acara'); ?>"
         class="nav-item <?= ($active_menu === 'acara') ? 'active' : ''; ?>" data-tooltip="Agenda Acara">
         <span class="material-icons">event_note</span>
-        Agenda Acara
+        Schedule Kepemimpinan
     </a>
 
     <?php if ($is_admin): ?>

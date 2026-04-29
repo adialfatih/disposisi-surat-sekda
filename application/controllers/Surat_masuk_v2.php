@@ -328,7 +328,7 @@ class Surat_masuk_v2 extends MY_Controller
         // Jika autoload CI belum include FPDF, uncomment baris berikut:
         // require_once APPPATH . 'third_party/fpdf/fpdf.php';
 
-        $pdf = new FPDF('P', 'mm', 'A4'); // A4 portrait
+        $pdf = new FPDF('P', 'mm', 'A5'); // A4 portrait
         $pdf->AddPage();
         $pdf->SetAutoPageBreak(FALSE);
 
@@ -356,7 +356,7 @@ class Surat_masuk_v2 extends MY_Controller
         $pdf->SetX($lm + 20);
         $pdf->Cell($w - 20, 4, 'Jalan Mataram No.1, Kota Pekalongan, Jawa Tengah 51111', 0, 1, 'C');
         $pdf->SetX($lm + 20);
-        $pdf->Cell($w - 20, 4, 'Telepon (0285) 421091  Faksimile (0285) 424061', 0, 1, 'C');
+        $pdf->Cell($w - 20, 4, 'Telepon (0285) 421093  Faksimile (0285) 421093', 0, 1, 'C');
         $pdf->SetX($lm + 20);
         $pdf->Cell($w - 20, 4, 'Pos-el: setda@pekalongankota.go.id    Laman: www.pekalongankota.go.id', 0, 1, 'C');
 

@@ -66,7 +66,7 @@
                     <div class="dsp-bukti-preview">
                         <div class="dsp-bukti-row">
                             <span class="material-icons">person</span>
-                            <span><strong>Pengirim:</strong> <?= html_escape($penerima->nama_pengirim ?: '-'); ?></span>
+                            <span><strong>Petugas Caraka:</strong> <?= html_escape($penerima->nama_pengirim ?: '-'); ?></span>
                         </div>
                         <div class="dsp-bukti-row">
                             <span class="material-icons">schedule</span>
