@@ -2104,3 +2104,139 @@ INFO - 2026-04-29 08:16:22 --> File loaded: C:\xampp\htdocs\disposisi-surat\appl
 INFO - 2026-04-29 08:16:22 --> File loaded: C:\xampp\htdocs\disposisi-surat\application\views\kurir/index.php
 INFO - 2026-04-29 08:16:22 --> Final output sent to browser
 DEBUG - 2026-04-29 08:16:22 --> Total execution time: 0.0603
+INFO - 2026-04-29 15:30:48 --> Config Class Initialized
+INFO - 2026-04-29 15:30:48 --> Hooks Class Initialized
+DEBUG - 2026-04-29 15:30:48 --> UTF-8 Support Enabled
+INFO - 2026-04-29 15:30:48 --> Utf8 Class Initialized
+INFO - 2026-04-29 15:30:48 --> URI Class Initialized
+INFO - 2026-04-29 15:30:48 --> Router Class Initialized
+INFO - 2026-04-29 15:30:48 --> Output Class Initialized
+INFO - 2026-04-29 15:30:48 --> Security Class Initialized
+DEBUG - 2026-04-29 15:30:48 --> Global POST, GET and COOKIE data sanitized
+INFO - 2026-04-29 15:30:48 --> CSRF cookie sent
+INFO - 2026-04-29 15:30:48 --> Input Class Initialized
+INFO - 2026-04-29 15:30:48 --> Language Class Initialized
+INFO - 2026-04-29 15:30:48 --> Loader Class Initialized
+INFO - 2026-04-29 15:30:48 --> Helper loaded: security_helper
+INFO - 2026-04-29 15:30:48 --> Helper loaded: url_helper
+INFO - 2026-04-29 15:30:48 --> Helper loaded: form_helper
+INFO - 2026-04-29 15:30:48 --> Helper loaded: upload_helper
+INFO - 2026-04-29 15:30:48 --> Database Driver Class Initialized
+DEBUG - 2026-04-29 15:30:49 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2026-04-29 15:30:49 --> Session: Class initialized using 'files' driver.
+INFO - 2026-04-29 15:30:49 --> Form Validation Class Initialized
+INFO - 2026-04-29 15:30:49 --> Controller Class Initialized
+INFO - 2026-04-29 15:30:49 --> Model Class Initialized
+INFO - 2026-04-29 15:30:49 --> File loaded: C:\xampp\htdocs\disposisi-surat\application\views\auth/login.php
+INFO - 2026-04-29 15:30:49 --> Final output sent to browser
+DEBUG - 2026-04-29 15:30:49 --> Total execution time: 0.7979
+INFO - 2026-04-29 15:32:22 --> Config Class Initialized
+INFO - 2026-04-29 15:32:22 --> Hooks Class Initialized
+DEBUG - 2026-04-29 15:32:22 --> UTF-8 Support Enabled
+INFO - 2026-04-29 15:32:22 --> Utf8 Class Initialized
+INFO - 2026-04-29 15:32:22 --> URI Class Initialized
+INFO - 2026-04-29 15:32:22 --> Router Class Initialized
+INFO - 2026-04-29 15:32:22 --> Output Class Initialized
+INFO - 2026-04-29 15:32:22 --> Security Class Initialized
+DEBUG - 2026-04-29 15:32:22 --> Global POST, GET and COOKIE data sanitized
+INFO - 2026-04-29 15:32:22 --> CSRF cookie sent
+INFO - 2026-04-29 15:32:22 --> Input Class Initialized
+INFO - 2026-04-29 15:32:22 --> Language Class Initialized
+INFO - 2026-04-29 15:32:22 --> Loader Class Initialized
+INFO - 2026-04-29 15:32:22 --> Helper loaded: security_helper
+INFO - 2026-04-29 15:32:22 --> Helper loaded: url_helper
+INFO - 2026-04-29 15:32:22 --> Helper loaded: form_helper
+INFO - 2026-04-29 15:32:22 --> Helper loaded: upload_helper
+INFO - 2026-04-29 15:32:22 --> Database Driver Class Initialized
+DEBUG - 2026-04-29 15:32:22 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2026-04-29 15:32:22 --> Session: Class initialized using 'files' driver.
+INFO - 2026-04-29 15:32:22 --> Form Validation Class Initialized
+INFO - 2026-04-29 15:32:22 --> Controller Class Initialized
+INFO - 2026-04-29 15:32:22 --> Model Class Initialized
+INFO - 2026-04-29 15:32:22 --> File loaded: C:\xampp\htdocs\disposisi-surat\application\views\auth/login.php
+INFO - 2026-04-29 15:32:22 --> Final output sent to browser
+DEBUG - 2026-04-29 15:32:22 --> Total execution time: 0.0382
+INFO - 2026-04-29 15:32:27 --> Config Class Initialized
+INFO - 2026-04-29 15:32:27 --> Hooks Class Initialized
+DEBUG - 2026-04-29 15:32:27 --> UTF-8 Support Enabled
+INFO - 2026-04-29 15:32:27 --> Utf8 Class Initialized
+INFO - 2026-04-29 15:32:27 --> URI Class Initialized
+INFO - 2026-04-29 15:32:27 --> Router Class Initialized
+INFO - 2026-04-29 15:32:27 --> Output Class Initialized
+INFO - 2026-04-29 15:32:27 --> Security Class Initialized
+DEBUG - 2026-04-29 15:32:27 --> Global POST, GET and COOKIE data sanitized
+INFO - 2026-04-29 15:32:27 --> CSRF cookie sent
+INFO - 2026-04-29 15:32:27 --> CSRF token verified
+INFO - 2026-04-29 15:32:27 --> Input Class Initialized
+INFO - 2026-04-29 15:32:27 --> Language Class Initialized
+INFO - 2026-04-29 15:32:27 --> Loader Class Initialized
+INFO - 2026-04-29 15:32:27 --> Helper loaded: security_helper
+INFO - 2026-04-29 15:32:27 --> Helper loaded: url_helper
+INFO - 2026-04-29 15:32:27 --> Helper loaded: form_helper
+INFO - 2026-04-29 15:32:27 --> Helper loaded: upload_helper
+INFO - 2026-04-29 15:32:27 --> Database Driver Class Initialized
+DEBUG - 2026-04-29 15:32:27 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2026-04-29 15:32:27 --> Session: Class initialized using 'files' driver.
+INFO - 2026-04-29 15:32:27 --> Form Validation Class Initialized
+INFO - 2026-04-29 15:32:27 --> Controller Class Initialized
+INFO - 2026-04-29 15:32:27 --> Model Class Initialized
+INFO - 2026-04-29 15:32:27 --> Language file loaded: language/english/form_validation_lang.php
+INFO - 2026-04-29 15:32:27 --> Config Class Initialized
+INFO - 2026-04-29 15:32:27 --> Hooks Class Initialized
+DEBUG - 2026-04-29 15:32:27 --> UTF-8 Support Enabled
+INFO - 2026-04-29 15:32:27 --> Utf8 Class Initialized
+INFO - 2026-04-29 15:32:27 --> URI Class Initialized
+INFO - 2026-04-29 15:32:27 --> Router Class Initialized
+INFO - 2026-04-29 15:32:27 --> Output Class Initialized
+INFO - 2026-04-29 15:32:27 --> Security Class Initialized
+DEBUG - 2026-04-29 15:32:27 --> Global POST, GET and COOKIE data sanitized
+INFO - 2026-04-29 15:32:27 --> CSRF cookie sent
+INFO - 2026-04-29 15:32:27 --> Input Class Initialized
+INFO - 2026-04-29 15:32:27 --> Language Class Initialized
+INFO - 2026-04-29 15:32:27 --> Loader Class Initialized
+INFO - 2026-04-29 15:32:27 --> Helper loaded: security_helper
+INFO - 2026-04-29 15:32:27 --> Helper loaded: url_helper
+INFO - 2026-04-29 15:32:27 --> Helper loaded: form_helper
+INFO - 2026-04-29 15:32:27 --> Helper loaded: upload_helper
+INFO - 2026-04-29 15:32:27 --> Database Driver Class Initialized
+DEBUG - 2026-04-29 15:32:27 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2026-04-29 15:32:27 --> Session: Class initialized using 'files' driver.
+INFO - 2026-04-29 15:32:27 --> Form Validation Class Initialized
+INFO - 2026-04-29 15:32:27 --> Controller Class Initialized
+INFO - 2026-04-29 15:32:27 --> File loaded: C:\xampp\htdocs\disposisi-surat\application\views\template/header.php
+INFO - 2026-04-29 15:32:27 --> File loaded: C:\xampp\htdocs\disposisi-surat\application\views\template/sidebar.php
+INFO - 2026-04-29 15:32:27 --> File loaded: C:\xampp\htdocs\disposisi-surat\application\views\template/topbar.php
+INFO - 2026-04-29 15:32:27 --> File loaded: C:\xampp\htdocs\disposisi-surat\application\views\dashboard/index.php
+INFO - 2026-04-29 15:32:27 --> File loaded: C:\xampp\htdocs\disposisi-surat\application\views\template/footer.php
+INFO - 2026-04-29 15:32:27 --> Final output sent to browser
+DEBUG - 2026-04-29 15:32:27 --> Total execution time: 0.0388
+INFO - 2026-04-29 15:32:31 --> Config Class Initialized
+INFO - 2026-04-29 15:32:31 --> Hooks Class Initialized
+DEBUG - 2026-04-29 15:32:31 --> UTF-8 Support Enabled
+INFO - 2026-04-29 15:32:31 --> Utf8 Class Initialized
+INFO - 2026-04-29 15:32:31 --> URI Class Initialized
+INFO - 2026-04-29 15:32:31 --> Router Class Initialized
+INFO - 2026-04-29 15:32:31 --> Output Class Initialized
+INFO - 2026-04-29 15:32:31 --> Security Class Initialized
+DEBUG - 2026-04-29 15:32:31 --> Global POST, GET and COOKIE data sanitized
+INFO - 2026-04-29 15:32:31 --> CSRF cookie sent
+INFO - 2026-04-29 15:32:31 --> Input Class Initialized
+INFO - 2026-04-29 15:32:31 --> Language Class Initialized
+INFO - 2026-04-29 15:32:31 --> Loader Class Initialized
+INFO - 2026-04-29 15:32:31 --> Helper loaded: security_helper
+INFO - 2026-04-29 15:32:31 --> Helper loaded: url_helper
+INFO - 2026-04-29 15:32:31 --> Helper loaded: form_helper
+INFO - 2026-04-29 15:32:31 --> Helper loaded: upload_helper
+INFO - 2026-04-29 15:32:31 --> Database Driver Class Initialized
+DEBUG - 2026-04-29 15:32:31 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2026-04-29 15:32:31 --> Session: Class initialized using 'files' driver.
+INFO - 2026-04-29 15:32:31 --> Form Validation Class Initialized
+INFO - 2026-04-29 15:32:31 --> Controller Class Initialized
+INFO - 2026-04-29 15:32:31 --> Model Class Initialized
+INFO - 2026-04-29 15:32:31 --> File loaded: C:\xampp\htdocs\disposisi-surat\application\views\template/header.php
+INFO - 2026-04-29 15:32:31 --> File loaded: C:\xampp\htdocs\disposisi-surat\application\views\template/sidebar.php
+INFO - 2026-04-29 15:32:31 --> File loaded: C:\xampp\htdocs\disposisi-surat\application\views\template/topbar.php
+INFO - 2026-04-29 15:32:31 --> File loaded: C:\xampp\htdocs\disposisi-surat\application\views\user_management/index.php
+INFO - 2026-04-29 15:32:31 --> File loaded: C:\xampp\htdocs\disposisi-surat\application\views\template/footer.php
+INFO - 2026-04-29 15:32:31 --> Final output sent to browser
+DEBUG - 2026-04-29 15:32:31 --> Total execution time: 0.0678

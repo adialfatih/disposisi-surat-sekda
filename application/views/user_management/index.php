@@ -165,7 +165,7 @@
 
     <div style="margin-top:16px;padding:12px 16px;background:var(--sogan-faint,#f3f0eb);border-radius:10px;border-left:4px solid var(--sogan,#5C3317);font-size:12px;color:#666;">
         <span class="material-icons" style="font-size:14px;vertical-align:middle;color:var(--sogan);">info</span>
-        Hak akses <strong>Kurir</strong> hanya diarahkan ke Portal Caraka, sedangkan <strong>Admin</strong> dapat mengakses seluruh modul.
+        Hak akses <strong>Caraka</strong> hanya diarahkan ke Portal Caraka, sedangkan <strong>Admin</strong> dapat mengakses seluruh modul.
     </div>
 
 </div>
