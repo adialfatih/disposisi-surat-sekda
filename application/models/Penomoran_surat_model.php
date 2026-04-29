@@ -54,8 +54,9 @@ class Penomoran_surat_model extends CI_Model
         return $this->db->get($this->table)->row();
     }
 
-    public function get_daily_nomor_bounds($tanggal_surat)
+    public function get_daily_nomor_bounds($tanggal_surat, $daily_quota = 100)
     {
+        $daily_quota = max(1, (int) $daily_quota);
         $date = DateTime::createFromFormat('Y-m-d', (string) $tanggal_surat);
         $errors = DateTime::getLastErrors();
 
@@ -67,11 +68,11 @@ class Penomoran_surat_model extends CI_Model
         }
 
         $day_number = (int) $date->format('z') + 1;
-        $start = (($day_number - 1) * 100) + 1;
+        $start = (($day_number - 1) * $daily_quota) + 1;
 
         return [
             'start' => $start,
-            'end'   => $start + 99,
+            'end'   => $start + $daily_quota - 1,
         ];
     }
     /**
@@ -206,9 +207,9 @@ class Penomoran_surat_model extends CI_Model
     
     ## di atas ini adalah ambil last nomor urut, di bawah ini adalah cari gap nomor urut terkecil yang tersedia
 
-    public function get_next_nomor_urut($jenis_surat_slug, $tahun, $tanggal_surat)
+    public function get_next_nomor_urut($jenis_surat_slug, $tahun, $tanggal_surat, $daily_quota = 100)
     {
-        $bounds = $this->get_daily_nomor_bounds($tanggal_surat);
+        $bounds = $this->get_daily_nomor_bounds($tanggal_surat, $daily_quota);
 
         // Ambil semua nomor urut yang sudah terpakai untuk jenis+tahun pada kuota hari ini.
         $result = $this->db
@@ -229,7 +230,7 @@ class Penomoran_surat_model extends CI_Model
             return (int) $row->nomor_urut;
         }, $result);
 
-        // Cari gap terkecil di dalam blok 100 nomor untuk tanggal surat.
+        // Cari gap terkecil di dalam blok kuota untuk tanggal surat.
         $candidate = $bounds['start'];
         foreach ($used as $nomor) {
             if ($nomor == $candidate) {

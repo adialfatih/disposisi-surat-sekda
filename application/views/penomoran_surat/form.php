@@ -103,7 +103,7 @@ function old_or_value($ci, $row, $field)
                     <div class="field-note">
                         <?= $is_edit
                             ? 'Nomor urut tidak boleh sama pada jenis dan tahun yang sama.'
-                            : 'Terisi otomatis sesuai kuota 100 nomor per hari untuk jenis surat ini.'; ?>
+                            : 'Terisi otomatis sesuai kuota ' . (int) $daily_quota . ' nomor per hari untuk jenis surat ini.'; ?>
                     </div>
                 </div>
 

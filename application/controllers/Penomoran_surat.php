@@ -27,23 +27,28 @@ class Penomoran_surat extends MY_Controller
         return [
             'setda-surat-keluar' => [
                 'label' => 'SETDA - Surat Keluar',
-                'show_kode_umum' => FALSE
+                'show_kode_umum' => FALSE,
+                'daily_quota' => 100
             ],
             'setda-sppd' => [
                 'label' => 'SETDA - SPPD',
-                'show_kode_umum' => FALSE
+                'show_kode_umum' => FALSE,
+                'daily_quota' => 100
             ],
             'umum-surat-keluar' => [
                 'label' => 'UMUM - Surat Keluar',
-                'show_kode_umum' => TRUE
+                'show_kode_umum' => TRUE,
+                'daily_quota' => 100
             ],
             'umum-sppd' => [
                 'label' => 'UMUM - SPPD',
-                'show_kode_umum' => TRUE
+                'show_kode_umum' => TRUE,
+                'daily_quota' => 100
             ],
             'nota-dinas' => [
                 'label' => 'NOTA DINAS',
-                'show_kode_umum' => FALSE
+                'show_kode_umum' => FALSE,
+                'daily_quota' => 100
             ],
         ];
     }
@@ -157,6 +162,7 @@ class Penomoran_surat extends MY_Controller
             'jenis_surat_slug'  => $jenis_slug,
             'jenis_surat_label' => $jenis_options[$jenis_slug]['label'],
             'show_kode_umum'    => $jenis_options[$jenis_slug]['show_kode_umum'],
+            'daily_quota'        => $jenis_options[$jenis_slug]['daily_quota'],
             'mode'              => 'create',
             'row'               => null
         ];
@@ -193,6 +199,7 @@ public function get_csrf_token()
                 'jenis_surat_slug'  => $jenis_slug,
                 'jenis_surat_label' => $jenis_options[$jenis_slug]['label'],
                 'show_kode_umum'    => $jenis_options[$jenis_slug]['show_kode_umum'],
+                'daily_quota'        => $jenis_options[$jenis_slug]['daily_quota'],
                 'mode'              => 'create',
                 'row'               => null
             ];
@@ -221,7 +228,8 @@ public function get_csrf_token()
         $insert_data['nomor_urut'] = $this->Penomoran_surat_model->get_next_nomor_urut(
             $insert_data['jenis_surat_slug'],
             $insert_data['tahun'],
-            $insert_data['tanggal_surat']
+            $insert_data['tanggal_surat'],
+            $jenis_options[$jenis_slug]['daily_quota']
         );
 
         if ($insert_data['nomor_urut'] === null) {
@@ -287,6 +295,7 @@ public function get_csrf_token()
             'jenis_surat_slug'  => $row->jenis_surat_slug,
             'jenis_surat_label' => $row->jenis_surat_label,
             'show_kode_umum'    => $jenis_options[$row->jenis_surat_slug]['show_kode_umum'],
+            'daily_quota'        => $jenis_options[$row->jenis_surat_slug]['daily_quota'],
             'mode'              => 'edit',
             'row'               => $row
         ];
@@ -319,6 +328,7 @@ public function get_csrf_token()
                 'jenis_surat_slug'  => $row->jenis_surat_slug,
                 'jenis_surat_label' => $row->jenis_surat_label,
                 'show_kode_umum'    => $jenis_options[$row->jenis_surat_slug]['show_kode_umum'],
+                'daily_quota'        => $jenis_options[$row->jenis_surat_slug]['daily_quota'],
                 'mode'              => 'edit',
                 'row'               => $row
             ];
@@ -412,13 +422,15 @@ public function get_csrf_token()
             return;
         }
 
-        $next = $this->Penomoran_surat_model->get_next_nomor_urut($jenis_slug, $tahun, $tanggal_surat);
-        $bounds = $this->Penomoran_surat_model->get_daily_nomor_bounds($tanggal_surat);
+        $daily_quota = $jenis_options[$jenis_slug]['daily_quota'];
+        $next = $this->Penomoran_surat_model->get_next_nomor_urut($jenis_slug, $tahun, $tanggal_surat, $daily_quota);
+        $bounds = $this->Penomoran_surat_model->get_daily_nomor_bounds($tanggal_surat, $daily_quota);
 
         echo json_encode([
             'success'    => ($next !== null),
             'next_nomor' => $next,
             'range'      => $bounds,
+            'daily_quota' => $daily_quota,
         ]);
     }
 }
