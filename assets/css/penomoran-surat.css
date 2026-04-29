@@ -55,7 +55,7 @@
 }
 
 .form-meta-box .meta-left h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 18px;
   font-weight: 600;
   color: var(--sogan);
@@ -205,7 +205,7 @@
 }
 
 .surat-picker-head h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 22px;
   font-weight: 600;
   color: var(--sogan);

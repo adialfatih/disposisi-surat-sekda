@@ -6,10 +6,10 @@
     <title>Login - DINAMIT | Sekda Kota Pekalongan</title>
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <link rel="stylesheet" href="<?= base_url('assets/css/login.css?versi=2'); ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/login.css?versi=3'); ?>">
 </head>
 <body>
 
@@ -153,7 +153,7 @@
         <div class="divider">DINAMIT</div>
 
         <div class="form-footer">
-            &copy; 2026 Sekretariat Daerah Kota Pekalongan &mdash;
+            &copy; 2026 Sekretariat Daerah Kota Pekalongan -
             <a href="#">Kebijakan Privasi</a> - <a href="#">Bantuan</a>
         </div>
 

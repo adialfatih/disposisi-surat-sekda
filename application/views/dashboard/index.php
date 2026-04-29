@@ -41,7 +41,7 @@
         <div class="card">
             <div class="section-title">
                 Aktivitas Penomoran Mingguan
-                <span style="font-size:12px;font-family:'Plus Jakarta Sans';font-weight:400;color:var(--text-muted)">dokumen/hari</span>
+                <span style="font-size:12px;font-family:'Roboto',sans-serif;font-weight:400;color:var(--text-muted)">dokumen/hari</span>
             </div>
             <div class="chart-bars" id="chartBars"></div>
             <div class="chart-legend">

@@ -22,7 +22,7 @@
 }
 
 body {
-    font-family: 'Sora', sans-serif;
+    font-family: 'Roboto', sans-serif;
     background: var(--surface);
     color: var(--ink);
     min-height: 100vh;
@@ -480,7 +480,7 @@ body {
 }
 
 body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
     background:
         radial-gradient(circle at 1px 1px, rgba(12, 68, 124, .06) 1px, transparent 0),
         var(--surface);
@@ -566,7 +566,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .k-brand-text {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 15px;
     font-weight: 600;
     line-height: 1.2;
@@ -575,7 +575,7 @@ a { color: inherit; text-decoration: none; }
 
 .k-brand-text small {
     display: block;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 10px;
     font-weight: 500;
     color: rgba(255,255,255,.72);
@@ -667,7 +667,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .k-header h1 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Roboto', sans-serif;
     color: var(--ink);
     font-size: 22px;
     letter-spacing: 0;

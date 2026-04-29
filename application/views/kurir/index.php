@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Caraka - Surat Masuk</title>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -29,7 +28,7 @@
 }
 
 body {
-    font-family: 'Sora', sans-serif;
+    font-family: 'Roboto', sans-serif;
     background: var(--surface);
     color: var(--ink);
     min-height: 100vh;
@@ -254,7 +253,7 @@ body {
 .k-fab:active { transform: scale(.93); }
 .k-fab .material-icons { font-size: 22px; }
 </style>
-<link rel="stylesheet" href="<?= base_url('assets/css/kurir.css?v=2'); ?>">
+<link rel="stylesheet" href="<?= base_url('assets/css/kurir.css?v=3'); ?>">
 </head>
 <body>
 

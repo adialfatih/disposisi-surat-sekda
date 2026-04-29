@@ -41,7 +41,7 @@
 }
 
 body {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Roboto', sans-serif;
   background: var(--cream);
   color: var(--text-dark);
   min-height: 100vh;
@@ -108,7 +108,7 @@ a {
 }
 
 .logo-text {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Roboto', sans-serif;
   color: var(--white);
   font-size: 15px;
   font-weight: 500;
@@ -117,7 +117,7 @@ a {
 
 .logo-text small {
   display: block;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 10px;
   color: rgba(255, 255, 255, .5);
   font-weight: 400;
@@ -344,7 +344,7 @@ a {
 }
 
 .page-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 18px;
   font-weight: 500;
   color: var(--sogan);
@@ -502,7 +502,7 @@ a {
 }
 
 .stat-val {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 28px;
   font-weight: 600;
   color: var(--text-dark);
@@ -539,7 +539,7 @@ a {
 }
 
 .section-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 16px;
   font-weight: 500;
   color: var(--sogan);
