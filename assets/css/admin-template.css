@@ -873,6 +873,11 @@ a {
   vertical-align: middle;
 }
 
+.data-table .col-date {
+  min-width: 96px;
+  white-space: nowrap;
+}
+
 .badge {
   display: inline-flex;
   align-items: center;

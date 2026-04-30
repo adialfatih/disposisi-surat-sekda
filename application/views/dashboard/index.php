@@ -11,7 +11,7 @@ function dash_number($value)
 
 function dash_date($date)
 {
-    return $date ? date('d-m-Y', strtotime($date)) : '-';
+    return $date ? date('d M Y', strtotime($date)) : '-';
 }
 ?>
 <div class="page active">
@@ -109,7 +109,7 @@ function dash_date($date)
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>Tanggal</th>
+                        <th style="width:100px;">Tanggal</th>
                         <th>Nomor Surat</th>
                         <th>Perihal</th>
                         <th>Asal / Tujuan</th>
