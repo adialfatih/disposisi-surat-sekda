@@ -60,10 +60,11 @@
     function buildChart() {
         if (!chartBars) return;
 
-        const days = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
-        const suratKeluar = [16, 22, 18, 27, 24, 12, 8];
-        const suratMasuk = [10, 14, 12, 15, 17, 9, 6];
-        const maxVal = Math.max(...suratKeluar, ...suratMasuk);
+        const dashboardData = window.DASHBOARD_CHART_DATA || {};
+        const days = dashboardData.labels || ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+        const suratKeluar = dashboardData.penomoran || [0, 0, 0, 0, 0, 0, 0];
+        const suratMasuk = dashboardData.surat_masuk || [0, 0, 0, 0, 0, 0, 0];
+        const maxVal = Math.max(...suratKeluar, ...suratMasuk, 1);
 
         chartBars.innerHTML = days.map((day, i) => {
             return `

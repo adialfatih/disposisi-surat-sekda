@@ -1,3 +1,10 @@
+<?php
+$login_stats = isset($login_stats) ? $login_stats : [
+    'nomor_surat' => 0,
+    'surat_masuk' => 0,
+    'disposisi_percent' => 0,
+];
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -42,15 +49,15 @@
 
         <div class="stats-row">
             <div class="stat-pill">
-                <div class="stat-pill-val">1.2k</div>
+                <div class="stat-pill-val"><?= number_format((int) $login_stats['nomor_surat'], 0, ',', '.'); ?></div>
                 <div class="stat-pill-label">Nomor Surat</div>
             </div>
             <div class="stat-pill">
-                <div class="stat-pill-val">324</div>
+                <div class="stat-pill-val"><?= number_format((int) $login_stats['surat_masuk'], 0, ',', '.'); ?></div>
                 <div class="stat-pill-label">Surat Masuk</div>
             </div>
             <div class="stat-pill">
-                <div class="stat-pill-val">89%</div>
+                <div class="stat-pill-val"><?= (int) $login_stats['disposisi_percent']; ?>%</div>
                 <div class="stat-pill-label">Disposisi Selesai</div>
             </div>
         </div>

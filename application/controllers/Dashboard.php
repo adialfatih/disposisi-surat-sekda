@@ -6,6 +6,7 @@ class Dashboard extends MY_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->model('Dashboard_model');
     }
 
     private function render($view, $data = [])
@@ -28,6 +29,8 @@ class Dashboard extends MY_Controller
             'page_subtitle' => 'Ringkasan aktivitas persuratan Sekda Kota Pekalongan',
             'active_menu'   => 'dashboard'
         ];
+
+        $data = array_merge($data, $this->Dashboard_model->get_dashboard_data());
 
         $this->render('dashboard/index', $data);
     }

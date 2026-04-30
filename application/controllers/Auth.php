@@ -7,6 +7,7 @@ class Auth extends CI_Controller
     {
         parent::__construct();
         $this->load->model('Auth_model');
+        $this->load->model('Dashboard_model');
     }
 
     public function login()
@@ -21,7 +22,9 @@ class Auth extends CI_Controller
             return;
         }
 
-        $this->load->view('auth/login');
+        $this->load->view('auth/login', [
+            'login_stats' => $this->Dashboard_model->get_login_stats()
+        ]);
     }
 
     private function process_login()
